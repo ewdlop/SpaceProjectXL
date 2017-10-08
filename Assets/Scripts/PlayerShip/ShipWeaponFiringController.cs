@@ -66,7 +66,7 @@ public class ShipWeaponFiringController : MonoBehaviour {
                             }
                             break;
 
-                        case "ChasingMissile":
+                        case "ChasingMissiles":
                             DestroyObject(leftProjectile);
                             DestroyObject(rightProjectile);
                             Destructibles[] enemies = FindObjectsOfType<Destructibles>();

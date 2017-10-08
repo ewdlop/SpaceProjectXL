@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
-
 public class PlayerShipDestructible : MonoBehaviour
 {
     public static bool isPlayerShipInvincible;
     public static bool isKillShip;
     private bool canMove;
-
 
     public float invincibleDuration;
     //public float timerForRedFlashes;
@@ -24,8 +20,7 @@ public class PlayerShipDestructible : MonoBehaviour
     public GameObject smallDebris3;
     public GameObject leftEngineFire;
     public GameObject rightEngineFire;
-    public GameObject sideLeftEngineFire;
-    public GameObject sideRightEngineFire;
+
     public float currentHealth = 100f;
     public float initialMaxHealth = 100f;
     public float currentMaxHealth = 100f;
@@ -137,8 +132,6 @@ public class PlayerShipDestructible : MonoBehaviour
 
         leftEngineFire.SetActive(false);
         rightEngineFire.SetActive(false);
-        sideLeftEngineFire.SetActive(false);
-        sideRightEngineFire.SetActive(false);
         rb.velocity = new Vector2(0, 0);
         Camera.main.GetComponent<FollowPlayerShip>().enabled = false;
 

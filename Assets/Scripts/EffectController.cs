@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class EffectController : MonoBehaviour {
 
-
     public float duration;
 
-	void Start () {
-        Destroy(this.gameObject, duration);
-        
+	void Start ()
+    {
+        Destroy(this.gameObject, duration);    
     }
 	
 

@@ -47,7 +47,7 @@ public class SpriteVertex : MonoBehaviour
             {
                 if (distance < 0.7)
                 {
-                    //PlayerShipActions.isKillShip = true;
+                    //PlayerController.isKillShip = true;
                     gameObject.GetComponent<SpriteVertex>().enabled = false;
                 }
                 else

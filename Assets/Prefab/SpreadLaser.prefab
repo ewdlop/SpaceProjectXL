@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf58fe93f3e469341bf04d9a2bbce603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
+  hiteffect: {fileID: 1076445698728776, guid: 3e0d00ad1759aed45a86154e9e7a57b1, type: 2}
   name: SpreadLaser
   damage: 2
   launchAngle: 0

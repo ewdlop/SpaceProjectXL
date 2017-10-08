@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9624390a33eb295428984942b01d36e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
+  hiteffect: {fileID: 1076445698728776, guid: 020c22f6cd4807e43b26be6c190fd3d1, type: 2}
   name: WaveMissle
   damage: 2
   launchAngle: 0

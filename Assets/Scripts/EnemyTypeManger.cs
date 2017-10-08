@@ -14,6 +14,16 @@ public class EnemyTypeManger : MonoBehaviour {
     public List<string> enemyCloneName;
     public List<bool> isItTakesDamage;
 
+    // so like this 
+    class Enemy
+    {
+        int numberOfSpawn;
+        int health;
+        int score;
+        string name;
+        bool doesTakeDamage;
+    }
+
 
     public static GameObject enemyTypeManger;
 
@@ -24,9 +34,6 @@ public class EnemyTypeManger : MonoBehaviour {
     {
         enemyTypeManger = gameObject;
     }
-
-
-
 	
     public static GameObject getEnemyTypeManger()
     {

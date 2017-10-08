@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114423051165632568}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 60022153177563540}
+  - component: {fileID: 114582386489842134}
   m_Layer: 9
   m_Name: ChasingMissiles
   m_TagString: Projectile
@@ -100,7 +101,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5e4dd70abd188d48a834333be21be0a, type: 3}
   m_Name: 
@@ -119,6 +120,24 @@ MonoBehaviour:
   playerSpaceShipX: 0
   playerSpaceShipY: 0
   names: 
+--- !u!114 &114582386489842134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1344034998661486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40ec2029dfe620409a26977e12f7e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hiteffect: {fileID: 1076445698728776, guid: 03125dfd5f649314794265917014f6fc, type: 2}
+  name: ChasingMissiles
+  damage: 2
+  launchAngle: 0
+  speed: 50
+  isUnlocked: 0
+  targetSprite: {fileID: 0}
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1
