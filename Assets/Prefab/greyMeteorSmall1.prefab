@@ -169,17 +169,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79499d443a546c84483b191bdc325f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  index: 0
   enemyTypeManger: {fileID: 1420891394749996, guid: eb76acd310560d141813485ab2a29701,
     type: 2}
-  weaponManger: {fileID: 1458014921665200, guid: fa502b1cfa04a2b42bc16f105680a5ff,
-    type: 2}
-  healthSlider: {fileID: 0}
   targetSprite: {fileID: 1815081498506772}
-  isItTakesDamage: 0
+  isItTakesDamage: 1
+  maxHealth: 5
   currentHealth: 0
-  maxHealth: 0
+  score: 2
 --- !u!212 &212034659105654248
 SpriteRenderer:
   m_ObjectHideFlags: 1

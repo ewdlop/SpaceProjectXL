@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4071374503653984}
   - component: {fileID: 212097695805022122}
-  - component: {fileID: 114423051165632568}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 60022153177563540}
+  - component: {fileID: 114297875268992516}
   m_Layer: 9
   m_Name: CircleMissiles
   m_TagString: Projectile
@@ -113,7 +113,7 @@ PolygonCollider2D:
       - {x: 0.98999995, y: -0.64}
       - {x: 1.15, y: -0.32}
       - {x: 1.15, y: 0.32999998}
---- !u!114 &114423051165632568
+--- !u!114 &114297875268992516
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -121,22 +121,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1344034998661486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e4dd70abd188d48a834333be21be0a, type: 3}
+  m_Script: {fileID: 11500000, guid: db6a7cd90204ca446b9f1a2fea586d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDamage: 10
-  speed: 50
-  duration: 5
-  time: 3
-  index: 0
-  isFireFromRight: 0
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
-  weaponManger: {fileID: 1458014921665200, guid: fa502b1cfa04a2b42bc16f105680a5ff,
-    type: 2}
-  playerSpaceShip: {fileID: 0}
-  playerSpaceShipX: 0
-  playerSpaceShipY: 0
-  names: 
+  name: CircleMissile
+  damage: 2
+  launchAngle: 0
+  speed: 10
+  isUnlocked: 1
+  isFiredFromRight: 0
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

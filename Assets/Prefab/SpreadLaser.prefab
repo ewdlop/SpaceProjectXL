@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4071374503653984}
   - component: {fileID: 212097695805022122}
-  - component: {fileID: 114423051165632568}
+  - component: {fileID: 114749090144671264}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 70751696733138400}
   m_Layer: 9
@@ -78,7 +78,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.09, y: 0.37}
   m_Direction: 0
---- !u!114 &114423051165632568
+--- !u!114 &114749090144671264
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,22 +86,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1344034998661486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e4dd70abd188d48a834333be21be0a, type: 3}
+  m_Script: {fileID: 11500000, guid: cf58fe93f3e469341bf04d9a2bbce603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDamage: 10
-  speed: 25
-  duration: 10
-  time: 0
-  index: 4
-  isFireFromRight: 0
-  hiteffect: {fileID: 1076445698728776, guid: 3e0d00ad1759aed45a86154e9e7a57b1, type: 2}
-  weaponManger: {fileID: 1458014921665200, guid: fa502b1cfa04a2b42bc16f105680a5ff,
-    type: 2}
-  playerSpaceShip: {fileID: 0}
-  playerSpaceShipX: 0
-  playerSpaceShipY: 0
-  names: 
+  hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
+  name: SpreadLaser
+  damage: 2
+  launchAngle: 0
+  speed: 50
+  isUnlocked: 0
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

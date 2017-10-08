@@ -46,7 +46,7 @@ public class BossManager : MonoBehaviour {
                     col = cols;
 
             }
-            if (boss.theBoss.GetComponent<Destructibles>().health > 0)
+            if (boss.theBoss.GetComponent<Destructibles>().currentHealth > 0)
             {
                 foreach (GameObject parts in boss.weaponParts)
                 {
