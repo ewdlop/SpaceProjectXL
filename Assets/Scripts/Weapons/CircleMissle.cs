@@ -38,6 +38,7 @@ public class CircleMissle : Weapon {
                  rightFire.rotation) as GameObject;
             rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
         }
+        SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
     public override void Kinematics()

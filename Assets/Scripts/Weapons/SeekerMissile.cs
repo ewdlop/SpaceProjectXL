@@ -8,12 +8,13 @@ public class SeekerMissile : Weapon {
     // SeekerMissle: 
     // Targets an enemy and moves toward them
     // TODO: attach the target sprite to SeekerMissile instead of Enemies
+    // TODO: abstract the speed to use the weapon.speed field
 
     public int shotCount = 3;
     public GameObject targetSprite;     // Cross hair sprite to show what missle is targeting
     private GameObject target;
     private Destructibles[] enemies; 
-
+    
     void Update()
     {      
         Kinematics();
@@ -26,6 +27,7 @@ public class SeekerMissile : Weapon {
             Instantiate(this.gameObject, leftFire.position, leftFire.rotation);
             Instantiate(this.gameObject, rightFire.position, rightFire.rotation);
         }
+        //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
     public override void Kinematics()
@@ -33,6 +35,7 @@ public class SeekerMissile : Weapon {
         // Need to update the enemies list each time so that missiles can redirect 
         enemies = FindObjectsOfType<Destructibles>();
 
+        // Find a new target for the missile
         if (target == null)
         {
             if (enemies.Length > 0)
@@ -54,10 +57,17 @@ public class SeekerMissile : Weapon {
                 targetSprite.transform.localScale = enemies[random].targetSprite.transform.localScale;
                 targetSprite.SetActive(true);
             }
+            // If there are no targets just have the missile slow down and destroy itself 
             else
             {
-                DestroyObject(gameObject);
-                DestroyObject(gameObject.GetComponent<ProjectileController>().targetSprite);
+                // Slow down the missile 
+
+                // Instantiate explosion effect
+                Vector2 velocity = gameObject.GetComponent<Rigidbody2D>().velocity;
+                if (Mathf.Approximately(velocity.x, 0.0f) && Mathf.Approximately(velocity.y, 0.0f))
+                {
+                    DestroyObject(gameObject);
+                }
             }
         }
         else

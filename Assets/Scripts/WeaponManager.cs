@@ -7,9 +7,7 @@ public class WeaponManager : MonoBehaviour {
     public GameObject[] WeaponList = new GameObject[10];
     // DEBUG: For quick testing of weapons
     public bool[] debugUnlockList = new bool[10];
-
     public static List<GameObject> playerWeaponList = new List<GameObject>();
-    public static WeaponManager instance;
 
     void Awake ()
     {    
@@ -18,7 +16,6 @@ public class WeaponManager : MonoBehaviour {
             if (WeaponList[i] != null) 
                 playerWeaponList.Add(WeaponList[i]);
         }
-        // Set the first weapon to be unlocked (Typically the default red laser)
     }
 
     void Update()
@@ -28,7 +25,6 @@ public class WeaponManager : MonoBehaviour {
         {
             if (WeaponList[i] != null)
             {
-                //playerWeaponList.Add(WeaponList[i]);
                 playerWeaponList[i].GetComponent<Weapon>().isUnlocked = debugUnlockList[i];
             }
         }

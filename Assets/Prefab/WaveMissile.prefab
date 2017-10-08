@@ -125,12 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 020c22f6cd4807e43b26be6c190fd3d1, type: 2}
-  name: WaveMissle
   damage: 2
   launchAngle: 0
-  speed: 50
+  speed: 15
   isUnlocked: 0
-  isFiredFromRight: 0
 --- !u!212 &212172207480508318
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -20,12 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4071374503653984}
   - component: {fileID: 212097695805022122}
-  - component: {fileID: 114423051165632568}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 60022153177563540}
   - component: {fileID: 114582386489842134}
   m_Layer: 9
-  m_Name: ChasingMissiles
+  m_Name: SeekerMissile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,31 +94,6 @@ PolygonCollider2D:
       - {x: 0.099999994, y: 0.055}
       - {x: 0.089999996, y: 0.145}
       - {x: 0.07, y: 0.175}
---- !u!114 &114423051165632568
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e4dd70abd188d48a834333be21be0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalDamage: 10
-  speed: 50
-  duration: 5
-  time: 0
-  index: 6
-  isFireFromRight: 0
-  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
-  weaponManger: {fileID: 1458014921665200, guid: fa502b1cfa04a2b42bc16f105680a5ff,
-    type: 2}
-  playerSpaceShip: {fileID: 0}
-  targetSprite: {fileID: 0}
-  playerSpaceShipX: 0
-  playerSpaceShipY: 0
-  names: 
 --- !u!114 &114582386489842134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,11 +106,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 03125dfd5f649314794265917014f6fc, type: 2}
-  name: ChasingMissiles
   damage: 2
   launchAngle: 0
   speed: 50
-  isUnlocked: 0
+  isUnlocked: 1
+  shotCount: 3
   targetSprite: {fileID: 0}
 --- !u!212 &212097695805022122
 SpriteRenderer:

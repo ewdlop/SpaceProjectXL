@@ -175,7 +175,7 @@ MonoBehaviour:
     type: 2}
   targetSprite: {fileID: 1597716327335592}
   isItTakesDamage: 1
-  maxHealth: 10
+  maxHealth: 15
   currentHealth: 0
   score: 5
 --- !u!212 &212177068542932772

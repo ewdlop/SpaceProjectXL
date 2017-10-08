@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 60022153177563540}
   - component: {fileID: 114297875268992516}
   m_Layer: 9
-  m_Name: CircleMissiles
+  m_Name: CircleMissile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,12 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
-  name: CircleMissile
   damage: 2
   launchAngle: 0
-  speed: 10
+  speed: 2
   isUnlocked: 1
-  isFiredFromRight: 0
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

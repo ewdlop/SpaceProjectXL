@@ -38,6 +38,7 @@ public class WaveMissile : Weapon {
                  rightFire.rotation) as GameObject;
             rightProjectile.GetComponent<WaveMissile>().isFiredFromRight = true;
         }
+        SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
     public override void Kinematics()
