@@ -34,7 +34,7 @@ public class PlayerShipActions : MonoBehaviour {
 
 	void Update ()
     {
-        if (LaunchPlayerShip.isPlayerShipLaunched && !GameController.instance.gameOver && !MenuManager.isPaused)
+        if (!GameController.instance.isGameOver && !MenuManager.isPaused)
         {
             mouseWorldPosition = mainCam.ScreenToWorldPoint(Input.mousePosition);
             playerShipFacingAngle = Mathf.Atan2(mouseWorldPosition.y - transform.position.y, mouseWorldPosition.x - transform.position.x) * 180 / Mathf.PI;
@@ -119,10 +119,7 @@ public class PlayerShipActions : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collidedTarget)
     {
         if (collidedTarget.gameObject.tag == "PowerUp")
-        {
-
-
-            
+        {  
             foreach (PowerUp powerUp in powerUpList)
             {
                 int index =powerUpList.IndexOf(powerUp);
@@ -139,7 +136,8 @@ public class PlayerShipActions : MonoBehaviour {
                             break;
                         case 101://shield powerup
                             PowerUpManger.weaponPanelOffset += 1f;
-                            WeaponManager.playerWeaponList[1].isUnlocked = true;
+                            //TODO unlock using the name
+                            //WeaponManager.playerWeaponList[1].isUnlocked = true;
                             shield.SetActive(true);
                             PowerUpManger.shieldOn = true;
                             powerUp.IncreaseDuration();//increase the duration
@@ -151,7 +149,7 @@ public class PlayerShipActions : MonoBehaviour {
                             break;
                         default:
                             int weaponIndex =powerUp.playerWeaponIndex;
-                            WeaponManager.playerWeaponList[weaponIndex].isUnlocked = true;
+                            //WeaponManager.playerWeaponList[weaponIndex].isUnlocked = true;
                             PowerUpManger.weaponPanelOffset += 1f;
                             powerUp.IncreaseDuration();
                             powerUp.SetProgress();
@@ -171,7 +169,7 @@ public class PlayerShipActions : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
-        if (collidedTarget.gameObject.tag=="PowerUp"|| PlayerShipDestructible.isPlayerShipInvincible || GameController.instance.gameOver)
+        if (collidedTarget.gameObject.tag=="PowerUp"|| PlayerShipDestructible.isPlayerShipInvincible || GameController.instance.isGameOver)
         {
             return; // Ship is invincible so do nothing
         }

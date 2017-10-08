@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour {
     public static Difficulty difficulty;     // The static difficulty var referenced by other scripts
     public int difficultyInt;  // TODO, can remove this and just use the enum
     public float scrollSpeed = -5.0f;
-    public bool gameOver;
+    public bool isGameOver;
     public Color hitColor;
 
     /**************/
@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour {
         else
         {
             //difficulty = debugDifficulty;
-            gameOver = false;
+            isGameOver = false;
             difficultyInt = (int)difficulty;
             difficultyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
         }
@@ -121,12 +121,16 @@ public class GameController : MonoBehaviour {
         PlayerShipDestructible.isKillShip = false;
         PlayerShipDestructible.isPlayerShipInvincible = false;
         PowerUpManger.weaponPanelOffset = 0;
-        foreach(Weapon weapon in WeaponManager.playerWeaponList)
+
+        foreach(GameObject weapon in WeaponManager.playerWeaponList)
         {
-            weapon.isUnlocked = false;
+            weapon.GetComponent<Weapon>().isUnlocked = false;
         }
     }
 
+
+    /***********************/
+    // TODO: move this into a seperate menu script, or maybe into the current MenuScript
     public void LoadScenes(string scene)
     {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
@@ -138,7 +142,6 @@ public class GameController : MonoBehaviour {
         Application.Quit();
     }
 
-    /***********************/
     public void OpenStartGameMenu()
     {
         startGameMenu.SetActive(true);

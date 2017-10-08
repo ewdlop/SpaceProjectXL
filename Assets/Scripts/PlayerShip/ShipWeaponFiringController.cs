@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class ShipWeaponFiringController : MonoBehaviour {
 
-    public List<GameObject> weaponProjectileList;
-    public GameObject weaponManager;
     public Transform leftFirePosition;
     public Transform rightFirePosition;
     public float shotCoolDown;
-    public float projectileSpeed = 25.0f;
-    public float projectileDuration = 1.0f;
-    public List<Weapon> weaponList;
+
+    private List<GameObject> weaponList;
     private bool canShoot;
     private float timeStamp;
     private Rigidbody2D shipRB; 
@@ -23,20 +20,7 @@ public class ShipWeaponFiringController : MonoBehaviour {
         shipRB = GetComponent<Rigidbody2D>();
 
         string names = gameObject.name;
-        switch(names)
-        {
-            case "PlayerShip_Green":
-                weaponList = WeaponManager.playerWeaponList;
-                break;
-            case "LeftCorvette":
-                weaponList = WeaponManager.leftCorvetteWeaponList;
-                break;
-            case "RightCorvette":
-                weaponList = WeaponManager.rightCorvetteWeaponList;
-                break;
-            default:
-                break;
-        }
+        weaponList = WeaponManager.playerWeaponList;
     }
 
     void Update()
@@ -46,55 +30,61 @@ public class ShipWeaponFiringController : MonoBehaviour {
             canShoot = true;
         }
 
-        if (!GameController.instance.gameOver && canShoot && LaunchPlayerShip.isPlayerShipLaunched)
+        if (!GameController.instance.isGameOver && canShoot)
         {
-            foreach (Weapon weapon in weaponList)
+            //Debug.Log("WeaponList Size: " + weaponList.Count);
+            foreach (GameObject weapon in weaponList)
             {
-                if (weapon.isUnlocked)
+                if (weapon.GetComponent<Weapon>().isUnlocked)
                 {
                     GameObject leftProjectile=null;
-                    GameObject rightProjectile=null;
-                    int index = WeaponManager.playerWeaponList.IndexOf(weapon);
-                    GameObject prefab = weapon.prefab;
-                    float weaponAngletoRad = weapon.launchAngle * Mathf.Deg2Rad;
+                    GameObject rightProjectile = null;
+                    float weaponAngletoRad = weapon.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
+
                     if (leftFirePosition != null)
                     {
-                        leftProjectile = Instantiate(prefab, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
+                        leftProjectile = Instantiate(weapon, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
                     }
                     if (rightFirePosition != null)
                     {
-                        rightProjectile = Instantiate(prefab, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
-                        rightProjectile.GetComponent<ProjectileController>().isFireFromRight = true;
+                        rightProjectile = Instantiate(weapon, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
                     }
-
-
+                    //Debug.Log(weapon.name);
                     switch (weapon.name)
                     {
-                        case "SineMissiles":
+                        case "WaveMissile":
+                            if (rightProjectile != null)
+                            {
+                                rightProjectile.GetComponent<WaveMissile>().isFiredFromRight = true;
+                            }
                             break;
 
-                        case "CircleMissiles":
-                            leftProjectile.GetComponent<ProjectileController>().playerSpaceShip = gameObject;
-                            rightProjectile.GetComponent<ProjectileController>().playerSpaceShip = gameObject;
+                        case "CircleMissile":
+                            if (rightProjectile != null)
+                            {
+                                rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
+                            }
                             break;
-                        case "ChasingMissiles":
+
+                        case "ChasingMissile":
                             DestroyObject(leftProjectile);
                             DestroyObject(rightProjectile);
                             Destructibles[] enemies = FindObjectsOfType<Destructibles>();
                             
                             for (int i = 0; i < 3; i++)
                             {
-                                leftProjectile = Instantiate(prefab, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
-                                rightProjectile = Instantiate(prefab, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
+                                leftProjectile = Instantiate(weapon, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
+                                rightProjectile = Instantiate(weapon, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
 
                             }
                             break;
+
                         case "SpreadLaser":
                             DestroyObject(leftProjectile);
                             DestroyObject(rightProjectile);
                             for(int i=0;i<10;i++)
                             {
-                                GameObject SpreadLaser = Instantiate(prefab, new Vector3(gameObject.transform.position.x,gameObject.transform.position.y,0.01f), leftFirePosition.rotation);
+                                GameObject SpreadLaser = Instantiate(weapon, new Vector3(gameObject.transform.position.x,gameObject.transform.position.y,0.01f), leftFirePosition.rotation);
 
                                 //final velocity=rotation matrix(shipfacingangle)*inital velocity //same as (cos(wA+fA), sin(wA+fA)) for this case 
                                 Vector2 LaserVelocity = 5f* new Vector2(Mathf.Cos(135f/180f*Mathf.PI-10f/180f*Mathf.PI*i), Mathf.Sin(135f / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i));
@@ -103,32 +93,36 @@ public class ShipWeaponFiringController : MonoBehaviour {
                             }
                             SoundController.Play((int)SFX.ShipLaserFire, 0.1f);
                             break;
+
                         default:
                             float totalSpeed = 0;
                             if (shipRB != null)
                             {
-                                 totalSpeed = shipRB.velocity.magnitude + weapon.speed;
+                                totalSpeed = shipRB.velocity.magnitude + weapon.GetComponent<Weapon>().speed;
                             }
                             else
                             {
-                                totalSpeed = weapon.speed;
+                                totalSpeed = weapon.GetComponent<Weapon>().speed;
 
                             }
                             float leftWeaponUnitVectorX = Mathf.Cos(weaponAngletoRad);
                             float leftWeaponUnitVecotrY = Mathf.Sin(weaponAngletoRad);
-                            //final velocity=rotation matrix(shipfacingangle)*inital velocity //same as (cos(wA+fA), sin(wA+fA)) for this case 
+                            
                             Vector2 leftLaserRelativeVelocity = totalSpeed * new Vector2(leftWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - leftWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
                                 , leftWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + leftWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-                            if (leftFirePosition != null)
+                            if (leftProjectile != null)
+                            {
                                 leftProjectile.GetComponent<Rigidbody2D>().velocity = leftLaserRelativeVelocity;
+                            }
                             //------------------------------------------------------------------------------//
                             float rightWeaponUnitVectorX = Mathf.Cos(-1 * weaponAngletoRad);
                             float rightWeaponUnitVecotrY = Mathf.Sin(-1 * weaponAngletoRad);
                             Vector2 rightLaserRelativeVelocity = totalSpeed * new Vector2(rightWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - rightWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
                                 , rightWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + rightWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-                            if (rightFirePosition != null)
+                            if (rightProjectile != null)
+                            {
                                 rightProjectile.GetComponent<Rigidbody2D>().velocity = rightLaserRelativeVelocity;
-
+                            }
                             SoundController.Play((int)SFX.ShipLaserFire, 0.1f);
                             break;
                     }
@@ -137,10 +131,5 @@ public class ShipWeaponFiringController : MonoBehaviour {
             canShoot = false;
             timeStamp = Time.time + shotCoolDown;
         }   
-    }
-   
-    void DestroyShip() 
-    {
-        Destroy(this.gameObject); 
     }
 }

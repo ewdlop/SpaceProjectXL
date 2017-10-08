@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class Destructibles : MonoBehaviour {
 
-    public float health;
-    public int index;
     public GameObject enemyTypeManger;
-    public GameObject weaponManger;
-    public GameObject healthSlider;
     public GameObject targetSprite;
     public bool isItTakesDamage;
 
-    public float currentHealth;
-    public float maxHealth;
+    public int maxHealth;
+    public int currentHealth;
+
+    public int score; 
+
     private Renderer renderer;
     private Color originalColor;
+    private int index = 3;  // TODO refactor all index operations out! Corresponds to Number of Spawn in enemymanager
+
     enum MeteorSize
     {
         Large,
@@ -26,24 +27,10 @@ public class Destructibles : MonoBehaviour {
 
     void Start()
     {
+        currentHealth = maxHealth;
         renderer = GetComponent<Renderer>();
         originalColor = renderer.material.color;
         enemyTypeManger = EnemyTypeManger.getEnemyTypeManger();
-        
-        foreach (GameObject enemy in enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList)
-        {
-            index = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList.IndexOf(enemy);
-
-            if (gameObject.name.Contains(enemyTypeManger.GetComponent<EnemyTypeManger>().enemyCloneName[index]))
-            {
-                health = enemyTypeManger.GetComponent<EnemyTypeManger>().health[index];
-                isItTakesDamage = enemyTypeManger.GetComponent<EnemyTypeManger>().isItTakesDamage[index];
-                break;
-            }
-
-        }
-        currentHealth = health;
-        maxHealth = health;
     }
     
     void Update()
@@ -61,7 +48,7 @@ public class Destructibles : MonoBehaviour {
                 SoundController.Play((int)SFX.RockBreakSmall);
             //SoundController.PlayWithOutInterrpution((int)SFX.MONEY);
 
-            GameController.playerScore += enemyTypeManger.GetComponent<EnemyTypeManger>().scoreFromDestroying[index];
+            GameController.playerScore += score;
 
             if (enemyTypeManger.GetComponent<EnemyTypeManger>().spawnEnemyAfterDeath[index] != null)
             {
@@ -100,26 +87,19 @@ public class Destructibles : MonoBehaviour {
                         break;
                 }
             }
-            string gameObjectNames = gameObject.name;
-            switch (gameObjectNames)
-            {
-                default:
-                    break;
-            }
         }
-    }
-
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
         // Ship projectile 
-        if (other.tag == "Projectile" &&isItTakesDamage)
+        if (other.tag == "Projectile" && isItTakesDamage)
         {
-            string projectileName=other.gameObject.name;
+            string projectileName = other.gameObject.name;
+       
+            // Destroy the weapon projectile upon impact
+            Destroy(other.gameObject);  
+
             switch (projectileName)
             {
                 case "LaserBeam":
@@ -128,60 +108,13 @@ public class Destructibles : MonoBehaviour {
                 case "ChasingMissiles(Clone)":
                     Destroy(other.gameObject.GetComponent<ProjectileController>().targetSprite);
                     Destroy(other.gameObject);
-
-                    break;
-                default:
-
-                    Destroy(other.gameObject);
                     break;
             }
-            
-            int weaponIndex = other.gameObject.GetComponent<ProjectileController>().index;
-            float damage = WeaponManager.playerWeaponList[weaponIndex].damage;
-            
-            string names = gameObject.name;
-
-
-
-            switch (names)
-            {
-                case "Boss1itSelf":
-                    float healthPercentage = Mathf.Clamp(currentHealth / maxHealth, 0f, 1f);
-                    healthSlider.GetComponent<Slider>().value = healthPercentage;
-                    currentHealth -= damage;
-                    health = currentHealth;
-                    renderer.material.SetFloat("_OcclusionStrength",1f-healthPercentage);
-
-                    break;
-                case "Boss2itSelf":
-                    float healthPercentageBoss2 = Mathf.Clamp(currentHealth / maxHealth, 0f, 1f);
-                    healthSlider.GetComponent<Slider>().value = healthPercentageBoss2;
-                    currentHealth -= damage;
-                    health = currentHealth;
-                    renderer.material.SetFloat("_OcclusionStrength", 1f - healthPercentageBoss2);
-                    break;
-
-                case "greyMeteorLarge1(Clone)":
-                    float healthPercentageRockLarge = Mathf.Clamp(currentHealth / maxHealth, 0f, 1f);
-                    currentHealth -= damage;
-                    health = currentHealth;
-                    renderer.material.SetFloat("_OcclusionStrength", 1f - healthPercentageRockLarge);
-                    break;
-                case "greyMeteorMed1(Clone)":
-                    float healthPercentageRockMedium = Mathf.Clamp(currentHealth / maxHealth, 0f, 1f);
-                    currentHealth -= damage;
-                    health = currentHealth;
-                    renderer.material.SetFloat("_OcclusionStrength", 1f - healthPercentageRockMedium);
-                    break;
-                default:
-                    float healthPercentageDefault= Mathf.Clamp(currentHealth / maxHealth, 0f, 1f);
-                    currentHealth -= damage;
-                    health = currentHealth;
-                    break;
-            }
-            GameController.playerScore += enemyTypeManger.GetComponent<EnemyTypeManger>().scoreFromHitting[index];
-            if(projectileName!= "LaserBeam")
-            Instantiate(other.gameObject.GetComponent<ProjectileController>().hiteffect, new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),Quaternion.identity);
+                     
+            // Reduce this destructable's current health by the damage of the weapon projectile;
+            currentHealth -= other.gameObject.GetComponent<Weapon>().damage;
+            float healthPercentage = Mathf.Clamp(currentHealth / maxHealth, 0.0f, 1.0f);
+            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
         }
 
     }
@@ -189,6 +122,10 @@ public class Destructibles : MonoBehaviour {
     {
         if (other.tag == "Projectile")
         {
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect, 
+                new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f), 
+                Quaternion.identity);
+
             StartCoroutine("HitFlash");
         }
 

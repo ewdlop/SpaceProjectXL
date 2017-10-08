@@ -61,8 +61,6 @@ public class PowerUpManger : MonoBehaviour {
     public GameObject playerShip;
     void Awake()
     {
-
-
         PowerUp healthRepair = new PowerUp(powerUp[0], weaponPanel[0], weaponPanelBar[0], "HealthRepairPowerUp",50f, 0f, 0f, 0f, 100);
         PowerUp shield = new PowerUp(powerUp[1], weaponPanel[1], weaponPanelBar[1], "ShieldPowerUp", 0f, 10f, 0f, 60f, 101);
         PowerUp blueLaser = new PowerUp(powerUp[2], weaponPanel[2], weaponPanelBar[2], "BlueLaserBulletPowerUp", 0f, 10f, 0f, 60f, 1);
@@ -119,7 +117,7 @@ public class PowerUpManger : MonoBehaviour {
                         {
 
                             powerUps.weaponPanelBar.SetActive(false);
-                            WeaponManager.playerWeaponList[powerUps.playerWeaponIndex].isUnlocked = false;
+                            //WeaponManager.playerWeaponList[powerUps.playerWeaponIndex].isUnlocked = false;
                         }
                     }
                 }

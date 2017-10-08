@@ -49,7 +49,6 @@ public class ProjectileController : MonoBehaviour {
         float velocityAngle = 0f;
         switch (names)
         {
-
             case "SineMissiles(Clone)":
                 time += Time.deltaTime;
                 float speedX = 10f;
@@ -141,7 +140,7 @@ public class ProjectileController : MonoBehaviour {
                 //transform.eulerAngles = new Vector3(0f, 0f, facingAngle * Mathf.Rad2Deg -180f);
                 break;
             case "Boss1BlueBall(Clone)":
-                gameObject.GetComponent<Destructibles>().currentHealth -= gameObject.GetComponent<Destructibles>().maxHealth / (gameObject.GetComponent<ProjectileController>().duration-1f) * Time.deltaTime;
+                gameObject.GetComponent<Destructibles>().currentHealth -= (int)(gameObject.GetComponent<Destructibles>().maxHealth / (gameObject.GetComponent<ProjectileController>().duration - 1f) * Time.deltaTime);
                 break;
             case "RedRocketMissiles(Clone)":
                 time += Time.deltaTime;

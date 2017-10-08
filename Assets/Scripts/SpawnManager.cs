@@ -154,7 +154,7 @@ public class SpawnManager : MonoBehaviour {
             }
             else
             {
-                health = bossList[bossIndex].type.GetComponent<Destructibles>().GetCurrentHealth();
+                health = bossList[bossIndex].type.GetComponent<Destructibles>().currentHealth;
             }
         }
         else

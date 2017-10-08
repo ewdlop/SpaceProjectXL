@@ -45,7 +45,6 @@ public class PlayerShipDestructible : MonoBehaviour
         isPlayerShipInvincible = false;
     }
 
-
     void Update()
     {
         if (isKillShip)
@@ -58,7 +57,7 @@ public class PlayerShipDestructible : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collidedTarget)
     {
 
-        if ((collidedTarget.gameObject.tag == "EP"|| collidedTarget.gameObject.tag == "Boss") && !isPlayerShipInvincible && !GameController.instance.gameOver)
+        if ((collidedTarget.gameObject.tag == "EP"|| collidedTarget.gameObject.tag == "Boss") && !isPlayerShipInvincible && !GameController.instance.isGameOver)
         {
 
             foreach (GameObject enemy in enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList)
@@ -107,9 +106,6 @@ public class PlayerShipDestructible : MonoBehaviour
         healthSlider.GetComponent<Slider>().value = healthPercentage;
     }
 
-
-
-
     IEnumerator InvincibleAfterTakeDamage()
     {
         isPlayerShipInvincible = true;
@@ -136,7 +132,7 @@ public class PlayerShipDestructible : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 
-        GameController.instance.gameOver = true;
+        GameController.instance.isGameOver = true;
         GameController.isPlayerShipDead = true;
 
         leftEngineFire.SetActive(false);

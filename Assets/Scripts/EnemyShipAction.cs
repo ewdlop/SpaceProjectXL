@@ -16,10 +16,7 @@ public class EnemyShipAction : MonoBehaviour
 
     void Start()
     {
-
-
         // Easy mode 
-
         if (GameController.difficulty == Difficulty.Easy)
             shotDeviation = shotdeviationArray[(int)Difficulty.Easy];
         // Medium mode
