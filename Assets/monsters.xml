@@ -1,0 +1,20 @@
+<MonsterCollection>
+ 	<Monsters>
+ 		<Monster name="a">
+ 			<Health>5</Health>
+			<AttackType>"Normal"</AttackType>
+			<SubMonsters>
+				<SubMonster name="ab">
+				</SubMonster>
+			</SubMonsters>
+ 		</Monster>
+ 		<Monster name="b">
+ 			<Health>3</Health>
+			<AttackType>"Magic"</AttackType>
+			<SubMonsters>
+				<SubMonster name="abc">
+				</SubMonster>
+			</SubMonsters>
+ 		</Monster>
+ 	</Monsters>
+ </MonsterCollection>

@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1420891394749996}
+  m_IsPrefabParent: 1
+--- !u!1 &1420891394749996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4625445752206526}
+  - component: {fileID: 114406493288751904}
+  m_Layer: 0
+  m_Name: EnemyTypeManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4625445752206526
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1420891394749996}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -79.72533, y: -0.92947626, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114406493288751904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1420891394749996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9d88384e7d87248bf74d092dfb5a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTypeList:
+  - {fileID: 1634547629620050, guid: ee0b2d0234cbbb84daf27df680317a3b, type: 2}
+  - {fileID: 1630395391724720, guid: 98fec3bc96fbfaf40823228c17e98a86, type: 2}
+  - {fileID: 1899199138861278, guid: ed548451208fb7e40b00924896f1a1b3, type: 2}
+  - {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
+  - {fileID: 1344034998661486, guid: 521dd14bcb8835d4cb1b61ed04760578, type: 2}
+  - {fileID: 1872659305063576, guid: b8813526558ebc64bb750606777f4945, type: 2}
+  - {fileID: 1344034998661486, guid: 1c09c099fecf60042a86d7da27cf9ca9, type: 2}
+  - {fileID: 1344034998661486, guid: e7095d6b0d1f7854bad33a6516654c61, type: 2}
+  - {fileID: 1344034998661486, guid: 04cb53c29bea1e344a757e07c3c830ac, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 1344034998661486, guid: 6425c0dc8cb1d7544a2cc5f402e0b2f3, type: 2}
+  spawnEnemyAfterDeath:
+  - {fileID: 1630395391724720, guid: 98fec3bc96fbfaf40823228c17e98a86, type: 2}
+  - {fileID: 1899199138861278, guid: ed548451208fb7e40b00924896f1a1b3, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 1344034998661486, guid: e7095d6b0d1f7854bad33a6516654c61, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  numberOfSpawn: 0300000005000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000
+  health:
+  - 20
+  - 10
+  - 2
+  - 1
+  - 1
+  - 10000
+  - 1
+  - 8000
+  - 200
+  - 2000
+  - 2000
+  - 2000
+  - 8000
+  - 10
+  enemyTypeDamageOnPlayerSpaceShip:
+  - 20
+  - 10
+  - 0
+  - 15
+  - 5
+  - 100
+  - 10
+  - 1
+  - 100
+  - 100
+  - 100
+  - 100
+  - 100
+  - 1
+  scoreFromHitting:
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0
+  - 0
+  - 100
+  - 0.5
+  - 0.5
+  - 0.5
+  - 50
+  - 50
+  - 50
+  - 50
+  - 0.5
+  scoreFromDestroying:
+  - 5
+  - 3
+  - 1
+  - 0
+  - 1
+  - 10000
+  - 1
+  - 1
+  - 100
+  - 5000
+  - 5000
+  - 5000
+  - 5000
+  - 1
+  enemyCloneName:
+  - greyMeteorLarge
+  - greyMeteorMed
+  - greyMeteorSmall
+  - Boss1GreenBall
+  - Boss1RedBall
+  - Boss1itSelf
+  - Boss1YellowBall
+  - Boss1BlueBall
+  - Boss2BrownBall
+  - Boss1RightTurret
+  - Boss1LeftTurret
+  - Boss1BackTurret
+  - Boss2itSelf
+  - Boss2GreenMissile
+  isItTakesDamage: 0101010101010100010101010101
