@@ -26,7 +26,7 @@ public class ShipWeaponFiringController : MonoBehaviour {
     void Update()
     {
         if (timeStamp <= Time.time)
-        { 
+        {
             canShoot = true;
         }
 
@@ -37,7 +37,7 @@ public class ShipWeaponFiringController : MonoBehaviour {
             {
                 if (weapon.GetComponent<Weapon>().isUnlocked)
                 {
-                    GameObject leftProjectile=null;
+                    GameObject leftProjectile = null;
                     GameObject rightProjectile = null;
                     float weaponAngletoRad = weapon.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
 
@@ -50,6 +50,7 @@ public class ShipWeaponFiringController : MonoBehaviour {
                         rightProjectile = Instantiate(weapon, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
                     }
                     //Debug.Log(weapon.name);
+                    /*
                     switch (weapon.name)
                     {
                         case "WaveMissile":
@@ -127,9 +128,11 @@ public class ShipWeaponFiringController : MonoBehaviour {
                             break;
                     }
                 }
+                */
+                }
+                canShoot = false;
+                timeStamp = Time.time + shotCoolDown;
             }
-            canShoot = false;
-            timeStamp = Time.time + shotCoolDown;
-        }   
+        }
     }
 }

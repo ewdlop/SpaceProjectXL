@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CircleMissle : Weapon {
 
     // CircleMissle: 
-    // Spins around the player
-    public bool isFiredFromRight;
+    // Missile spins around the player
 
     private float time;
     private float velocityAngle;
+    private bool isFiredFromRight; 
 
     void Start()
     {
@@ -20,6 +21,23 @@ public class CircleMissle : Weapon {
     void Update()
     {
         Kinematics();
+    }
+
+    public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
+    {
+        GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
+        if (leftFire != null)
+        {
+            Instantiate(this.gameObject, leftFire.position,
+                leftFire.rotation);
+        }
+
+        if (rightFire != null)
+        {
+            rightProjectile = Instantiate(this.gameObject, rightFire.position,
+                 rightFire.rotation) as GameObject;
+            rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
+        }
     }
 
     public override void Kinematics()

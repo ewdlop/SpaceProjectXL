@@ -5,42 +5,59 @@ using UnityEngine;
 
 public class DefaultLaser : Weapon {
 
+    // DefaultLaser: 
+    // Shoots forward at the specified launch angle
+
+    private float launchAngleRad;
+    private float unitVectorX, unitVectorY;
+
+    private bool isFiredFromRight; 
+
+    void Start()
+    {
+        launchAngleRad = launchAngle * Mathf.Deg2Rad;
+        if (isFiredFromRight)
+        {
+            unitVectorX = Mathf.Cos(-1 * launchAngleRad);
+            unitVectorY = Mathf.Sin(-1 * launchAngleRad);
+        }
+        else
+        {
+            unitVectorX = Mathf.Cos(launchAngleRad);
+            unitVectorY = Mathf.Sin(launchAngleRad);
+        }    
+    }
+
     void Update()
     {
         Kinematics();
     }
 
+    public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
+    {
+        GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
+        if (leftFire != null)
+        {
+            Instantiate(this.gameObject, leftFire.position,
+                leftFire.rotation);
+        }
+
+        if (rightFire != null)
+        {
+            rightProjectile = Instantiate(this.gameObject, rightFire.position,
+                 rightFire.rotation) as GameObject;
+            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+        }
+
+        SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
+    }
+
     public override void Kinematics()
     {
-        /*
-        float totalSpeed = 0;
-        if (shipRB != null)
-        {
-            totalSpeed = shipRB.velocity.magnitude + weapon.GetComponent<Weapon>().speed;
-        }
-        else
-        {
-            totalSpeed = weapon.GetComponent<Weapon>().speed;
+        Vector2 relativeVelocity =
+            speed * new Vector2(unitVectorX * Mathf.Cos(Mathf.PI / 2) - unitVectorY * Mathf.Sin(Mathf.PI / 2),
+            unitVectorX * Mathf.Sin(Mathf.PI / 2) + unitVectorY * Mathf.Cos(Mathf.PI / 2));
 
-        }
-        float leftWeaponUnitVectorX = Mathf.Cos(weaponAngletoRad);
-        float leftWeaponUnitVecotrY = Mathf.Sin(weaponAngletoRad);
-
-        Vector2 leftLaserRelativeVelocity = totalSpeed * new Vector2(leftWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - leftWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
-            , leftWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + leftWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-        if (leftProjectile != null)
-        {
-            leftProjectile.GetComponent<Rigidbody2D>().velocity = leftLaserRelativeVelocity;
-        }
-        //------------------------------------------------------------------------------//
-        float rightWeaponUnitVectorX = Mathf.Cos(-1 * weaponAngletoRad);
-        float rightWeaponUnitVecotrY = Mathf.Sin(-1 * weaponAngletoRad);
-        Vector2 rightLaserRelativeVelocity = totalSpeed * new Vector2(rightWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - rightWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
-            , rightWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + rightWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-        if (rightProjectile != null)
-        {
-            rightProjectile.GetComponent<Rigidbody2D>().velocity = rightLaserRelativeVelocity;
-        }
-        */
+        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
     }
 }

@@ -19,7 +19,6 @@ public class WeaponManager : MonoBehaviour {
                 playerWeaponList.Add(WeaponList[i]);
         }
         // Set the first weapon to be unlocked (Typically the default red laser)
-        debugUnlockList[0] = true;
     }
 
     void Update()

@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour {
     public GameObject enemyTypeManger;
     public GameObject powerUpManger;
     public List <PowerUp> powerUpList = new List<PowerUp>();
-
     private Rigidbody2D shipRB;
-    // For controlling ship shooting 
+
+    [Header("Shooting Controls")]
     public Transform leftFirePosition; 
     public Transform rightFirePosition;
     public float shotCoolDown = 0.2f;
@@ -53,97 +53,10 @@ public class PlayerController : MonoBehaviour {
     {
         foreach (GameObject weapon in weaponList)
         {
-            // Do nothing if the weapon is not unlocked
-            if (!weapon.GetComponent<Weapon>().isUnlocked) { continue; }  
-
-            GameObject leftProjectile = null;
-            GameObject rightProjectile = null;
-            float weaponAngletoRad = weapon.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
-
-            if (leftFirePosition != null)
+            // Instantiate the weapon if it's unlocked
+            if (weapon.GetComponent<Weapon>().isUnlocked)
             {
-                leftProjectile = Instantiate(weapon, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
-            }
-            if (rightFirePosition != null)
-            {
-                rightProjectile = Instantiate(weapon, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
-            }
-
-            switch (weapon.name)
-            {
-                case "WaveMissile":
-                    if (rightProjectile != null)
-                    {
-                        rightProjectile.GetComponent<WaveMissile>().isFiredFromRight = true;
-                    }
-                    break;
-
-                case "CircleMissile":
-                    if (rightProjectile != null)
-                    {
-                        rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
-                    }
-                    break;
-
-                case "ChasingMissiles":
-                    DestroyObject(leftProjectile);
-                    DestroyObject(rightProjectile);
-                    Destructibles[] enemies = FindObjectsOfType<Destructibles>();
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        leftProjectile = Instantiate(weapon, leftFirePosition.position, leftFirePosition.rotation) as GameObject;
-                        rightProjectile = Instantiate(weapon, rightFirePosition.position, rightFirePosition.rotation) as GameObject;
-
-                    }
-                    break;
-
-                case "SpreadLaser":
-                        DestroyObject(leftProjectile);
-                        DestroyObject(rightProjectile);
-                        for (int i = 0; i < 10; i++)
-                        {
-                            GameObject SpreadLaser = Instantiate(weapon, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0.01f), leftFirePosition.rotation);
-
-                            //final velocity=rotation matrix(shipfacingangle)*inital velocity //same as (cos(wA+fA), sin(wA+fA)) for this case 
-                            Vector2 LaserVelocity = 5f * new Vector2(Mathf.Cos(135f / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i), Mathf.Sin(135f / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i));
-                            SpreadLaser.GetComponent<Rigidbody2D>().velocity = LaserVelocity;
-
-                        }
-                        SoundController.Play((int)SFX.ShipLaserFire, 0.1f);
-                        break;
-
-                default:
-                    float totalSpeed = 0;
-                    if (shipRB != null)
-                    {
-                        totalSpeed = shipRB.velocity.magnitude + weapon.GetComponent<Weapon>().speed;
-                    }
-                    else
-                    {
-                        totalSpeed = weapon.GetComponent<Weapon>().speed;
-
-                    }
-                    float leftWeaponUnitVectorX = Mathf.Cos(weaponAngletoRad);
-                    float leftWeaponUnitVecotrY = Mathf.Sin(weaponAngletoRad);
-
-                    Vector2 leftLaserRelativeVelocity = totalSpeed * new Vector2(leftWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - leftWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
-                        , leftWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + leftWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-                    if (leftProjectile != null)
-                    {
-                        leftProjectile.GetComponent<Rigidbody2D>().velocity = leftLaserRelativeVelocity;
-                    }
-                    //------------------------------------------------------------------------------//
-                    float rightWeaponUnitVectorX = Mathf.Cos(-1 * weaponAngletoRad);
-                    float rightWeaponUnitVecotrY = Mathf.Sin(-1 * weaponAngletoRad);
-                    Vector2 rightLaserRelativeVelocity = totalSpeed * new Vector2(rightWeaponUnitVectorX * Mathf.Cos(Mathf.PI / 2) - rightWeaponUnitVecotrY * Mathf.Sin(Mathf.PI / 2)
-                        , rightWeaponUnitVectorX * Mathf.Sin(Mathf.PI / 2) + rightWeaponUnitVecotrY * Mathf.Cos(Mathf.PI / 2));
-                    if (rightProjectile != null)
-                    {
-                        rightProjectile.GetComponent<Rigidbody2D>().velocity = rightLaserRelativeVelocity;
-                    }
-                    SoundController.Play((int)SFX.ShipLaserFire, 0.1f);
-                    break;  
+                weapon.GetComponent<Weapon>().Instantiate(this.gameObject.transform, leftFirePosition, rightFirePosition);
             }
         }
         timeStamp = Time.time + shotCoolDown;
@@ -180,7 +93,7 @@ public class PlayerController : MonoBehaviour {
 
                             break;
                         default:
-                            int weaponIndex =powerUp.playerWeaponIndex;
+                            int weaponIndex = powerUp.playerWeaponIndex;
                             //WeaponManager.playerWeaponList[weaponIndex].isUnlocked = true;
                             PowerUpManger.weaponPanelOffset += 1f;
                             powerUp.IncreaseDuration();
