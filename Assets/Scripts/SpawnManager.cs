@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SpawnGameObjbect{
+public class SpawnObject{
     public GameObject type;
     public List <GameObject> parts;
     public string name;
@@ -17,9 +17,9 @@ public class SpawnGameObjbect{
 
 public class SpawnManager : MonoBehaviour {
 
-    public List<SpawnGameObjbect> enemyShipSpawnType;
-    public List<SpawnGameObjbect> powerUpsList;
-    public List<SpawnGameObjbect> bossList;
+    public List<SpawnObject> enemyShipSpawnType;
+    public List<SpawnObject> powerUpsList;
+    public List<SpawnObject> bossList;
 
     public Transform min;
     public Transform max;
@@ -68,7 +68,7 @@ public class SpawnManager : MonoBehaviour {
             StartCoroutine("SpawnBosses");
  
         }
-        foreach (SpawnGameObjbect spawn in enemyShipSpawnType)
+        foreach (SpawnObject spawn in enemyShipSpawnType)
         {
             if (spawn.timeStamp >= spawn.time && spawn.timeStamp < Time.time)
             {

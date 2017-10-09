@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerShipDestructible : MonoBehaviour
+public class DestructibleShip : Destructible
 {
     public static bool isPlayerShipInvincible;
     public static bool isKillShip;

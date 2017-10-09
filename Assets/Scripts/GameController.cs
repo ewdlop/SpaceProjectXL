@@ -118,8 +118,8 @@ public class GameController : MonoBehaviour {
         playerScore = 0f;
         LaunchPlayerShip.isPlayerShipLaunched = false;
         LaunchPlayerShip.isPlayerShipDebugMode = false;
-        PlayerShipDestructible.isKillShip = false;
-        PlayerShipDestructible.isPlayerShipInvincible = false;
+        DestructibleShip.isKillShip = false;
+        DestructibleShip.isPlayerShipInvincible = false;
         PowerUpManger.weaponPanelOffset = 0;
 
         foreach(GameObject weapon in WeaponManager.playerWeaponList)

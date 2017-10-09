@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     float healthRepair = powerUp.healthRepair;
 
-                    gameObject.GetComponent<PlayerShipDestructible>().IncreaseHealth(healthRepair);
+                    gameObject.GetComponent<DestructibleShip>().IncreaseHealth(healthRepair);
                     switch (powerUp.playerWeaponIndex)
                     {
                         case 100://health powerup
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
-        if (collidedTarget.gameObject.tag=="PowerUp"|| PlayerShipDestructible.isPlayerShipInvincible || GameController.instance.isGameOver)
+        if (collidedTarget.gameObject.tag=="PowerUp"|| DestructibleShip.isPlayerShipInvincible || GameController.instance.isGameOver)
         {
             return; // Ship is invincible so do nothing
         }
@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour {
                 if (collidedTarget.gameObject.name.Contains(enemyTypeManger.GetComponent<EnemyTypeManger>().enemyCloneName[index]))
                 {
                     float damage = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeDamageOnPlayerSpaceShip[index];
-                    gameObject.GetComponent<PlayerShipDestructible>().DecreaseHealth(damage);
+                    gameObject.GetComponent<DestructibleShip>().DecreaseHealth(damage);
                     if (collidedTarget.gameObject.tag == "EP")/*EP=EnemyProjectiles*/
                     {
                         Instantiate(collidedTarget.gameObject.GetComponent<ProjectileController>().hiteffect, new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), Quaternion.identity);
