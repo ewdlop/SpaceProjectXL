@@ -18,8 +18,6 @@ public class DestructibleShip : Destructible
     public GameObject smallDebris1;
     public GameObject smallDebris2;
     public GameObject smallDebris3;
-    public GameObject leftEngineFire;
-    public GameObject rightEngineFire;
 
     public float currentHealth = 100f;
     public float initialMaxHealth = 100f;
@@ -130,8 +128,6 @@ public class DestructibleShip : Destructible
         GameController.instance.isGameOver = true;
         GameController.isPlayerShipDead = true;
 
-        leftEngineFire.SetActive(false);
-        rightEngineFire.SetActive(false);
         rb.velocity = new Vector2(0, 0);
         Camera.main.GetComponent<FollowPlayerShip>().enabled = false;
 

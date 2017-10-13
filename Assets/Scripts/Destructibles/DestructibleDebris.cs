@@ -5,7 +5,11 @@ using UnityEngine;
 public class DestructibleDebris : Destructible {
 
     public GameObject objectToSpawn;
-    public int numberToSpawn; 
+    public int numberToSpawn;
+
+    [Header("Spawn child object parameters")]
+    public float maxSpeed = 2.0f;
+    public float maxAngle = 120.0f; 
 
 	new void Start ()
     {
@@ -33,8 +37,8 @@ public class DestructibleDebris : Destructible {
         float angle, speed; 
         for (int i = 0; i < numberToSpawn; ++i)
         {
-            angle = Random.Range(0.0f, 120.0f);
-            speed = Random.Range(1.0f, 5.0f);
+            angle = Random.Range(0.0f, maxAngle);
+            speed = Random.Range(0.2f, maxSpeed);
             GameObject clone = Instantiate(objectToSpawn,
                 new Vector3(transform.position.x, transform.position.y, transform.position.z),
                 Quaternion.identity);

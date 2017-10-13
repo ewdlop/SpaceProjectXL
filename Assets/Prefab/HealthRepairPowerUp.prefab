@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212893537656473488}
   - component: {fileID: 61591841211335850}
   - component: {fileID: 50470258151925436}
+  - component: {fileID: 114450213711852088}
   m_Layer: 13
   m_Name: HealthRepairPowerUp
   m_TagString: PowerUp
@@ -87,6 +88,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.34, y: 0.33}
   m_EdgeRadius: 0
+--- !u!114 &114450213711852088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1828840228733854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0658e5807a5f39345a5e37e52212b035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healAmount: 50
 --- !u!212 &212893537656473488
 SpriteRenderer:
   m_ObjectHideFlags: 1

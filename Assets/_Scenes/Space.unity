@@ -8786,6 +8786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4899513d8d0364e40889d66e39fe0a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  score: 0
   invincibleDuration: 2
   bigDebris1: {fileID: 1175776260}
   bigDebris2: {fileID: 1973882642}
@@ -10797,7 +10799,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  debugUnlockList: 00000000000100000000
+  debugUnlockList: 01000000000000000000
 --- !u!1 &1761237795
 GameObject:
   m_ObjectHideFlags: 0

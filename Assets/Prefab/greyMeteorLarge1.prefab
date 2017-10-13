@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 50732564070392958}
   - component: {fileID: 60112881006213922}
   - component: {fileID: 60093063678299450}
-  - component: {fileID: 114246664448466644}
+  - component: {fileID: 114796283658569190}
   m_Layer: 8
   m_Name: greyMeteorLarge1
   m_TagString: RockLarge
@@ -188,7 +188,7 @@ PolygonCollider2D:
       - {x: 0.07544013, y: -0.4548003}
       - {x: 0.30332765, y: -0.4333276}
       - {x: 0.3299931, y: -0.35665178}
---- !u!114 &114246664448466644
+--- !u!114 &114796283658569190
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -196,16 +196,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1634547629620050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79499d443a546c84483b191bdc325f61, type: 3}
+  m_Script: {fileID: 11500000, guid: b32402d961656a34bbdd53fdd25550ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypeManger: {fileID: 1420891394749996, guid: eb76acd310560d141813485ab2a29701,
+  maxHealth: 15
+  score: 5
+  objectToSpawn: {fileID: 1630395391724720, guid: 98fec3bc96fbfaf40823228c17e98a86,
     type: 2}
-  targetSprite: {fileID: 1078918136402206}
-  isItTakesDamage: 1
-  maxHealth: 20
-  currentHealth: 0
-  score: 20
+  numberToSpawn: 4
+  maxSpeed: 3
+  maxAngle: 100
 --- !u!212 &212920479266177918
 SpriteRenderer:
   m_ObjectHideFlags: 1

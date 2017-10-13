@@ -19,6 +19,12 @@ public class Destructible : MonoBehaviour {
         originalColor = renderer.material.color;
     }
 
+    public void AddHealth(int amount)
+    {
+        health += amount;
+        Mathf.Clamp(health, 0, maxHealth);
+    }
+
     protected IEnumerator HitFlash()
     {
         this.renderer.material.color = GameController.instance.hitColor;

@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject enemyTypeManger;
     public GameObject powerUpManger;
     public List <PowerUp> powerUpList = new List<PowerUp>();
-    private Rigidbody2D shipRB;
+    private Rigidbody2D rb2D;
 
     [Header("Shooting Controls")]
     public Transform leftFirePosition; 
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour {
 
     void Start ()
     {
-        shipRB = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         powerUpList = powerUpManger.GetComponent<PowerUpManger>().GetPowerUpList();
         weaponList = WeaponManager.playerWeaponList;
         timeStamp = Time.time; 
@@ -64,53 +64,15 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collidedTarget)
     {
-        if (collidedTarget.gameObject.tag == "PowerUp")
-        {  
-            foreach (PowerUp powerUp in powerUpList)
-            {
-                int index =powerUpList.IndexOf(powerUp);
-
-                if (collidedTarget.gameObject.name.Contains(powerUp.powerUpName))
-                {
-                    float healthRepair = powerUp.healthRepair;
-
-                    gameObject.GetComponent<DestructibleShip>().IncreaseHealth(healthRepair);
-                    switch (powerUp.playerWeaponIndex)
-                    {
-                        case 100://health powerup
-                            DestroyObject(collidedTarget.gameObject);
-                            break;
-                        case 101://shield powerup
-                            PowerUpManger.weaponPanelOffset += 1f;
-                            //TODO unlock using the name
-                            //WeaponManager.playerWeaponList[1].isUnlocked = true;
-                            PowerUpManger.shieldOn = true;
-                            powerUp.IncreaseDuration();//increase the duration
-                            powerUp.SetProgress();//update the bar
-                            powerUp.weaponPanelBar.SetActive(true);
-                            DestroyObject(collidedTarget.gameObject);
-                            //*powerUp.weaponPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-80f, -38.4f + 102.4f * PowerUpManger.weaponPanelOffset);
-
-                            break;
-                        default:
-                            int weaponIndex = powerUp.playerWeaponIndex;
-                            //WeaponManager.playerWeaponList[weaponIndex].isUnlocked = true;
-                            PowerUpManger.weaponPanelOffset += 1f;
-                            powerUp.IncreaseDuration();
-                            powerUp.SetProgress();
-                            powerUp.weaponPanelBar.SetActive(true);
-                            DestroyObject(collidedTarget.gameObject);
-                            //*powerUp.weaponPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-80f, -38.4f + 102.4f * PowerUpManger.weaponPanelOffset);
-
-                            break;
-                    }
-
-                    break;
-                }
-            }
+        // Collided object is a Powerup so activate the effect on our gameobject
+        if (collidedTarget.gameObject.GetComponent<Powerup>() != null)
+        {
+            collidedTarget.gameObject.GetComponent<Powerup>().ActivateEffect(this.gameObject);
         }
-    }
 
+        // Collided object is an enemy or enemy projectile, so reduce health
+        
+    }
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
