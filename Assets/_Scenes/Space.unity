@@ -4386,7 +4386,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 713312601}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 23, z: 0}
+  m_LocalPosition: {x: 0.4, y: 23, z: 0}
   m_LocalScale: {x: 7.37872, y: 7.37869, z: 7.37869}
   m_Children: []
   m_Father: {fileID: 1721841102}
@@ -7332,7 +7332,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1180891156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7366,7 +7366,7 @@ MonoBehaviour:
   largeMeteor: {fileID: 1634547629620050, guid: ee0b2d0234cbbb84daf27df680317a3b,
     type: 2}
   totalMeteors: 5
-  waveTimer: 3
+  waveTimer: 1
   spawnDelay: 0.5
   powerUpmin: {fileID: 1954408183}
   powerUpmax: {fileID: 1531655856}
@@ -10819,8 +10819,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  isDebugMode: 0
-  debugUnlockList: 00000000000000000000
+  isDebugMode: 1
+  debugUnlockList: 01010101010000000000
 --- !u!1 &1761237795
 GameObject:
   m_ObjectHideFlags: 0
@@ -12234,7 +12234,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2066029211}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.465, y: -0.412, z: 0}
+  m_LocalPosition: {x: 0.4, y: -0.412, z: 0}
   m_LocalScale: {x: 7.378717, y: 7.3786845, z: 7.3786845}
   m_Children: []
   m_Father: {fileID: 1721841102}

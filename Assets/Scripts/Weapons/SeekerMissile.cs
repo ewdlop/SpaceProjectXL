@@ -55,10 +55,11 @@ public class SeekerMissile : Weapon {
 
                 // TODO handle the target crosshair sprite so that it scales with the object
                 target = enemies[random].gameObject;
-                //targetSprite = Instantiate(enemies[random].targetSprite, target.transform.position, Quaternion.identity);
-                targetSprite.transform.parent = enemies[random].gameObject.transform;
-                //targetSprite.transform.localScale = enemies[random].targetSprite.transform.localScale;
-                targetSprite.SetActive(true);
+                GameObject tempTarget =
+                    Instantiate(targetSprite, target.transform.position, Quaternion.identity) as GameObject;
+                tempTarget.transform.parent = target.transform;
+                // Get the enemies scale
+                targetSprite.transform.localScale = enemies[random].gameObject.GetComponent<Renderer>().bounds.size;
             }
             // If there are no targets just have the missile slow down and destroy itself 
             else

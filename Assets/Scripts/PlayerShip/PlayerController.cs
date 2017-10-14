@@ -150,7 +150,6 @@ public class PlayerController : MonoBehaviour {
         gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 
         GameController.instance.isGameOver = true;
-        GameController.isPlayerShipDead = true;
 
         /*
         rb.velocity = new Vector2(0, 0);
