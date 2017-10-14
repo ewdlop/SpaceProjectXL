@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Destructible : MonoBehaviour {
+public class Destructible : MonoBehaviour
+{
 
     public int maxHealth;
     protected int health;

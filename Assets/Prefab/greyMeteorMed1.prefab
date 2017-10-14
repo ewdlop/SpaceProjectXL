@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 50765228064984086}
   - component: {fileID: 60001511129618384}
   - component: {fileID: 60345395948660514}
-  - component: {fileID: 114292299614527512}
+  - component: {fileID: 114552077821379176}
   m_Layer: 8
   m_Name: greyMeteorMed1
   m_TagString: RockMedium
@@ -136,7 +136,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -160,7 +160,7 @@ PolygonCollider2D:
       - {x: 0.21701741, y: -0.08061335}
       - {x: 0.19280648, y: 0.1269297}
       - {x: 0.180789, y: 0.19280665}
---- !u!114 &114292299614527512
+--- !u!114 &114552077821379176
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -168,16 +168,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630395391724720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b32402d961656a34bbdd53fdd25550ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 88532f6b70917a341a75d3cd6de1b50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   score: 5
+  damage: 20
   objectToSpawn: {fileID: 1899199138861278, guid: ed548451208fb7e40b00924896f1a1b3,
     type: 2}
   numberToSpawn: 5
-  maxSpeed: 3
-  maxAngle: 100
+  maxSpeed: 2
+  maxAngle: 120
 --- !u!212 &212177068542932772
 SpriteRenderer:
   m_ObjectHideFlags: 1

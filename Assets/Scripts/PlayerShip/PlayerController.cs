@@ -6,30 +6,43 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public float speed = 10.0f;
-    public GameObject enemyTypeManger;
-    public GameObject powerUpManger;
-    public List <PowerUp> powerUpList = new List<PowerUp>();
-    private Rigidbody2D rb2D;
+
+    [Header("Health/Damage Settings")]
+    public int maxHealth = 100;
+    private int health;
+    public float invincibleDuration = 1.2f;
+    private bool isInvincible;
 
     [Header("Shooting Controls")]
     public Transform leftFirePosition; 
     public Transform rightFirePosition;
     public float shotCoolDown = 0.2f;
     private List<GameObject> weaponList; 
-    private float timeStamp; 
+
+    private float timeStamp;
+
+    // For use in making ship flash upon receiving damager
+    private new Renderer renderer;
+    private Color originalColor;
 
     void Start ()
     {
-        rb2D = GetComponent<Rigidbody2D>();
-        powerUpList = powerUpManger.GetComponent<PowerUpManger>().GetPowerUpList();
+        health = maxHealth;
         weaponList = WeaponManager.playerWeaponList;
-        timeStamp = Time.time; 
+        timeStamp = Time.time;
+        renderer = GetComponent<Renderer>();
+        originalColor = renderer.material.color;
     }
 
 	void Update ()
     {
         // Don't allow any ship actions if game is over
         if (GameController.instance.isGameOver) { return; }
+
+        if (health <= 0)
+        {
+            Death();
+        }
 
         Kinematics(); 
         if (timeStamp <= Time.time)
@@ -62,7 +75,7 @@ public class PlayerController : MonoBehaviour {
         timeStamp = Time.time + shotCoolDown;
     }
 
-    void OnCollisionEnter2D(Collision2D collidedTarget)
+    void OnCollisionStay2D(Collision2D collidedTarget)
     {
         // Collided object is a Powerup so activate the effect on our gameobject
         if (collidedTarget.gameObject.GetComponent<Powerup>() != null)
@@ -70,36 +83,106 @@ public class PlayerController : MonoBehaviour {
             collidedTarget.gameObject.GetComponent<Powerup>().ActivateEffect(this.gameObject);
         }
 
-        // Collided object is an enemy or enemy projectile, so reduce health
-        
+        // Ship physically collided with an enemy
+        if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
+        {
+            // Set ship to invincible
+            StartCoroutine(InvincibilityFrames());
+            int damage = collidedTarget.gameObject.GetComponent<Enemy>().damage;
+            health -= damage;
+            SoundController.Play((int)SFX.ShipDamage, damage);
+            //Debug.Log("Player Health:" + health);
+        }
     }
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
-        if (collidedTarget.gameObject.tag=="PowerUp"|| DestructibleShip.isPlayerShipInvincible || GameController.instance.isGameOver)
+        if (DestructibleShip.isPlayerShipInvincible || GameController.instance.isGameOver)
         {
             return; // Ship is invincible so do nothing
         }
-        else
+      
+        // Ship collided with enemy projectile
+        if (collidedTarget.gameObject.tag == "EnemyProjectile")           
         {
-            foreach (GameObject enemy in enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList)
-            {
-                int index = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList.IndexOf(enemy);
-                if (collidedTarget.gameObject.name.Contains(enemyTypeManger.GetComponent<EnemyTypeManger>().enemyCloneName[index]))
-                {
-                    float damage = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeDamageOnPlayerSpaceShip[index];
-                    gameObject.GetComponent<DestructibleShip>().DecreaseHealth(damage);
-                    if (collidedTarget.gameObject.tag == "EP")/*EP=EnemyProjectiles*/
-                    {
-                        Instantiate(collidedTarget.gameObject.GetComponent<ProjectileController>().hiteffect, new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), Quaternion.identity);
-                        Destroy(collidedTarget.gameObject);
-                    }
-
-                    break;
-                }
-            }
-        }
+            int damage = collidedTarget.GetComponent<Weapon>().damage;
+            Instantiate(collidedTarget.GetComponent<Weapon>().hiteffect,
+                new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), 
+                Quaternion.identity);
+            Destroy(collidedTarget.gameObject);
+            // Set ship to invincible
+            StartCoroutine(InvincibilityFrames());
+            health -= damage;
+            SoundController.Play((int)SFX.ShipDamage, damage);
+        }  
     }
 
+    public List<GameObject> getWeaponList()
+    {
+        return weaponList;
+    }
+
+    public void unlockWeapon(int index)
+    {
+        weaponList[index].GetComponent<Weapon>().isUnlocked = true;
+    }
+
+    IEnumerator HitFlash()
+    {
+        this.renderer.material.color = GameController.instance.hitColor;
+        yield return new WaitForSeconds(0.05f);
+        this.renderer.material.color = originalColor;
+    }
+
+    IEnumerator InvincibilityFrames()
+    {
+        isInvincible = true;
+        StartCoroutine(HitFlash());
+        yield return new WaitForSeconds(invincibleDuration);
+        isInvincible = false;
+    }
+
+    private void Death()
+    {
+        SoundController.Play((int)SFX.ShipDeath);
+
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+
+        GameController.instance.isGameOver = true;
+        GameController.isPlayerShipDead = true;
+
+        /*
+        rb.velocity = new Vector2(0, 0);
+        Camera.main.GetComponent<FollowPlayerShip>().enabled = false;
+
+        bigDebris1.SetActive(true);
+        bigDebris2.SetActive(true);
+        bigDebris3.SetActive(true);
+
+        smallDebris1.SetActive(true);
+        smallDebris2.SetActive(true);
+        smallDebris3.SetActive(true);
+
+        float bigDebrisX = 0.1f;
+        float bigDebrisY = 0.1f;
+        float smallDebrisX = 0.5f;
+        float smallDebrisY = 0.5f;
+
+        bigDebris1.GetComponent<Rigidbody2D>().velocity = new Vector2(-1 * (bigDebrisX + Random.Range(0f, 1f)), -1 * (bigDebrisY + Random.Range(0f, 1f)));
+        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
+        bigDebris2.GetComponent<Rigidbody2D>().velocity = new Vector2((bigDebrisX + Random.Range(0f, 1f)), -1 * (bigDebrisY + Random.Range(0f, 1f)));
+        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
+        bigDebris3.GetComponent<Rigidbody2D>().velocity = new Vector2((bigDebrisX + Random.Range(0f, 1f)), (bigDebrisY + Random.Range(0f, 1f)));
+        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
+
+        smallDebris1.GetComponent<Rigidbody2D>().velocity = new Vector2(-1 * (smallDebrisX + Random.Range(1f, 2f)), -1 * (smallDebrisY + Random.Range(1f, 2f)));
+        smallDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
+        smallDebris2.GetComponent<Rigidbody2D>().velocity = new Vector2((smallDebrisX + Random.Range(1f, 2f)), -1 * (smallDebrisY + Random.Range(1f, 2f)));
+        smallDebris2.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
+        smallDebris3.GetComponent<Rigidbody2D>().velocity = new Vector2((smallDebrisX + Random.Range(1f, 2f)), (smallDebrisY + Random.Range(1f, 2f)));
+        smallDebris3.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
+        */
+    }
 
 }

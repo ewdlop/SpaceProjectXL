@@ -6,14 +6,8 @@ public class SpreadLaser : Weapon {
 
     public int shotCount = 10; 
 
-    private float launchAngleRad;
     private float unitVectorX, unitVectorY;
     private Vector2 shotDirection;
-
-    void Start()
-    {
-        launchAngleRad = launchAngle * Mathf.Deg2Rad;
-    }
 
     void Update()
     {

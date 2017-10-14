@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestructibleDebris : Destructible {
+public class EnemyDebris : Enemy {
+
+    // Should be placed onto debris objects that can 
+    // only deal physical damage to the player
 
     public GameObject objectToSpawn;
     public int numberToSpawn;
 
-    [Header("Spawn child object parameters")]
+    [Header("Spawn child object settings")]
     public float maxSpeed = 2.0f;
-    public float maxAngle = 120.0f; 
+    public float maxAngle = 120.0f;
 
-	new void Start ()
+    new void Start ()
     {
         base.Start();
 	}
@@ -30,11 +33,11 @@ public class DestructibleDebris : Destructible {
                 SpawnObjects();
             }
         }
-	}
+    }
 
     private void SpawnObjects()
     {
-        float angle, speed; 
+        float angle, speed;
         for (int i = 0; i < numberToSpawn; ++i)
         {
             angle = Random.Range(0.0f, maxAngle);
@@ -47,7 +50,7 @@ public class DestructibleDebris : Destructible {
                             speed * Mathf.Sin((360.0f / numberToSpawn * i + angle) * Mathf.PI / 180.0f));
         }
     }
-  
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.tag == "Projectile")
@@ -56,7 +59,7 @@ public class DestructibleDebris : Destructible {
             float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
             renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
         }
-      
+
     }
 
     void OnTriggerEnter2D(Collider2D other)

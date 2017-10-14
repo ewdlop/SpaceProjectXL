@@ -26,9 +26,9 @@ public class BossManager : MonoBehaviour {
     public TheBoss boss;
     void Start () {
 
-        boss.theBoss = spawnManager.GetComponent<SpawnManager>().bossList[0].type;
+        //boss.theBoss = spawnManager.GetComponent<SpawnManager>().bossList[0].type;
 
-        boss.weaponParts = spawnManager.GetComponent<SpawnManager>().bossList[0].parts;
+        //oss.weaponParts = spawnManager.GetComponent<SpawnManager>().bossList[0].parts;
     }
 
     // Update is called once per frame

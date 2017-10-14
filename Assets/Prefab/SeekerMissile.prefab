@@ -109,8 +109,9 @@ MonoBehaviour:
   damage: 2
   launchAngle: 0
   speed: 50
-  isUnlocked: 1
+  isUnlocked: 0
   shotCount: 3
+  destroyTimer: 5
   targetSprite: {fileID: 0}
 --- !u!212 &212097695805022122
 SpriteRenderer:

@@ -59,7 +59,7 @@ public class MenuManager : MonoBehaviour
 
     public void Restart()
     {
-        GameController.playerScore = 0f;
+        GameController.playerScore = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

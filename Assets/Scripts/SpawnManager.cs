@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class SpawnObject{
     public GameObject type;
-    public List <GameObject> parts;
     public string name;
     public float time;//When do they starts to spawn
     public float spawnDelay;
@@ -17,9 +16,7 @@ public class SpawnObject{
 
 public class SpawnManager : MonoBehaviour {
 
-    public List<SpawnObject> enemyShipSpawnType;
     public List<SpawnObject> powerUpsList;
-    public List<SpawnObject> bossList;
 
     public Transform min;
     public Transform max;
@@ -59,15 +56,16 @@ public class SpawnManager : MonoBehaviour {
         }
         if (allPowerUpTimeStamp <= Time.time)
         {
-            StartCoroutine("SpawnPowerUps");
+            //StartCoroutine("SpawnPowerUps");
 
             allPowerUpTimeStamp = Time.time + powerUpWaveTimer;
         }
         if (bossTimeStamp <= Time.time)
         {
-            StartCoroutine("SpawnBosses");
+            //StartCoroutine("SpawnBosses");
  
         }
+        /*
         foreach (SpawnObject spawn in enemyShipSpawnType)
         {
             if (spawn.timeStamp >= spawn.time && spawn.timeStamp < Time.time)
@@ -78,6 +76,7 @@ public class SpawnManager : MonoBehaviour {
             }
 
         }
+        */
         
     }
 
@@ -137,7 +136,7 @@ public class SpawnManager : MonoBehaviour {
         yield return new WaitForSeconds(powerUpWaveTimer);
     }
 
-
+    /*
     IEnumerator SpawnBosses()
     {
         float health = 0f;
@@ -172,7 +171,7 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine("WaitSeconds", bossList[bossIndex].waveTimer);
         bossTimeStamp = Time.time + bossList[bossIndex].waveTimer;
     }
-
+    */
     
     IEnumerator WaitSeconds(float seconds)
     {

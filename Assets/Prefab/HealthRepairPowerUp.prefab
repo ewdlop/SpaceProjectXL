@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4450874783586766}
   - component: {fileID: 212893537656473488}
   - component: {fileID: 61591841211335850}
-  - component: {fileID: 50470258151925436}
   - component: {fileID: 114450213711852088}
+  - component: {fileID: 50897106067052040}
   m_Layer: 13
   m_Name: HealthRepairPowerUp
   m_TagString: PowerUp
@@ -43,7 +43,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50470258151925436
+--- !u!50 &50897106067052040
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
@@ -57,12 +57,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &61591841211335850
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -72,7 +72,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

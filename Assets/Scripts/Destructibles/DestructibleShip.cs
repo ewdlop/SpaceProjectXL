@@ -7,7 +7,6 @@ public class DestructibleShip : Destructible
 {
     public static bool isPlayerShipInvincible;
     public static bool isKillShip;
-    private bool canMove;
 
     public float invincibleDuration;
     //public float timerForRedFlashes;
@@ -22,18 +21,13 @@ public class DestructibleShip : Destructible
     public float currentHealth = 100f;
     public float initialMaxHealth = 100f;
     public float currentMaxHealth = 100f;
-    public GameObject healthSlider;
-    public GameObject enemyTypeManger;
 
     Rigidbody2D rb;
     //public Image RedFlashes;
-    private Renderer renderer;
-    private Color originalColor;
 
-    void Start()
+    new void Start()
     {
-        renderer = GetComponent<Renderer>();
-        originalColor = renderer.material.color;
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
         isPlayerShipInvincible = false;
     }
@@ -47,30 +41,7 @@ public class DestructibleShip : Destructible
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collidedTarget)
-    {
-
-        if ((collidedTarget.gameObject.tag == "EP"|| collidedTarget.gameObject.tag == "Boss") && !isPlayerShipInvincible && !GameController.instance.isGameOver)
-        {
-
-            foreach (GameObject enemy in enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList)
-            {
-                
-                int index = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeList.IndexOf(enemy);
-                if (collidedTarget.gameObject.name.Contains(enemyTypeManger.GetComponent<EnemyTypeManger>().enemyCloneName[index]))
-                {
-                    float damage = enemyTypeManger.GetComponent<EnemyTypeManger>().enemyTypeDamageOnPlayerSpaceShip[index];
-                    DecreaseHealth(damage);
-                    if (collidedTarget.gameObject.tag == "EP")
-                    {
-                        Instantiate(collidedTarget.gameObject.GetComponent<ProjectileController>().hiteffect, new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.02f), Quaternion.identity);
-                        Destroy(collidedTarget.gameObject);
-                    }
-                    break;
-                }
-            }
-        }
-    }
+    /*
     public void DecreaseHealth(float damage)
     {
 
@@ -89,15 +60,7 @@ public class DestructibleShip : Destructible
             StartCoroutine(InvincibleAfterTakeDamage());
         }
     }
-
-    public void IncreaseHealth(float health)
-    {
-        SoundController.Play((int)SFX.PickupHealth);
-        currentHealth += health;
-        currentHealth = Mathf.Clamp(currentHealth, 0.0f, currentMaxHealth);
-        float healthPercentage = Mathf.Clamp(currentHealth / currentMaxHealth, 0f, 1f);
-        healthSlider.GetComponent<Slider>().value = healthPercentage;
-    }
+    */
 
     IEnumerator InvincibleAfterTakeDamage()
     {
@@ -107,19 +70,8 @@ public class DestructibleShip : Destructible
         isPlayerShipInvincible = false;
     }
 
-    IEnumerator HitFlash()
-    {
-        while (isPlayerShipInvincible)
-        {
-            this.GetComponent<Renderer>().material.color = GameController.instance.hitColor;
-            yield return new WaitForSeconds(0.05f);
-            this.GetComponent<Renderer>().material.color = originalColor;
-        }
-    }
-
     void PlayerShipDeath()
     {
-        canMove = false;
         SoundController.Play((int)SFX.ShipDeath);
 
         gameObject.GetComponent<SpriteRenderer>().enabled = false;

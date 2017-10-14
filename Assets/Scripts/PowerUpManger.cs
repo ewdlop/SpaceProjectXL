@@ -91,6 +91,7 @@ public class PowerUpManger : MonoBehaviour {
     {
         if (playerShip != null)
         {
+            /*
             foreach (PowerUp powerUps in playerShip.GetComponent<PlayerController>().powerUpList)//public list too avoid losing reference issue
 
             {
@@ -122,6 +123,7 @@ public class PowerUpManger : MonoBehaviour {
                     }
                 }
             }
+            */
         }
     }
 

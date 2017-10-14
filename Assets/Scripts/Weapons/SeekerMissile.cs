@@ -11,9 +11,10 @@ public class SeekerMissile : Weapon {
     // TODO: abstract the speed to use the weapon.speed field
 
     public int shotCount = 3;
+    public float destroyTimer = 5.0f;
     public GameObject targetSprite;     // Cross hair sprite to show what missle is targeting
     private GameObject target;
-    private Destructibles[] enemies; 
+    private Enemy[] enemies; 
     
     void Update()
     {      
@@ -22,10 +23,15 @@ public class SeekerMissile : Weapon {
 
     public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
     {
+        GameObject leftProj, rightProj;
         for (int i = 0; i < shotCount; ++i)
         {
-            Instantiate(this.gameObject, leftFire.position, leftFire.rotation);
-            Instantiate(this.gameObject, rightFire.position, rightFire.rotation);
+            leftProj  = Instantiate(this.gameObject, leftFire.position, leftFire.rotation) as GameObject;
+            rightProj = Instantiate(this.gameObject, rightFire.position, rightFire.rotation) as GameObject;
+
+            // Destroy the seeker after a certain time to avoid too much on screen
+            DestroyObject(leftProj, destroyTimer);
+            DestroyObject(rightProj, destroyTimer);
         }
         //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
@@ -33,7 +39,7 @@ public class SeekerMissile : Weapon {
     public override void Kinematics()
     {
         // Need to update the enemies list each time so that missiles can redirect 
-        enemies = FindObjectsOfType<Destructibles>();
+        enemies = FindObjectsOfType<Enemy>();
 
         // Find a new target for the missile
         if (target == null)
@@ -41,10 +47,7 @@ public class SeekerMissile : Weapon {
             if (enemies.Length > 0)
             {
                 int random = UnityEngine.Random.Range(0, enemies.Length);
-                while (enemies[random].isItTakesDamage == false)
-                {
-                    random = UnityEngine.Random.Range(0, enemies.Length);
-                }
+
                 if (targetSprite != null)
                 {
                     Destroy(targetSprite);
@@ -52,9 +55,9 @@ public class SeekerMissile : Weapon {
 
                 // TODO handle the target crosshair sprite so that it scales with the object
                 target = enemies[random].gameObject;
-                targetSprite = Instantiate(enemies[random].targetSprite, target.transform.position, Quaternion.identity);
+                //targetSprite = Instantiate(enemies[random].targetSprite, target.transform.position, Quaternion.identity);
                 targetSprite.transform.parent = enemies[random].gameObject.transform;
-                targetSprite.transform.localScale = enemies[random].targetSprite.transform.localScale;
+                //targetSprite.transform.localScale = enemies[random].targetSprite.transform.localScale;
                 targetSprite.SetActive(true);
             }
             // If there are no targets just have the missile slow down and destroy itself 

@@ -23,8 +23,8 @@ public class ShipSprite
 public class GameController : MonoBehaviour {
 
     public static GameController instance;
-    public static float playerScore;
-    public static float playerHighScore;
+    public static int playerScore;
+    public static int playerHighScore;
     public static bool isPlayerShipDead;
     public bool isMenu;
     public Text difficultyText;
@@ -88,7 +88,6 @@ public class GameController : MonoBehaviour {
                 SetHighScore();
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    playerShip.GetComponent<ShipWeaponFiringController>().enabled = false;
                     ResetStaticVariables();
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 }
@@ -97,7 +96,7 @@ public class GameController : MonoBehaviour {
             {
                 scoreText.text = "Score:" + Mathf.RoundToInt(playerScore).ToString();
                 highScoreText.text = "HighScore:" + Mathf.RoundToInt(playerHighScore).ToString();
-                playerScore += Time.deltaTime;
+                //playerScore += Time.deltaTime;
             }
         }
     }
@@ -108,14 +107,14 @@ public class GameController : MonoBehaviour {
         {
             playerHighScore = playerScore;
         }
-        scoreText.text = "Score:" + Mathf.RoundToInt(playerScore).ToString();
-        highScoreText.text = "HighScore:" + Mathf.RoundToInt(playerHighScore).ToString();
+        scoreText.text = "Score:" + playerScore.ToString();
+        highScoreText.text = "HighScore:" + playerHighScore.ToString();
     }
 
     public void ResetStaticVariables()
     {
         isPlayerShipDead = false;
-        playerScore = 0f;
+        playerScore = 0;
         LaunchPlayerShip.isPlayerShipLaunched = false;
         LaunchPlayerShip.isPlayerShipDebugMode = false;
         DestructibleShip.isKillShip = false;
