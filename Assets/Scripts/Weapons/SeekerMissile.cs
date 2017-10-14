@@ -24,16 +24,22 @@ public class SeekerMissile : Weapon {
     public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
     {
         GameObject leftProj, rightProj;
-        for (int i = 0; i < shotCount; ++i)
-        {
-            leftProj  = Instantiate(this.gameObject, leftFire.position, leftFire.rotation) as GameObject;
-            rightProj = Instantiate(this.gameObject, rightFire.position, rightFire.rotation) as GameObject;
 
-            // Destroy the seeker after a certain time to avoid too much on screen
-            DestroyObject(leftProj, destroyTimer);
-            DestroyObject(rightProj, destroyTimer);
+        enemies = FindObjectsOfType<Enemy>();
+        // Fire the missle only if there are enemies around
+        if (enemies.Length > 0)
+        {
+            for (int i = 0; i < shotCount; ++i)
+            {
+                leftProj = Instantiate(this.gameObject, leftFire.position, leftFire.rotation) as GameObject;
+                rightProj = Instantiate(this.gameObject, rightFire.position, rightFire.rotation) as GameObject;
+
+                // Destroy the seeker after a certain time to avoid too much on screen
+                DestroyObject(leftProj, destroyTimer);
+                DestroyObject(rightProj, destroyTimer);
+            }
+            SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
         }
-        //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
     public override void Kinematics()
@@ -47,11 +53,6 @@ public class SeekerMissile : Weapon {
             if (enemies.Length > 0)
             {
                 int random = UnityEngine.Random.Range(0, enemies.Length);
-
-                if (targetSprite != null)
-                {
-                    Destroy(targetSprite);
-                }
 
                 // TODO handle the target crosshair sprite so that it scales with the object
                 target = enemies[random].gameObject;
