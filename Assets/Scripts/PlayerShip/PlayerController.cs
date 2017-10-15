@@ -144,6 +144,12 @@ public class PlayerController : MonoBehaviour {
         isInvincible = false;
     }
 
+    public void AddHealth(int amount)
+    {
+        health += amount;
+        Mathf.Clamp(health, 0, maxHealth);
+    }
+
     private void Death()
     {
         SoundController.Play((int)SFX.ShipDeath);

@@ -3608,6 +3608,15 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 212245578032784092, guid: b8813526558ebc64bb750606777f4945,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689041019963242, guid: b8813526558ebc64bb750606777f4945, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114040353771722912, guid: b8813526558ebc64bb750606777f4945, type: 2}
     - {fileID: 114728821110941134, guid: b8813526558ebc64bb750606777f4945, type: 2}
@@ -3650,6 +3659,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  unlockWeapons: 0100000000
   firePosition: {fileID: 516646889}
 --- !u!4 &516646889 stripped
 Transform:
@@ -5607,7 +5617,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 911764408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42532578, y: 0.029476669, z: 0}
+  m_LocalPosition: {x: 0.42532578, y: 2.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 871923977}
@@ -8970,6 +8980,33 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1367161017}
+--- !u!1 &1386467604 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1496550402169066, guid: b8813526558ebc64bb750606777f4945,
+    type: 2}
+  m_PrefabInternal: {fileID: 516646882}
+--- !u!114 &1386467609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1386467604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083a08e36e92b794dbf5db03d555e38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 500
+  score: 1000
+  damage: 100
+  enemyWeaponArray:
+  - {fileID: 1454145339478662, guid: a847b7da9c10eaa489eb8b965a72b59b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  unlockWeapons: 0100000000
+  firePosition: {fileID: 1987274322}
 --- !u!1 &1410747347
 GameObject:
   m_ObjectHideFlags: 0
@@ -10832,7 +10869,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   isDebugMode: 1
-  debugUnlockList: 00000000000000000000
+  debugUnlockList: 01000000000000000000
 --- !u!1 &1761237795
 GameObject:
   m_ObjectHideFlags: 0
@@ -11748,6 +11785,34 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &1987274321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1987274322}
+  m_Layer: 0
+  m_Name: MainFiringPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1987274322
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1987274321}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0038314462, y: -0.4101308, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_Children: []
+  m_Father: {fileID: 871923977}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2000219755
 GameObject:
   m_ObjectHideFlags: 0
