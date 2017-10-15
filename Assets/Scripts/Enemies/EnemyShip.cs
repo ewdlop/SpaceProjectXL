@@ -6,16 +6,30 @@ using UnityEngine;
 public class EnemyShip : Enemy {
 
     [Header("Weapons")]
-    public GameObject[] enemyWeaponList = new GameObject[5];
+    public GameObject[] enemyWeaponArray = new GameObject[5];
+    public bool[] unlockWeapons = new bool[5];
     [Header("Shooting settings")]
     public Transform firePosition;
 
+    private List<GameObject> enemyWeaponList = new List<GameObject>();
     private PlayerController[] players;
 
     // Use this for initialization
     new void Start () {
         base.Start(); // Setup the hit flash
         players = FindObjectsOfType<PlayerController>();	
+
+        // Convert the array to list 
+        for (int i = 0; i < enemyWeaponArray.Length; ++i)
+        {
+            // Check that the weapon is valid
+            if (enemyWeaponArray[i] != null)
+            {
+                enemyWeaponArray[i].GetComponent<Weapon>().isUnlocked = unlockWeapons[i];
+                enemyWeaponList.Add(enemyWeaponArray[i]);
+               
+            }
+        }
 	}
 	
 	// Update is called once per frame
@@ -37,21 +51,34 @@ public class EnemyShip : Enemy {
             if (weapon.isUnlocked)
             {
                 // Choose a random player to shoot at
-                int pIdx = UnityEngine.Random.Range(0, players.Length);
-                weapon.Shoot(firePosition, players[pIdx].gameObject.transform);
-                
+                if (players.Length > 0)
+                {
+                    int pIdx = UnityEngine.Random.Range(0, players.Length);
+                    weapon.Shoot(firePosition, players[pIdx].gameObject.transform);
+                }
+                StartCoroutine(FireCooldown(weapon));
             }
-            StartCoroutine(FireCooldown(weapon));
+           
         }
     }
 
     protected override void Kinematics()
     {
-        float deltaX = players[0].gameObject.transform.position.x - gameObject.transform.position.x;
-        float deltaY = players[0].gameObject.transform.position.y - gameObject.transform.position.y;
+        if (players.Length > 0)
+        {
+            float deltaX = players[0].gameObject.transform.position.x - gameObject.transform.position.x;
+            float deltaY = players[0].gameObject.transform.position.y - gameObject.transform.position.y;
 
-        float facingAngle = Mathf.Atan2(deltaY, deltaX) * Mathf.Rad2Deg;
-        transform.eulerAngles = new Vector3(0, 0, facingAngle + 90f);
+            float facingAngle = Mathf.Atan2(deltaY, deltaX) * Mathf.Rad2Deg;
+            transform.eulerAngles = new Vector3(0, 0, facingAngle + 90f);
+        }
+    }
+
+    IEnumerator FireCooldown(EnemyWeapon weapon)
+    {
+        weapon.isUnlocked = false;
+        yield return new WaitForSeconds(weapon.cooldown);
+        weapon.isUnlocked = true;
     }
 
     IEnumerator FireDelay(EnemyWeapon weapon, float angle)
@@ -96,10 +123,5 @@ public class EnemyShip : Enemy {
         }
     }
 
-    IEnumerator FireCooldown(EnemyWeapon weapon)
-    {
-        weapon.isUnlocked = false;
-        yield return new WaitForSeconds(weapon.cooldown);
-        weapon.isUnlocked = true;
-    }
+
 }

@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour {
 
     // For use in making ship flash upon receiving damager
     private new Renderer renderer;
-    private Color originalColor;
 
     void Start ()
     {
@@ -31,7 +30,6 @@ public class PlayerController : MonoBehaviour {
         weaponList = WeaponManager.playerWeaponList;
         timeStamp = Time.time;
         renderer = GetComponent<Renderer>();
-        originalColor = renderer.material.color;
     }
 
 	void Update ()
@@ -97,11 +95,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
-        if (DestructibleShip.isPlayerShipInvincible || GameController.instance.isGameOver)
-        {
-            return; // Ship is invincible so do nothing
-        }
-      
         // Ship collided with enemy projectile
         if (collidedTarget.gameObject.GetComponent<EnemyWeapon>() != null)           
         {
@@ -110,10 +103,13 @@ public class PlayerController : MonoBehaviour {
                 new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), 
                 Quaternion.identity);
             Destroy(collidedTarget.gameObject);
-            // Set ship to invincible
-            StartCoroutine(InvincibilityFrames());
-            health -= damage;
-            SoundController.Play((int)SFX.ShipDamage, damage);
+            // Set ship to invincible if it's not current invincible
+            if (!isInvincible)
+            {
+                StartCoroutine(InvincibilityFrames());
+                health -= damage;
+                SoundController.Play((int)SFX.ShipDamage, damage);
+            }   
         }  
     }
 

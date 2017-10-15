@@ -26,13 +26,4 @@ public abstract class EnemyWeapon : Weapon
 
     public abstract void Shoot(Transform ship, Transform target);
 
-    IEnumerator FireDelay(float angle)
-    {
-        yield return new WaitForSeconds(fireDelay);
-    }
-
-    IEnumerator FireCooldown(float angle)
-    {
-        yield return new WaitForSeconds(cooldown);
-    }
 }
