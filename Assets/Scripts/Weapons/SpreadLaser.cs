@@ -14,7 +14,7 @@ public class SpreadLaser : Weapon {
         Kinematics();
     }
 
-    public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
+    public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
         for (int i = 0; i < shotCount; i++)
         {

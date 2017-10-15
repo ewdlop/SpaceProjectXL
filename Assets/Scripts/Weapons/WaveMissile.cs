@@ -23,7 +23,7 @@ public class WaveMissile : Weapon {
         Kinematics();
     }
 
-    public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
+    public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
         GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
         if (leftFire != null)

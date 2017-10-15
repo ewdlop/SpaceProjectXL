@@ -66,10 +66,10 @@ public class PlayerController : MonoBehaviour {
     {
         foreach (GameObject weapon in weaponList)
         {
-            // Instantiate the weapon if it's unlocked
+            // Shoot the weapon if it's unlocked
             if (weapon.GetComponent<Weapon>().isUnlocked)
             {
-                weapon.GetComponent<Weapon>().Instantiate(this.gameObject.transform, leftFirePosition, rightFirePosition);
+                weapon.GetComponent<Weapon>().Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
             }
         }
         timeStamp = Time.time + shotCoolDown;
@@ -103,10 +103,10 @@ public class PlayerController : MonoBehaviour {
         }
       
         // Ship collided with enemy projectile
-        if (collidedTarget.gameObject.tag == "EnemyProjectile")           
+        if (collidedTarget.gameObject.GetComponent<EnemyWeapon>() != null)           
         {
-            int damage = collidedTarget.GetComponent<Weapon>().damage;
-            Instantiate(collidedTarget.GetComponent<Weapon>().hiteffect,
+            int damage = collidedTarget.GetComponent<EnemyWeapon>().damage;
+            Instantiate(collidedTarget.GetComponent<EnemyWeapon>().hiteffect,
                 new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), 
                 Quaternion.identity);
             Destroy(collidedTarget.gameObject);
@@ -129,14 +129,20 @@ public class PlayerController : MonoBehaviour {
 
     IEnumerator HitFlash()
     {
-        this.renderer.material.color = GameController.instance.hitColor;
-        yield return new WaitForSeconds(0.05f);
-        this.renderer.material.color = originalColor;
+        // Flicker effect
+        while (isInvincible)
+        {
+            this.renderer.enabled = false;
+            yield return new WaitForSeconds(0.05f);          
+            this.renderer.enabled = true;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     IEnumerator InvincibilityFrames()
     {
         isInvincible = true;
+        // Make the ship flash while ship is invincible
         StartCoroutine(HitFlash());
         yield return new WaitForSeconds(invincibleDuration);
         isInvincible = false;
@@ -145,10 +151,7 @@ public class PlayerController : MonoBehaviour {
     private void Death()
     {
         SoundController.Play((int)SFX.ShipDeath);
-
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        gameObject.GetComponent<PolygonCollider2D>().enabled = false;
-
+        Destroy(this.gameObject);
         GameController.instance.isGameOver = true;
 
         /*

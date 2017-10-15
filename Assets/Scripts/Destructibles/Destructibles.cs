@@ -14,7 +14,7 @@ public class Destructibles : MonoBehaviour {
 
     public int score; 
 
-    private Renderer renderer;
+    private new Renderer renderer;
     private Color originalColor;
     private int index = 3;  // TODO refactor all index operations out! Corresponds to Number of Spawn in enemymanager
 

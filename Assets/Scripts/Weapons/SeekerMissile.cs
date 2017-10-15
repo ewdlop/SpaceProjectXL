@@ -21,7 +21,7 @@ public class SeekerMissile : Weapon {
         Kinematics();
     }
 
-    public override void Instantiate(Transform ship, Transform leftFire, Transform rightFire)
+    public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
         GameObject leftProj, rightProj;
 
@@ -67,7 +67,7 @@ public class SeekerMissile : Weapon {
             {
                 // Slow down the missile 
 
-                // Instantiate explosion effect
+                // Shoot explosion effect
                 Vector2 velocity = gameObject.GetComponent<Rigidbody2D>().velocity;
                 if (Mathf.Approximately(velocity.x, 0.0f) && Mathf.Approximately(velocity.y, 0.0f))
                 {

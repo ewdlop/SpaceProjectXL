@@ -10,7 +10,7 @@ public class Destructible : MonoBehaviour
 
     public int score;
 
-    protected Renderer renderer;
+    protected new Renderer renderer;
     protected Color originalColor;
 
     protected void Start()

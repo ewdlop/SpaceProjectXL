@@ -76,6 +76,22 @@ public class GameController : MonoBehaviour {
                 Destroy(gameObject);
             }
 
+        /*
+        // TODO move this into the GameController instead with some global shot deviation
+        // Easy mode 
+        if (GameController.difficulty == Difficulty.Easy)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Easy];
+        // Medium mode
+        else if (GameController.difficulty == Difficulty.Medium)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Medium];
+        // Hard mode 
+        else if (GameController.difficulty == Difficulty.Hard)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Hard];
+
+        // Make value positive so we can use in Random.Range later on
+        if (shotDeviation < 0)
+            shotDeviation *= -1;
+        */
     }
 
     void Update()

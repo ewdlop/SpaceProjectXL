@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class EnemyDebris : Enemy {
     [Header("Spawn child object settings")]
     public float maxSpeed = 2.0f;
     public float maxAngle = 120.0f;
+    private float speed;
+    private float angle;
 
     new void Start ()
     {
@@ -21,6 +24,8 @@ public class EnemyDebris : Enemy {
 	
 	void Update ()
     {
+        //Kinematics();
+
         if (health <= 0)
         {
             Destroy(this.gameObject);
@@ -35,22 +40,28 @@ public class EnemyDebris : Enemy {
         }
     }
 
+    // Spawn our child objects upon debris being destroyed
     private void SpawnObjects()
     {
-        float angle, speed;
         for (int i = 0; i < numberToSpawn; ++i)
         {
-            angle = Random.Range(0.0f, maxAngle);
-            speed = Random.Range(0.2f, maxSpeed);
-            GameObject clone = Instantiate(objectToSpawn,
+            GameObject temp = Instantiate(objectToSpawn,
                 new Vector3(transform.position.x, transform.position.y, transform.position.z),
                 Quaternion.identity);
-            clone.GetComponent<Rigidbody2D>().velocity =
-                new Vector2(speed * Mathf.Cos((360.0f / numberToSpawn * i + angle) * Mathf.PI / 180.0f),
-                            speed * Mathf.Sin((360.0f / numberToSpawn * i + angle) * Mathf.PI / 180.0f));
+
+            temp.GetComponent<EnemyDebris>().angle = UnityEngine.Random.Range(0.0f, maxAngle);
+            temp.GetComponent<EnemyDebris>().speed = UnityEngine.Random.Range(0.2f, maxSpeed);
         }
     }
 
+    protected override void Kinematics()
+    {
+        GetComponent<Rigidbody2D>().velocity =
+               new Vector2(speed * Mathf.Cos((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f),
+                           speed * Mathf.Sin((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f));
+    }
+
+    /*
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.tag == "Projectile")
@@ -75,4 +86,5 @@ public class EnemyDebris : Enemy {
             health--;
         }
     }
+    */
 }
