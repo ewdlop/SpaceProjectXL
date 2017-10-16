@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 50732564070392958}
   - component: {fileID: 60112881006213922}
   - component: {fileID: 60093063678299450}
-  - component: {fileID: 114246664448466644}
+  - component: {fileID: 114030681468170570}
   m_Layer: 8
   m_Name: greyMeteorLarge1
   m_TagString: RockLarge
@@ -100,7 +100,7 @@ PolygonCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634547629620050}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -188,7 +188,7 @@ PolygonCollider2D:
       - {x: 0.07544013, y: -0.4548003}
       - {x: 0.30332765, y: -0.4333276}
       - {x: 0.3299931, y: -0.35665178}
---- !u!114 &114246664448466644
+--- !u!114 &114030681468170570
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -196,20 +196,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1634547629620050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79499d443a546c84483b191bdc325f61, type: 3}
+  m_Script: {fileID: 11500000, guid: 88532f6b70917a341a75d3cd6de1b50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  index: 0
-  enemyTypeManger: {fileID: 1420891394749996, guid: eb76acd310560d141813485ab2a29701,
+  maxHealth: 15
+  score: 5
+  damage: 50
+  objectToSpawn: {fileID: 1630395391724720, guid: 98fec3bc96fbfaf40823228c17e98a86,
     type: 2}
-  weaponManger: {fileID: 1458014921665200, guid: fa502b1cfa04a2b42bc16f105680a5ff,
-    type: 2}
-  healthSlider: {fileID: 0}
-  targetSprite: {fileID: 1078918136402206}
-  isItTakesDamage: 0
-  currentHealth: 0
-  maxHealth: 0
+  numberToSpawn: 5
+  maxSpeed: 2
+  maxAngle: 120
 --- !u!212 &212920479266177918
 SpriteRenderer:
   m_ObjectHideFlags: 1

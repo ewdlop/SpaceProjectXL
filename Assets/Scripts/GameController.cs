@@ -23,8 +23,8 @@ public class ShipSprite
 public class GameController : MonoBehaviour {
 
     public static GameController instance;
-    public static float playerScore;
-    public static float playerHighScore;
+    public static int playerScore;
+    public static int playerHighScore;
     public static bool isPlayerShipDead;
     public bool isMenu;
     public Text difficultyText;
@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour {
     public static Difficulty difficulty;     // The static difficulty var referenced by other scripts
     public int difficultyInt;  // TODO, can remove this and just use the enum
     public float scrollSpeed = -5.0f;
-    public bool gameOver;
+    public bool isGameOver;
     public Color hitColor;
 
     /**************/
@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour {
         else
         {
             //difficulty = debugDifficulty;
-            gameOver = false;
+            isGameOver = false;
             difficultyInt = (int)difficulty;
             difficultyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
         }
@@ -76,6 +76,22 @@ public class GameController : MonoBehaviour {
                 Destroy(gameObject);
             }
 
+        /*
+        // TODO move this into the GameController instead with some global shot deviation
+        // Easy mode 
+        if (GameController.difficulty == Difficulty.Easy)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Easy];
+        // Medium mode
+        else if (GameController.difficulty == Difficulty.Medium)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Medium];
+        // Hard mode 
+        else if (GameController.difficulty == Difficulty.Hard)
+            shotDeviation = shotdeviationArray[(int)Difficulty.Hard];
+
+        // Make value positive so we can use in Random.Range later on
+        if (shotDeviation < 0)
+            shotDeviation *= -1;
+        */
     }
 
     void Update()
@@ -88,7 +104,6 @@ public class GameController : MonoBehaviour {
                 SetHighScore();
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    playerShip.GetComponent<ShipWeaponFiringController>().enabled = false;
                     ResetStaticVariables();
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 }
@@ -97,7 +112,7 @@ public class GameController : MonoBehaviour {
             {
                 scoreText.text = "Score:" + Mathf.RoundToInt(playerScore).ToString();
                 highScoreText.text = "HighScore:" + Mathf.RoundToInt(playerHighScore).ToString();
-                playerScore += Time.deltaTime;
+                //playerScore += Time.deltaTime;
             }
         }
     }
@@ -108,25 +123,29 @@ public class GameController : MonoBehaviour {
         {
             playerHighScore = playerScore;
         }
-        scoreText.text = "Score:" + Mathf.RoundToInt(playerScore).ToString();
-        highScoreText.text = "HighScore:" + Mathf.RoundToInt(playerHighScore).ToString();
+        scoreText.text = "Score:" + playerScore.ToString();
+        highScoreText.text = "HighScore:" + playerHighScore.ToString();
     }
 
     public void ResetStaticVariables()
     {
         isPlayerShipDead = false;
-        playerScore = 0f;
+        playerScore = 0;
         LaunchPlayerShip.isPlayerShipLaunched = false;
         LaunchPlayerShip.isPlayerShipDebugMode = false;
-        PlayerShipDestructible.isKillShip = false;
-        PlayerShipDestructible.isPlayerShipInvincible = false;
+        DestructibleShip.isKillShip = false;
+        DestructibleShip.isPlayerShipInvincible = false;
         PowerUpManger.weaponPanelOffset = 0;
-        foreach(Weapon weapon in WeaponManager.playerWeaponList)
+
+        foreach(GameObject weapon in WeaponManager.playerWeaponList)
         {
-            weapon.isUnlocked = false;
+            weapon.GetComponent<Weapon>().isUnlocked = false;
         }
     }
 
+
+    /***********************/
+    // TODO: move this into a seperate menu script, or maybe into the current MenuScript
     public void LoadScenes(string scene)
     {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
@@ -138,7 +157,6 @@ public class GameController : MonoBehaviour {
         Application.Quit();
     }
 
-    /***********************/
     public void OpenStartGameMenu()
     {
         startGameMenu.SetActive(true);

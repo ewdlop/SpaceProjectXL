@@ -3,8 +3,9 @@ using System.Collections;
 
 public class BGM : MonoBehaviour {
 
+    // TODO combine this with the SoundController
 	static bool isAudioOn = false;
-	AudioSource audio; 
+	new AudioSource audio; 
 
 	// To keep BGM persistent when changing levels
 	void Awake() {

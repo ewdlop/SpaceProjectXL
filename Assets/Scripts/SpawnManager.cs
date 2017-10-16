@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SpawnGameObjbect{
+public class SpawnObject{
     public GameObject type;
-    public List <GameObject> parts;
     public string name;
     public float time;//When do they starts to spawn
     public float spawnDelay;
@@ -17,9 +16,7 @@ public class SpawnGameObjbect{
 
 public class SpawnManager : MonoBehaviour {
 
-    public List<SpawnGameObjbect> enemyShipSpawnType;
-    public List<SpawnGameObjbect> powerUpsList;
-    public List<SpawnGameObjbect> bossList;
+    public List<SpawnObject> powerUpsList;
 
     public Transform min;
     public Transform max;
@@ -59,16 +56,17 @@ public class SpawnManager : MonoBehaviour {
         }
         if (allPowerUpTimeStamp <= Time.time)
         {
-            StartCoroutine("SpawnPowerUps");
+            //StartCoroutine("SpawnPowerUps");
 
             allPowerUpTimeStamp = Time.time + powerUpWaveTimer;
         }
         if (bossTimeStamp <= Time.time)
         {
-            StartCoroutine("SpawnBosses");
+            //StartCoroutine("SpawnBosses");
  
         }
-        foreach (SpawnGameObjbect spawn in enemyShipSpawnType)
+        /*
+        foreach (SpawnObject spawn in enemyShipSpawnType)
         {
             if (spawn.timeStamp >= spawn.time && spawn.timeStamp < Time.time)
             {
@@ -78,6 +76,7 @@ public class SpawnManager : MonoBehaviour {
             }
 
         }
+        */
         
     }
 
@@ -137,7 +136,7 @@ public class SpawnManager : MonoBehaviour {
         yield return new WaitForSeconds(powerUpWaveTimer);
     }
 
-
+    /*
     IEnumerator SpawnBosses()
     {
         float health = 0f;
@@ -154,7 +153,7 @@ public class SpawnManager : MonoBehaviour {
             }
             else
             {
-                health = bossList[bossIndex].type.GetComponent<Destructibles>().GetCurrentHealth();
+                health = bossList[bossIndex].type.GetComponent<Destructibles>().currentHealth;
             }
         }
         else
@@ -172,7 +171,7 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine("WaitSeconds", bossList[bossIndex].waveTimer);
         bossTimeStamp = Time.time + bossList[bossIndex].waveTimer;
     }
-
+    */
     
     IEnumerator WaitSeconds(float seconds)
     {

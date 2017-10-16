@@ -49,82 +49,7 @@ public class ProjectileController : MonoBehaviour {
         float velocityAngle = 0f;
         switch (names)
         {
-
-            case "SineMissiles(Clone)":
-                time += Time.deltaTime;
-                float speedX = 10f;
-                float speedY = speedX * 3 * Mathf.Cos(speedX * time);
-                if (isFireFromRight)
-                {
-                    speedY *= -1;
-                }
-                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speedX * Mathf.Cos(Mathf.PI / 2) - speedY * Mathf.Sin(Mathf.PI / 2), speedX * Mathf.Sin(Mathf.PI / 2) + speedY * Mathf.Cos(Mathf.PI / 2));
-                velocityAngle = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.y, gameObject.GetComponent<Rigidbody2D>().velocity.x);
-                transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
-                break;
-
-            case "CircleMissiles(Clone)":
-                time += Time.deltaTime;
-                float angularSpeed = 5f;
-                float phase = -1 * Mathf.PI / 2f;
-                if (isFireFromRight)
-                {
-                    phase *= -1;
-                }
-                float speedX2 = -1 * angularSpeed * 2 * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
-                float speedY2 = angularSpeed * 2 * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-                float positionX = playerSpaceShipX + 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-                float positionY = playerSpaceShipY + 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
-                gameObject.transform.position = new Vector2(positionX, positionY);
-
-                velocityAngle = Mathf.Atan2(speedY2, speedX2);
-                transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
-                break;
-            case "ChasingMissiles(Clone)":
-                if (playerSpaceShip == null)//playerSpaceShip is the target
-                {
-                    Destructibles[] enemies = FindObjectsOfType<Destructibles>();
-                    if (enemies.Length>0) {
-                        int random = Random.Range(0, enemies.Length);
-                        int count=0;
-                        while (enemies[random].isItTakesDamage == false&&count<enemies.Length)//need to fix this later
-                        {
-                            random = Random.Range(0, enemies.Length);
-                            count++;
-                        }
-                        if (targetSprite != null)
-                        {
-                            Destroy(targetSprite);
-                        }
-                        playerSpaceShip = enemies[random].gameObject;
-                        targetSprite = Instantiate(enemies[random].targetSprite, playerSpaceShip.transform.position,Quaternion.identity);
-                        targetSprite.transform.parent= enemies[random].gameObject.transform;
-                        targetSprite.transform.localScale = enemies[random].targetSprite.transform.localScale;
-                        targetSprite.SetActive(true);
-                    }
-                    else
-                    {
-                        DestroyObject(gameObject);
-                        DestroyObject(gameObject.GetComponent<ProjectileController>().targetSprite);
-                    }
-
-                    
-                }
-                else
-                {
-
-                    float deltaXChasingMissiles = playerSpaceShip.transform.position.x - gameObject.transform.position.x;
-                    float deltaYChasingMissiles = playerSpaceShip.transform.position.y - gameObject.transform.position.y;
-                    float angleChasingMissiles = Mathf.Atan2(deltaYChasingMissiles, deltaXChasingMissiles);
-                    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(10 * Mathf.Cos(angleChasingMissiles), 10 * Mathf.Sin(angleChasingMissiles));
-                    gameObject.transform.eulerAngles = new Vector3(0f, 0f, angleChasingMissiles * Mathf.Rad2Deg - 90f);
-                    if (targetSprite != null)
-                    { 
-                        targetSprite.transform.eulerAngles += new Vector3(0f, 0f,360*Time.deltaTime);
-                        
-                    }
-                }
-                break;
+         
             case "Boss1RedBall(Clone)":
                 time += Time.deltaTime;
                 float x = 0.5f*time * Mathf.Cos(time);
@@ -141,7 +66,7 @@ public class ProjectileController : MonoBehaviour {
                 //transform.eulerAngles = new Vector3(0f, 0f, facingAngle * Mathf.Rad2Deg -180f);
                 break;
             case "Boss1BlueBall(Clone)":
-                gameObject.GetComponent<Destructibles>().currentHealth -= gameObject.GetComponent<Destructibles>().maxHealth / (gameObject.GetComponent<ProjectileController>().duration-1f) * Time.deltaTime;
+                gameObject.GetComponent<Destructibles>().currentHealth -= (int)(gameObject.GetComponent<Destructibles>().maxHealth / (gameObject.GetComponent<ProjectileController>().duration - 1f) * Time.deltaTime);
                 break;
             case "RedRocketMissiles(Clone)":
                 time += Time.deltaTime;
@@ -160,10 +85,8 @@ public class ProjectileController : MonoBehaviour {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(3* Mathf.Cos(angleBrownBall), 3* Mathf.Sin(angleBrownBall));
                 break;
             case "Boss2GreenMissile(Clone)":
-
                 if (time >= 1f)
                 {
-
                     time = 0f;
                     List<int> randomList= new List<int>();
                     randomList.Add(1);
@@ -174,10 +97,7 @@ public class ProjectileController : MonoBehaviour {
                     gameObject.transform.eulerAngles=new Vector3(0f, 0f, gameObject.transform.eulerAngles.z+random *90f);
                 }
 
-                time += Time.deltaTime;
-                
-                break;
-            case "LaserBeam":
+                time += Time.deltaTime;        
                 break;
             default:
                 velocityAngle = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.y, gameObject.GetComponent<Rigidbody2D>().velocity.x);
