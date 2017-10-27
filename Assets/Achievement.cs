@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Achievement {
 
@@ -96,6 +97,7 @@ public class Achievement {
         this.categoryIndex = categoryIndex;
         this.spriteIndex = spriteIndex;
         this.achievementReference = achievementReference;
+        LoadAchievement();
     }
 
 
@@ -105,9 +107,20 @@ public class Achievement {
         if (!unlocked)
         {
             unlocked = true;
+            achievementReference.GetComponent<Image>().color = AchievementManager.AchivementEarnedColor;
             return true;
         }
         return false;
     }
-
+    public void SaveAchievement(bool value)
+    {
+        unlocked = true;
+    }
+    public void LoadAchievement()
+    {
+        if (unlocked)
+        {
+            achievementReference.GetComponent<Image>().color = AchievementManager.AchivementEarnedColor;
+        }
+    }
 }

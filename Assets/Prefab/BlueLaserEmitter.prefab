@@ -21,10 +21,9 @@ GameObject:
   - component: {fileID: 4071374503653984}
   - component: {fileID: 212097695805022122}
   - component: {fileID: 50260416164914012}
-  - component: {fileID: 70751696733138400}
-  - component: {fileID: 114417718029758518}
+  - component: {fileID: 114520737958650736}
   m_Layer: 9
-  m_Name: BlueLaserBullet
+  m_Name: BlueLaserEmitter
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,8 +36,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.372, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.7632942, y: -3.9177852, z: -0.01}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -50,7 +49,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -63,22 +62,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &70751696733138400
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.09, y: 0.37}
-  m_Direction: 0
---- !u!114 &114417718029758518
+--- !u!114 &114520737958650736
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,14 +70,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1344034998661486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615db9fc645a36d4ca6da6fe78f7493e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c22d5ad813ba6541a5f514d759776fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
-  damage: 5
-  launchAngle: 0
-  speed: 10
+  hiteffect: {fileID: 0}
+  damage: 0
+  launchAngle: 90
+  speed: 5
   isUnlocked: 0
+  emittingCoolDown: 0.1
+  lifeTime: 2
+  finalEmission: 20
+  emission: {fileID: 1344034998661486, guid: 2e9603bcb3453024482ddb81f63615fd, type: 2}
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -126,7 +114,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b75308dcbc9cfc649814b1acadf55919, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a9166b5d48eafee4ea6edb46144acbeb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

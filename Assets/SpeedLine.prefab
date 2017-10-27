@@ -9,97 +9,81 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1344034998661486}
+  m_RootGameObject: {fileID: 1642610113513436}
   m_IsPrefabParent: 1
---- !u!1 &1344034998661486
+--- !u!1 &1642610113513436
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4071374503653984}
-  - component: {fileID: 212097695805022122}
-  - component: {fileID: 50260416164914012}
-  - component: {fileID: 70751696733138400}
-  - component: {fileID: 114417718029758518}
-  m_Layer: 9
-  m_Name: BlueLaserBullet
-  m_TagString: Projectile
+  - component: {fileID: 4335295388395254}
+  - component: {fileID: 212089810390853434}
+  - component: {fileID: 50479006547862808}
+  - component: {fileID: 114217197637551086}
+  m_Layer: 0
+  m_Name: SpeedLine
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4071374503653984
+--- !u!4 &4335295388395254
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
+  m_GameObject: {fileID: 1642610113513436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.372, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -6.79, y: -2.66, z: 0}
+  m_LocalScale: {x: 2, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50260416164914012
+--- !u!50 &50479006547862808
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
-  m_BodyType: 0
+  m_GameObject: {fileID: 1642610113513436}
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &70751696733138400
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.09, y: 0.37}
-  m_Direction: 0
---- !u!114 &114417718029758518
+--- !u!114 &114217197637551086
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
+  m_GameObject: {fileID: 1642610113513436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615db9fc645a36d4ca6da6fe78f7493e, type: 3}
+  m_Script: {fileID: 11500000, guid: cf58fe93f3e469341bf04d9a2bbce603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
-  damage: 5
-  launchAngle: 0
-  speed: 10
+  hiteffect: {fileID: 0}
+  damage: 0
+  launchAngle: 270
+  speed: 15
   isUnlocked: 0
---- !u!212 &212097695805022122
+--- !u!212 &212089810390853434
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1344034998661486}
+  m_GameObject: {fileID: 1642610113513436}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -126,12 +110,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b75308dcbc9cfc649814b1acadf55919, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea6813fdca6da7749a6c56fead673a5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.09, y: 0.37}
+  m_Size: {x: 0.07, y: 1.86}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

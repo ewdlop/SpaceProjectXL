@@ -8,15 +8,6 @@ public class AchievementButton : MonoBehaviour {
     public Sprite normal;
     public Sprite highlight;
 
-    void Start () {
-		
-	}
-	
-
-	void Update () {
-		
-	}
-
     public void Click()
     {
         achievementList.SetActive(!achievementList.activeSelf);

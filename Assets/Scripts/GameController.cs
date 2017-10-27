@@ -49,6 +49,8 @@ public class GameController : MonoBehaviour {
     public Image shipSpriteImage;
     public GameObject shipSelectionPanel;
     public static Sprite inGameSprite;
+    /************************/
+    public GameObject achieveMentPanel;
 
     void Start() {
         if (isMenu)
@@ -173,6 +175,10 @@ public class GameController : MonoBehaviour {
     public void CloseShipSelectionPanel()
     {
         shipSelectionPanel.SetActive(false);
+    }
+    public void OpenAchievementMenu()
+    {
+        achieveMentPanel.SetActive(true);
     }
 
     public void UpdateDiffcultyText(int increament)

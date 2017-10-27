@@ -8,24 +8,12 @@ public class DefaultLaser : Weapon {
     // DefaultLaser: 
     // Shoots forward at the specified launch angle
 
-    private float launchAngleRad;
-    private float unitVectorX, unitVectorY;
-
     private bool isFiredFromRight; 
+
 
     void Start()
     {
-        launchAngleRad = launchAngle * Mathf.Deg2Rad;
-        if (isFiredFromRight)
-        {
-            unitVectorX = Mathf.Cos(-1 * launchAngleRad);
-            unitVectorY = Mathf.Sin(-1 * launchAngleRad);
-        }
-        else
-        {
-            unitVectorX = Mathf.Cos(launchAngleRad);
-            unitVectorY = Mathf.Sin(launchAngleRad);
-        }    
+
     }
 
     void Update()
@@ -35,17 +23,38 @@ public class DefaultLaser : Weapon {
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
+        GameObject leftProjectile;
         GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
         if (leftFire != null)
         {
-            Instantiate(this.gameObject, leftFire.position,
+            leftProjectile=Instantiate(this.gameObject, leftFire.position,
                 leftFire.rotation);
+            leftProjectile.GetComponent<Weapon>().launchAngle = 45f;
+            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f,-45f);
+            leftProjectile = Instantiate(this.gameObject, leftFire.position,
+            leftFire.rotation);
+            leftProjectile.GetComponent<Weapon>().launchAngle = 90f;
+            leftProjectile = Instantiate(this.gameObject, leftFire.position,
+            leftFire.rotation);
+            leftProjectile.GetComponent<Weapon>().launchAngle = 135f;
+            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f, 45f);
         }
 
         if (rightFire != null)
         {
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                  rightFire.rotation) as GameObject;
+            rightProjectile.GetComponent<Weapon>().launchAngle = 45f;
+            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, -45f);
+            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+            rightProjectile = Instantiate(this.gameObject, rightFire.position,
+                rightFire.rotation) as GameObject;
+            rightProjectile.GetComponent<Weapon>().launchAngle = 90f;
+            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+            rightProjectile = Instantiate(this.gameObject, rightFire.position,
+                rightFire.rotation) as GameObject;
+            rightProjectile.GetComponent<Weapon>().launchAngle = 135f;
+            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, 45f);
             rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
         }
 
@@ -54,9 +63,10 @@ public class DefaultLaser : Weapon {
 
     public override void Kinematics()
     {
+        float launchAngletoRad = this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
         Vector2 relativeVelocity =
-            speed * new Vector2(unitVectorX * Mathf.Cos(Mathf.PI / 2) - unitVectorY * Mathf.Sin(Mathf.PI / 2),
-            unitVectorX * Mathf.Sin(Mathf.PI / 2) + unitVectorY * Mathf.Cos(Mathf.PI / 2));
+            speed * new Vector2(Mathf.Cos(launchAngletoRad),
+            Mathf.Sin(launchAngletoRad));
 
         this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
     }
