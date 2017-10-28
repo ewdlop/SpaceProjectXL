@@ -8,6 +8,7 @@ public class WeaponPowerup : Powerup {
     // Unlock a weapon in the object's weapon list
     public override void ActivateEffect(GameObject touchedObject)
     {
+        /*
         List<GameObject> weaponList = 
             touchedObject.GetComponent<PlayerController>().getWeaponList();
 
@@ -17,5 +18,7 @@ public class WeaponPowerup : Powerup {
 
         SoundController.Play((int)SFX.PickupHealth);
         DestroyObject(this.gameObject);
+        */
     }
+    
 }

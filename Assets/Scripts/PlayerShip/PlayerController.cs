@@ -17,19 +17,26 @@ public class PlayerController : MonoBehaviour {
     public Transform leftFirePosition; 
     public Transform rightFirePosition;
     public float shotCoolDown = 0.2f;
-    private List<GameObject> weaponList; 
+    //private List<GameObject> weaponList; 
+    public GameObject mainWeaponObject;
+    public GameObject supportWeaponObject;
+    private Weapon mainWeapon;
+    private Weapon supportWeapon;
 
-    private float timeStamp;
-
-    // For use in making ship flash upon receiving damager
+    // For use in making ship flash upon receiving damage
     private new Renderer renderer;
 
     void Start ()
     {
         health = maxHealth;
-        weaponList = WeaponManager.playerWeaponList;
-        timeStamp = Time.time;
+        //weaponList = WeaponManager.playerWeaponList;
         renderer = GetComponent<Renderer>();
+
+        mainWeapon = mainWeaponObject.GetComponent<Weapon>();
+        mainWeapon.cooldownStamp = Time.time;
+   
+        supportWeapon = supportWeaponObject.GetComponent<Weapon>();
+        supportWeapon.cooldownStamp = Time.time;
     }
 
 	void Update ()
@@ -42,11 +49,8 @@ public class PlayerController : MonoBehaviour {
             Death();
         }
 
-        Kinematics(); 
-        if (timeStamp <= Time.time)
-        {
-            Shoot();
-        }
+        Kinematics();
+        Shoot();
     }
 
     // Controls player movement
@@ -62,6 +66,7 @@ public class PlayerController : MonoBehaviour {
     // Controls shooting 
     void Shoot()
     {
+        /*
         foreach (GameObject weapon in weaponList)
         {
             // Shoot the weapon if it's unlocked
@@ -70,7 +75,22 @@ public class PlayerController : MonoBehaviour {
                 weapon.GetComponent<Weapon>().Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
             }
         }
-        timeStamp = Time.time + shotCoolDown;
+        */
+        // Fire the main weapon if off cooldown
+        if ((Input.GetAxis("MainFire") > 0) && 
+            (mainWeapon.cooldownStamp < Time.time))
+        {
+            mainWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
+            mainWeapon.cooldownStamp = Time.time + mainWeapon.cooldown;
+        }
+
+        // Fire the support weapon if off cooldown
+        if ((Input.GetAxis("SupportFire") > 0) &&
+            (supportWeapon.cooldownStamp < Time.time))
+        {
+            supportWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
+            supportWeapon.cooldownStamp = Time.time + supportWeapon.cooldown;
+        }
     }
 
     void OnCollisionStay2D(Collision2D collidedTarget)
@@ -113,6 +133,7 @@ public class PlayerController : MonoBehaviour {
         }  
     }
 
+    /*
     public List<GameObject> getWeaponList()
     {
         return weaponList;
@@ -122,6 +143,7 @@ public class PlayerController : MonoBehaviour {
     {
         weaponList[index].GetComponent<Weapon>().isUnlocked = true;
     }
+    */
 
     IEnumerator HitFlash()
     {

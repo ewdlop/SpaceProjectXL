@@ -94,6 +94,8 @@ MonoBehaviour:
   launchAngle: 0
   speed: 10
   isUnlocked: 0
+  cooldown: 0.5
+  cooldownStamp: 0
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

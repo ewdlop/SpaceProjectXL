@@ -9,6 +9,8 @@ public abstract class Weapon : MonoBehaviour {
     public float launchAngle = 0;
     public float speed = 50.0f;
     public bool isUnlocked;
+    public float cooldown = 0.2f;
+    public float cooldownStamp = 0.0f;
 
     // Handles where/how the object is instantiated
     public abstract void Shoot(Transform ship, Transform leftFire, Transform rightFire);
