@@ -7,11 +7,16 @@ public class PlayerController : MonoBehaviour {
 
     public float speed = 10.0f;
 
-    [Header("Health/Damage Settings")]
-    public int maxHealth = 100;
-    private int health;
+    [Header("Total lives")]
+    public static int maxLives = 3;
+    private int lives;
+
+    [Header("Spawn Settings")]
+    public Transform playerSpawn; // Where the player is respawned
     public float invincibleDuration = 1.2f;
     private bool isInvincible;
+    public float deathDuration = 1.5f;
+    private bool isDead;
 
     [Header("Shooting Controls")]
     public Transform leftFirePosition; 
@@ -23,12 +28,21 @@ public class PlayerController : MonoBehaviour {
     private Weapon mainWeapon;
     private Weapon supportWeapon;
 
+    [Header("Ultimate Controls")]
+    public GameObject ultimateWeaponObject;
+    private float ultimateProgress; // current progress of the ultimate bar
+    private bool isDrainingProgess; // sets the ultimate bar to be drained
+    public float chargingDuration;  // the amount the bar is charged per tick
+    public float dischargingDuration;  // the amount the bar is charged per tick
+    public float ultimateDuration;  // the maximum amount allowed of the ultimate bar
+    private Weapon ultimateWeapon;  
+
     // For use in making ship flash upon receiving damage
     private new Renderer renderer;
 
     void Start ()
     {
-        health = maxHealth;
+        lives = maxLives;
         //weaponList = WeaponManager.playerWeaponList;
         renderer = GetComponent<Renderer>();
 
@@ -37,20 +51,19 @@ public class PlayerController : MonoBehaviour {
    
         supportWeapon = supportWeaponObject.GetComponent<Weapon>();
         supportWeapon.cooldownStamp = Time.time;
+
+        ultimateWeapon = ultimateWeaponObject.GetComponent<Weapon>();
+        ultimateProgress = 0.0f;
+        ultimateWeapon.cooldownStamp = 0.0f;
     }
 
 	void Update ()
     {
-        // Don't allow any ship actions if game is over
-        if (GameController.instance.isGameOver) { return; }
-
-        if (health <= 0)
+        if (!isDead)
         {
-            Death();
+            Kinematics();
+            Shoot();
         }
-
-        Kinematics();
-        Shoot();
     }
 
     // Controls player movement
@@ -66,16 +79,6 @@ public class PlayerController : MonoBehaviour {
     // Controls shooting 
     void Shoot()
     {
-        /*
-        foreach (GameObject weapon in weaponList)
-        {
-            // Shoot the weapon if it's unlocked
-            if (weapon.GetComponent<Weapon>().isUnlocked)
-            {
-                weapon.GetComponent<Weapon>().Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
-            }
-        }
-        */
         // Fire the main weapon if off cooldown
         if ((Input.GetAxis("MainFire") > 0) && 
             (mainWeapon.cooldownStamp < Time.time))
@@ -91,6 +94,59 @@ public class PlayerController : MonoBehaviour {
             supportWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
             supportWeapon.cooldownStamp = Time.time + supportWeapon.cooldown;
         }
+
+        // Handle the ultimate 
+        controlUltimate();
+    }
+
+    void controlUltimate()
+    {
+        //time += Time.deltaTime;
+
+        // Fire the ultimate weapon if bar is full and we click the ultimate button
+        if (Input.GetKeyDown("u") && ultimateProgress >= ultimateDuration)
+        {
+            isDrainingProgess = true;
+            fillProgress(-1 * Time.deltaTime / ultimateDuration);
+        }      
+        else
+        {
+            // if ultimate was activated
+            if (isDrainingProgess)
+            {
+                fillProgress(-1 * Time.deltaTime / dischargingDuration);
+                // Instantiate the ultimate weapon while the bar is not yet 0
+                if (ultimateProgress > 0.0f) 
+                {
+                    if (ultimateWeapon.cooldownStamp < Time.time)
+                    {
+                        ultimateWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
+                        ultimateWeapon.cooldownStamp = Time.time + ultimateWeapon.cooldown;
+                    }
+                }
+                // Ultimate ends when bar reaches 0
+                else
+                {
+                    isDrainingProgess = false;
+                }
+            }
+            else
+            {
+                // charging
+                fillProgress(Time.deltaTime / chargingDuration);
+            }
+        }
+    }
+
+    public void fillProgress(float amount)
+    {
+        ultimateProgress = Mathf.Clamp(ultimateProgress + amount, 0f, ultimateDuration);
+        //this.ultimateSlider.GetComponent<Slider>().value = progress;
+    }
+
+    public float getUltimateProgress()
+    {
+        return ultimateProgress;
     }
 
     void OnCollisionStay2D(Collision2D collidedTarget)
@@ -104,12 +160,7 @@ public class PlayerController : MonoBehaviour {
         // Ship physically collided with an enemy
         if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
         {
-            // Set ship to invincible
-            StartCoroutine(InvincibilityFrames());
-            int damage = collidedTarget.gameObject.GetComponent<Enemy>().damage;
-            health -= damage;
-            SoundController.Play((int)SFX.ShipDamage, damage);
-            //Debug.Log("Player Health:" + health);
+            StartCoroutine(Death());
         }
     }
 
@@ -126,24 +177,12 @@ public class PlayerController : MonoBehaviour {
             // Set ship to invincible if it's not current invincible
             if (!isInvincible)
             {
-                StartCoroutine(InvincibilityFrames());
-                health -= damage;
-                SoundController.Play((int)SFX.ShipDamage, damage);
+                StartCoroutine(Death());
+                //StartCoroutine(InvincibilityFrames());
+                //SoundController.Play((int)SFX.ShipDamage, damage);
             }   
         }  
     }
-
-    /*
-    public List<GameObject> getWeaponList()
-    {
-        return weaponList;
-    }
-
-    public void unlockWeapon(int index)
-    {
-        weaponList[index].GetComponent<Weapon>().isUnlocked = true;
-    }
-    */
 
     IEnumerator HitFlash()
     {
@@ -166,49 +205,30 @@ public class PlayerController : MonoBehaviour {
         isInvincible = false;
     }
 
-    public void AddHealth(int amount)
-    {
-        health += amount;
-        Mathf.Clamp(health, 0, maxHealth);
-    }
-
-    private void Death()
+    IEnumerator Death()
     {
         SoundController.Play((int)SFX.ShipDeath);
-        Destroy(this.gameObject);
-        GameController.instance.isGameOver = true;
-
-        /*
-        rb.velocity = new Vector2(0, 0);
-        Camera.main.GetComponent<FollowPlayerShip>().enabled = false;
-
-        bigDebris1.SetActive(true);
-        bigDebris2.SetActive(true);
-        bigDebris3.SetActive(true);
-
-        smallDebris1.SetActive(true);
-        smallDebris2.SetActive(true);
-        smallDebris3.SetActive(true);
-
-        float bigDebrisX = 0.1f;
-        float bigDebrisY = 0.1f;
-        float smallDebrisX = 0.5f;
-        float smallDebrisY = 0.5f;
-
-        bigDebris1.GetComponent<Rigidbody2D>().velocity = new Vector2(-1 * (bigDebrisX + Random.Range(0f, 1f)), -1 * (bigDebrisY + Random.Range(0f, 1f)));
-        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
-        bigDebris2.GetComponent<Rigidbody2D>().velocity = new Vector2((bigDebrisX + Random.Range(0f, 1f)), -1 * (bigDebrisY + Random.Range(0f, 1f)));
-        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
-        bigDebris3.GetComponent<Rigidbody2D>().velocity = new Vector2((bigDebrisX + Random.Range(0f, 1f)), (bigDebrisY + Random.Range(0f, 1f)));
-        bigDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 5 + Random.Range(1f, 2f), ForceMode2D.Impulse);
-
-        smallDebris1.GetComponent<Rigidbody2D>().velocity = new Vector2(-1 * (smallDebrisX + Random.Range(1f, 2f)), -1 * (smallDebrisY + Random.Range(1f, 2f)));
-        smallDebris1.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
-        smallDebris2.GetComponent<Rigidbody2D>().velocity = new Vector2((smallDebrisX + Random.Range(1f, 2f)), -1 * (smallDebrisY + Random.Range(1f, 2f)));
-        smallDebris2.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
-        smallDebris3.GetComponent<Rigidbody2D>().velocity = new Vector2((smallDebrisX + Random.Range(1f, 2f)), (smallDebrisY + Random.Range(1f, 2f)));
-        smallDebris3.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f, 1f) * 10 + Random.Range(1f, 10f), ForceMode2D.Impulse);
-        */
+        renderer.enabled = false;
+        isDead = true;
+        isInvincible = true;
+        yield return new WaitForSeconds(deathDuration);
+        RespawnPlayer();  
     }
 
+    public void RespawnPlayer()
+    {
+        lives--;
+        GameController.instance.UpdateLivesText(lives);
+        if (lives >= 0)
+        {
+            this.transform.position = playerSpawn.position;
+            isDead = false;
+            StartCoroutine(InvincibilityFrames());
+        }
+        else
+        {
+            GameController.instance.isGameOver = true;
+            Destroy(this.gameObject);
+        }
+    }
 }

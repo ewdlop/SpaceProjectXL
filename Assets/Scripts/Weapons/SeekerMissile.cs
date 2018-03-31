@@ -14,8 +14,9 @@ public class SeekerMissile : Weapon {
     public float destroyTimer = 5.0f;
     public GameObject targetSprite;     // Cross hair sprite to show what missle is targeting
     private GameObject target;
-    private Enemy[] enemies; 
-    
+    private GameObject tempTarget;
+    private Enemy[] enemies;
+
     void Update()
     {      
         Kinematics();
@@ -52,15 +53,20 @@ public class SeekerMissile : Weapon {
         {
             if (enemies.Length > 0)
             {
+                if (tempTarget != null)
+                {
+                    DestroyObject(tempTarget);
+                }
                 int random = UnityEngine.Random.Range(0, enemies.Length);
 
                 // TODO handle the target crosshair sprite so that it scales with the object
                 target = enemies[random].gameObject;
-                GameObject tempTarget =
+                tempTarget =
                     Instantiate(targetSprite, target.transform.position, Quaternion.identity) as GameObject;
-                tempTarget.transform.parent = target.transform;
+                //Destory the target marker with the missile
+                tempTarget.transform.parent = gameObject.transform;
                 // Get the enemies scale
-                targetSprite.transform.localScale = enemies[random].gameObject.GetComponent<Renderer>().bounds.size;
+                targetSprite.transform.localScale = target.GetComponent<Renderer>().bounds.size;
             }
             // If there are no targets just have the missile slow down and destroy itself 
             else
@@ -72,11 +78,14 @@ public class SeekerMissile : Weapon {
                 if (Mathf.Approximately(velocity.x, 0.0f) && Mathf.Approximately(velocity.y, 0.0f))
                 {
                     DestroyObject(gameObject);
+
                 }
             }
         }
         else
         {
+            
+            
             float deltaXChasingMissiles = target.transform.position.x - gameObject.transform.position.x;
             float deltaYChasingMissiles = target.transform.position.y - gameObject.transform.position.y;
             float angleChasingMissiles = Mathf.Atan2(deltaYChasingMissiles, deltaXChasingMissiles);
@@ -87,5 +96,16 @@ public class SeekerMissile : Weapon {
                 targetSprite.transform.eulerAngles += new Vector3(0f, 0f, 360 * Time.deltaTime);
             }
         }
+    }
+    void LateUpdate()
+    {
+        //Prevent parent.transform issue
+        MoveTargetMark();
+        
+    }
+    void MoveTargetMark()
+    {
+        if (target != null)
+            tempTarget.transform.position = target.transform.position;
     }
 }

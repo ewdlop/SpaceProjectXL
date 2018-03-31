@@ -14,8 +14,9 @@ public class EnemyDebris : Enemy {
     [Header("Spawn child object settings")]
     public float maxSpeed = 2.0f;
     public float maxAngle = 120.0f;
-    private float speed;
-    private float angle;
+
+    float speed;
+    float angle;
 
     new void Start ()
     {
@@ -24,7 +25,7 @@ public class EnemyDebris : Enemy {
 	
 	void Update ()
     {
-        //Kinematics();
+        //kinematics();
 
         if (health <= 0)
         {
@@ -49,8 +50,16 @@ public class EnemyDebris : Enemy {
                 new Vector3(transform.position.x, transform.position.y, transform.position.z),
                 Quaternion.identity);
 
-            temp.GetComponent<EnemyDebris>().angle = UnityEngine.Random.Range(0.0f, maxAngle);
-            temp.GetComponent<EnemyDebris>().speed = UnityEngine.Random.Range(0.2f, maxSpeed);
+            //temp.GetComponent<EnemyDebris>().angle = UnityEngine.Random.Range(0.0f, maxAngle);
+            //temp.GetComponent<EnemyDebris>().speed = UnityEngine.Random.Range(0.2f, maxSpeed);
+            angle = UnityEngine.Random.Range(0.0f, maxAngle);
+            speed = UnityEngine.Random.Range(0.2f, maxSpeed);
+
+            // Update the speed of the object
+            //temp.GetComponent<EnemyDebris>().Kinematics();
+            temp.GetComponent<Rigidbody2D>().velocity =
+               new Vector2(speed * Mathf.Cos((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f),
+                           speed * Mathf.Sin((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f));
         }
     }
 

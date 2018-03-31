@@ -28,6 +28,7 @@ public class Ultimate
         this.ultimateDuration = ultimateDuration;
         FillProgress(progress);
     }
+
     public void FillProgress(float amount)
     {
         this.progress = Mathf.Clamp(this.progress+amount,0f,1f);
@@ -48,12 +49,21 @@ public class UltimateManger : MonoBehaviour {
     public GameObject playerShip;
     public GameObject playerShipIcon;
     public Ultimate playerShipUltimate;
+    public Sprite defaultSprite;
+
     public float time;
 
     void Awake () { 
+        //currently one have 1 and all ship uses this one
+        //need to add ulimate swapping
         playerShipUltimate = new Ultimate("YouShallNotPass", summonPrefab, ultimateSlider, GameController.inGameSprite, false, 0f, 20f, 10f);
-
+        
+        //for debugging
+        if (playerShipUltimate.sprite!=null)
         playerShip.GetComponent<SpriteRenderer>().sprite = playerShipUltimate.sprite;
+        else
+            playerShip.GetComponent<SpriteRenderer>().sprite =defaultSprite;
+
         foreach (PolygonCollider2D cols in playerShip.GetComponents<PolygonCollider2D>())//reset collider size/shape after we change sprite
         {
             Destroy(cols);
@@ -66,7 +76,13 @@ public class UltimateManger : MonoBehaviour {
     }
 	
 
-	void Update () {
+	void Update ()
+    {
+        // Just find the only playerController object since no plans yet for multiple players 
+        if (FindObjectOfType<PlayerController>() != null)
+            this.ultimateSlider.GetComponent<Slider>().value = FindObjectOfType<PlayerController>().getUltimateProgress();
+
+        /*
         time+=Time.deltaTime;
         
         if (playerShipUltimate.GetProgress()>=1f)//ultimate is ready
@@ -101,6 +117,8 @@ public class UltimateManger : MonoBehaviour {
                 //charging
                 playerShipUltimate.FillProgress(Time.deltaTime / playerShipUltimate.chargingDuration);
             }
-        }        
+        }  
+        */
     }
+    
 }

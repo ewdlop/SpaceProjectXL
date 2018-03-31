@@ -37,7 +37,6 @@ public abstract class Enemy : MonoBehaviour {
             float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
             renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
         }
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -52,5 +51,10 @@ public abstract class Enemy : MonoBehaviour {
             StartCoroutine(HitFlash());
             health--;
         }
+    }
+
+    public int getHealth()
+    {
+        return health;
     }
 }

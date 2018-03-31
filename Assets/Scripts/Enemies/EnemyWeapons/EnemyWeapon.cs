@@ -19,8 +19,6 @@ public abstract class EnemyWeapon : Weapon
         public abstract void Kinematics();
      *
      **/
-
-    public float cooldown = 2.0f;   // the time until we first the next set
     public float fireDelay = 0.3f;  // the delay between each shot
     public int totalShots = 1;      // the number of shots for each wave    
 

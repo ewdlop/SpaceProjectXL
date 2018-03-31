@@ -15,7 +15,7 @@ public class EnemyShip : Enemy {
     private PlayerController[] players;
 
     // Use this for initialization
-    new void Start () {
+    protected new void Start () {
         base.Start(); // Setup the hit flash
         players = FindObjectsOfType<PlayerController>();	
 
@@ -57,8 +57,12 @@ public class EnemyShip : Enemy {
                     weapon.Shoot(firePosition, players[pIdx].gameObject.transform);
                 }
                 StartCoroutine(FireCooldown(weapon));
-            }
-           
+            }  
+        }
+
+        if (health <= 0)
+        {
+            Death();
         }
     }
 
@@ -123,5 +127,10 @@ public class EnemyShip : Enemy {
         }
     }
 
+    void Death()
+    {
+        SoundController.Play((int)SFX.ShipDeath);
+        Destroy(this.gameObject);
+    }
 
 }

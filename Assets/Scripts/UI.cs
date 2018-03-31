@@ -7,16 +7,40 @@ using UnityEngine.UI;
 // TODO extract UI element from the GameController
 public class UI : MonoBehaviour {
 
+    [Header("UI Settings")]
     public Text difficultyText;
     public Text scoreText;
     public Text highScoreText;
     public Text retryText;
+    public Slider bossHealth;
 
     public static int spriteInt;
     public List<ShipSprite> sprites;
     public Image shipSpriteImage;
     
     public Sprite inGameSprite;
+
+    private EnemyShip boss;
+
+    void Start()
+    {
+        boss = (EnemyShip)FindObjectOfType(typeof(EnemyShip));
+    }
+
+    void Update()
+    {
+        if (boss != null)
+        {
+            //Debug.Log(bossHealth.value);
+            bossHealth.gameObject.SetActive(true);
+            bossHealth.maxValue = boss.GetComponent<Enemy>().maxHealth;
+            bossHealth.value = boss.GetComponent<Enemy>().getHealth();
+        }
+        else
+        {
+            bossHealth.gameObject.SetActive(false);
+        }
+    }
 
     public void UpdateDifficultyText()
     {

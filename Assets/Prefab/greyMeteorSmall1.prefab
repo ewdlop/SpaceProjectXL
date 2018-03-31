@@ -174,7 +174,7 @@ MonoBehaviour:
   damage: 5
   objectToSpawn: {fileID: 0}
   numberToSpawn: 0
-  maxSpeed: 2
+  maxSpeed: 5
   maxAngle: 120
 --- !u!212 &212034659105654248
 SpriteRenderer:

@@ -109,7 +109,9 @@ MonoBehaviour:
   damage: 2
   launchAngle: 0
   speed: 50
-  isUnlocked: 1
+  isUnlocked: 0
+  cooldown: 0.1
+  cooldownStamp: 31.033817
   shotCount: 3
   destroyTimer: 2
   targetSprite: {fileID: 1868108643342870, guid: 1ae37c1338900ca438c67a20bd1d316b,

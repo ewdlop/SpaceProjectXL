@@ -17,7 +17,6 @@ public class ShipSprite
     {
         this.Icon = Icon;
     }
-
 }
 
 public class GameController : MonoBehaviour {
@@ -25,32 +24,41 @@ public class GameController : MonoBehaviour {
     public static GameController instance;
     public static int playerScore;
     public static int playerHighScore;
-    public static bool isPlayerShipDead;
+    //public static bool isPlayerShipDead;
     public bool isMenu;
+
+    [Header("UI Settings")]
     public Text difficultyText;
     public Text scoreText;
     public Text highScoreText;
     public Text retryText;
-    public GameObject playerShip;
-    public Difficulty debugDifficulty;       // Just for setting difficulty via the inspector for debugging
-    public static Difficulty difficulty;     // The static difficulty var referenced by other scripts
+    public Text livesText;
+
+    [Header("Gameplay Settings")]
+    public Difficulty debugDifficulty;   // Just for setting difficulty via the inspector for debugging
+    public static Difficulty difficulty; // The static difficulty var referenced by other scripts
     public int difficultyInt;  // TODO, can remove this and just use the enum
     public float scrollSpeed = -5.0f;
+    public Color hitColor; // Hit flash color
     public bool isGameOver;
-    public Color hitColor;
 
-    /**************/
+    [Header("Start Menu")]
     public GameObject startGameMenu;
     public Text startGameMenuDiffucltyText;
 
-    /************************/
+    [Header("PlayerShipSprites")]
     public static int spriteInt;
     public List<ShipSprite> sprites;
     public Image shipSpriteImage;
     public GameObject shipSelectionPanel;
     public static Sprite inGameSprite;
-    /************************/
+
+    [Header("ArmoryMenu")]
+    public GameObject armoryPanel;
+
+    [Header("AchievementMenu")]
     public GameObject achieveMentPanel;
+
 
     void Start() {
         if (isMenu)
@@ -62,7 +70,7 @@ public class GameController : MonoBehaviour {
         }
         else
         {
-            //difficulty = debugDifficulty;
+            UpdateLivesText(PlayerController.maxLives);
             isGameOver = false;
             difficultyInt = (int)difficulty;
             difficultyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
@@ -100,7 +108,7 @@ public class GameController : MonoBehaviour {
     {
         if (!isMenu)
         {
-            if (isPlayerShipDead)
+            if (isGameOver)
             {
                 retryText.gameObject.SetActive(true);
                 SetHighScore();
@@ -112,9 +120,8 @@ public class GameController : MonoBehaviour {
             }
             else
             {
-                scoreText.text = "Score:" + Mathf.RoundToInt(playerScore).ToString();
-                highScoreText.text = "HighScore:" + Mathf.RoundToInt(playerHighScore).ToString();
-                //playerScore += Time.deltaTime;
+                scoreText.text = "Score:" + playerScore.ToString();
+                highScoreText.text = "HighScore:" + playerHighScore.ToString();
             }
         }
     }
@@ -131,20 +138,9 @@ public class GameController : MonoBehaviour {
 
     public void ResetStaticVariables()
     {
-        isPlayerShipDead = false;
+        isGameOver = false;
         playerScore = 0;
-        LaunchPlayerShip.isPlayerShipLaunched = false;
-        LaunchPlayerShip.isPlayerShipDebugMode = false;
-        DestructibleShip.isKillShip = false;
-        DestructibleShip.isPlayerShipInvincible = false;
-        PowerUpManger.weaponPanelOffset = 0;
-
-        foreach(GameObject weapon in WeaponManager.playerWeaponList)
-        {
-            weapon.GetComponent<Weapon>().isUnlocked = false;
-        }
     }
-
 
     /***********************/
     // TODO: move this into a seperate menu script, or maybe into the current MenuScript
@@ -180,8 +176,16 @@ public class GameController : MonoBehaviour {
     {
         achieveMentPanel.SetActive(true);
     }
+    public void OpenArmoryMenu()
+    {
+        armoryPanel.SetActive(true);
+    }
+    public void CloseArmoryMenu()
+    {
+        armoryPanel.SetActive(false);
+    }
 
-    public void UpdateDiffcultyText(int increament)
+    public void UpdateDifficultyText(int increament)
     {
 
         difficultyInt = (difficultyInt+increament)%3;
@@ -196,12 +200,20 @@ public class GameController : MonoBehaviour {
     public void UpdateSpriteImage(int increament)
     {
 
-        spriteInt = (spriteInt + increament) % 2;
+        spriteInt = (spriteInt + increament) % 5;
         if (spriteInt < 0)
         {
-            spriteInt += 2;
+            spriteInt += 5;
         }
         shipSpriteImage.GetComponent<Image>().sprite = sprites[spriteInt].Icon;
         inGameSprite = sprites[spriteInt].Icon;
+    }
+
+    public void UpdateLivesText(int lives)
+    {
+        if (lives < 0)
+            lives = 0; // Prevent displaying negative lives 
+
+        livesText.text = "x" + lives.ToString();
     }
 }

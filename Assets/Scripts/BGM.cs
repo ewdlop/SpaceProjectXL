@@ -21,7 +21,7 @@ public class BGM : MonoBehaviour {
 
     void Update()
     {
-        audio.volume = SoundController.bgmVolume * SoundController.masterVolume;
+        //audio.volume = SoundController.bgmVolume * SoundController.masterVolume;
     }
 
 

@@ -77,7 +77,10 @@ MonoBehaviour:
   damage: 0
   launchAngle: 90
   speed: 5
-  isUnlocked: 0
+  isUnlocked: 1
+  cooldown: 0.2
+  cooldownStamp: 1.3085473
+  angularSpeed: 500
   emittingCoolDown: 0.1
   lifeTime: 2
   finalEmission: 20

@@ -9,7 +9,7 @@ public class HealthPowerup : Powerup {
     public override void ActivateEffect(GameObject touchedObject)
     {
         // Heal player or other object (this requires that object has a Destructible component
-        touchedObject.GetComponent<PlayerController>().AddHealth(healAmount);
+        //touchedObject.GetComponent<PlayerController>().AddHealth(healAmount);
         SoundController.Play((int)SFX.PickupHealth);
         DestroyObject(this.gameObject);
     }

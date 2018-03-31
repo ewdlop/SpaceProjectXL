@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponManager : MonoBehaviour {
-
+    // Not really needed anymore, 
+    // Refactor to have list of main and subs for 
+    // easy testing? 
     public GameObject[] WeaponList = new GameObject[10];
     // DEBUG: For quick testing of weapons
     public bool isDebugMode = false;

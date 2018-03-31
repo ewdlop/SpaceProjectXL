@@ -77,8 +77,8 @@ public class DestructibleShip : Destructible
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 
-        GameController.instance.isGameOver = true;
-        GameController.isPlayerShipDead = true;
+        //GameController.instance.isGameOver = true;
+        //GameController.isPlayerShipDead = true;
 
         rb.velocity = new Vector2(0, 0);
         Camera.main.GetComponent<FollowPlayerShip>().enabled = false;

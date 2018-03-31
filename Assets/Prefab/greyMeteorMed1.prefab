@@ -176,8 +176,8 @@ MonoBehaviour:
   damage: 20
   objectToSpawn: {fileID: 1899199138861278, guid: ed548451208fb7e40b00924896f1a1b3,
     type: 2}
-  numberToSpawn: 10
-  maxSpeed: 2
+  numberToSpawn: 5
+  maxSpeed: 5
   maxAngle: 120
 --- !u!212 &212177068542932772
 SpriteRenderer:

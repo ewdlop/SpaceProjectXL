@@ -8,6 +8,7 @@ public class AchievementManager : MonoBehaviour {
     public GameObject achievementClone;
     public Sprite[] generalAchievementSprites;
     public Sprite[] bossAchievementSprites;
+    public Sprite[] enemyAchievementSprites;
     public Sprite[] powerUpAchievementSprites;
     public Sprite[] shipAchievementSprites;
     public Sprite[] weaponAchievementSprites;
@@ -86,10 +87,11 @@ public class AchievementManager : MonoBehaviour {
         CreateAchievement("General", 0, "A", "Press Z", 15, 0);
         CreateAchievement("General", 0, "B", "Press X", 15, 1);
         CreateAchievement("Boss", 1, "C", "Press C", 15, 0);
-        CreateAchievement("PowerUp", 2, "D", "Press C", 15, 0);
-        CreateAchievement("Ship", 3, "E", "Press C", 15, 0);
-        CreateAchievement("Weapon", 4, "F", "Press C", 15, 0);
-        CreateAchievement("Other", 5, "G", "Press D", 10, 0);
+        CreateAchievement("Enemy", 2, "D", "Press C", 15, 0);
+        CreateAchievement("PowerUp", 3, "F", "Press C", 15, 0);
+        CreateAchievement("Ship", 4, "G", "Press C", 15, 0);
+        CreateAchievement("Weapon", 5, "H", "Press C", 15, 0);
+        CreateAchievement("Other", 6, "I", "Press D", 10, 0);
 
     }
     public void CreateAchievement(string category, int categoryIndex, string title, string description ,int points, int spriteIndex)
@@ -115,15 +117,18 @@ public class AchievementManager : MonoBehaviour {
                 achievement.transform.GetChild(2).GetComponent<Image>().sprite = bossAchievementSprites[achievements[title].SpriteIndex];
                 break;
             case 2:
-                achievement.transform.GetChild(2).GetComponent<Image>().sprite = powerUpAchievementSprites[achievements[title].SpriteIndex];
+                achievement.transform.GetChild(2).GetComponent<Image>().sprite = enemyAchievementSprites[achievements[title].SpriteIndex];
                 break;
             case 3:
-                achievement.transform.GetChild(2).GetComponent<Image>().sprite = shipAchievementSprites[achievements[title].SpriteIndex];
+                achievement.transform.GetChild(2).GetComponent<Image>().sprite = powerUpAchievementSprites[achievements[title].SpriteIndex];
                 break;
             case 4:
-                achievement.transform.GetChild(2).GetComponent<Image>().sprite = weaponAchievementSprites[achievements[title].SpriteIndex];
+                achievement.transform.GetChild(2).GetComponent<Image>().sprite = shipAchievementSprites[achievements[title].SpriteIndex];
                 break;
             case 5:
+                achievement.transform.GetChild(2).GetComponent<Image>().sprite = weaponAchievementSprites[achievements[title].SpriteIndex];
+                break;
+            case 6:
                 achievement.transform.GetChild(2).GetComponent<Image>().sprite = otherAchievementSprites[achievements[title].SpriteIndex];
                 break;
             default:
