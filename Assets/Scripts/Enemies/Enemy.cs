@@ -29,16 +29,6 @@ public abstract class Enemy : MonoBehaviour {
         renderer.material.color = originalColor;
     }
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.tag == "Projectile")
-        {
-            health -= other.gameObject.GetComponent<Weapon>().damage;
-            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Projectile")
@@ -46,10 +36,13 @@ public abstract class Enemy : MonoBehaviour {
             Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
                new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
                Quaternion.identity);
-
+            //need to tune damage
+            health -= other.gameObject.GetComponent<Weapon>().damage;
             Destroy(other.gameObject);
+            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
+            //0.5f so it is not so "cracked"
+            renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
             StartCoroutine(HitFlash());
-            health--;
         }
     }
 

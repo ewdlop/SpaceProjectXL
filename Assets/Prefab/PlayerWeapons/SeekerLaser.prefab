@@ -58,7 +58,9 @@ MonoBehaviour:
   speed: 0
   isUnlocked: 0
   cooldown: 5
-  cooldownStamp: 452.83752
+  cooldownStamp: 30.654198
+  totalShots: 1
+  shotDelay: 0.2
   playerShip: {fileID: 0}
   enemies: []
   target: {fileID: 0}
