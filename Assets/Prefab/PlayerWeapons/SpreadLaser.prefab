@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212097695805022122}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 70751696733138400}
-  - component: {fileID: 114641785720913468}
+  - component: {fileID: 114672573938428600}
   m_Layer: 9
-  m_Name: BlueLaserBullet
+  m_Name: SpreadLaser
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,8 +37,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.372, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.1656554, y: 1.7844224, z: 3.422327}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,7 +78,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.09, y: 0.37}
   m_Direction: 0
---- !u!114 &114641785720913468
+--- !u!114 &114672573938428600
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,16 +86,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1344034998661486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615db9fc645a36d4ca6da6fe78f7493e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fb38fb6ed29bc6459eb7c0821767a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
-  damage: 5
+  hiteffect: {fileID: 1076445698728776, guid: 3e0d00ad1759aed45a86154e9e7a57b1, type: 2}
+  damage: 2
   launchAngle: 0
-  speed: 50
+  speed: 30
   isUnlocked: 0
   cooldown: 0.2
-  cooldownStamp: 0
+  cooldownStamp: 17.706264
+  shotCount: 10
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -128,12 +129,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b75308dcbc9cfc649814b1acadf55919, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bbba03dce925e5d4b958515f88b77ee3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.09, y: 0.37}
+  m_Size: {x: 0.13, y: 0.37}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -4,8 +4,6 @@ public class EmittedLaser : Weapon {
 
     // DefaultLaser: 
     // Shoots forward at the specified launch angle
-
-
     void Start()
     {
         Kinematics();

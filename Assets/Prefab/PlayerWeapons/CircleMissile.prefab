@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212097695805022122}
   - component: {fileID: 50260416164914012}
   - component: {fileID: 60022153177563540}
-  - component: {fileID: 114462449255783510}
+  - component: {fileID: 114508058007304606}
   m_Layer: 9
   m_Name: CircleMissile
   m_TagString: Projectile
@@ -113,26 +113,24 @@ PolygonCollider2D:
       - {x: 0.98999995, y: -0.64}
       - {x: 1.15, y: -0.32}
       - {x: 1.15, y: 0.32999998}
---- !u!114 &114462449255783510
+--- !u!114 &114508058007304606
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d40ec2029dfe620409a26977e12f7e31, type: 3}
+  m_Script: {fileID: 11500000, guid: db6a7cd90204ca446b9f1a2fea586d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
   damage: 5
   launchAngle: 0
-  speed: 50
+  speed: 10
   isUnlocked: 1
-  shotCount: 3
-  destroyTimer: 5
-  targetSprite: {fileID: 1868108643342870, guid: 1ae37c1338900ca438c67a20bd1d316b,
-    type: 2}
+  cooldown: 0.2
+  cooldownStamp: 1.7771127
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

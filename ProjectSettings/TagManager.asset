@@ -12,6 +12,7 @@ TagManager:
   - RockSmall
   - Boss
   - EP
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX

@@ -21,11 +21,11 @@ GameObject:
   - component: {fileID: 4071374503653984}
   - component: {fileID: 212097695805022122}
   - component: {fileID: 50260416164914012}
-  - component: {fileID: 114723704017981386}
   - component: {fileID: 70751696733138400}
-  m_Layer: 9
-  m_Name: RedLaserBullet
-  m_TagString: Projectile
+  - component: {fileID: 114238349017653786}
+  m_Layer: 8
+  m_Name: EnemyBlueLaser
+  m_TagString: EnemyProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 4044828680585222}
   - component: {fileID: 198287001297252824}
   - component: {fileID: 199195512166058998}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.09, y: 0.37}
   m_Direction: 0
---- !u!114 &114723704017981386
+--- !u!114 &114238349017653786
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -117,16 +117,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1344034998661486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf58fe93f3e469341bf04d9a2bbce603, type: 3}
+  m_Script: {fileID: 11500000, guid: db77153e595cece46aff53062e13ae68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
-  damage: 2
-  launchAngle: 0
-  speed: 50
+  hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
+  damage: 5
+  launchAngle: -90
+  speed: 20
   isUnlocked: 1
-  cooldown: 0.2
-  cooldownStamp: 6.496907
+  cooldown: 1
+  cooldownStamp: 0
+  debugLog: 5021
+  totalShots: 1
+  shotDelay: 1
 --- !u!198 &198287001297252824
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -741,7 +744,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -3473,7 +3476,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 039f7fefc514863489c6502b63729240, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b551d567a0946c42894fef7fa23339d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

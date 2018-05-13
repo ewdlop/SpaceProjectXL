@@ -21,6 +21,7 @@ public class SubEmitter : Weapon {
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
         GameObject emitter = Instantiate(gameObject, ship.position,Quaternion.identity);
+        
     }
 
     public override void Kinematics()
@@ -32,12 +33,14 @@ public class SubEmitter : Weapon {
 
         GetComponent<Rigidbody2D>().velocity = relativeVelocity;
         GetComponent<Rigidbody2D>().angularVelocity = angularSpeed;
+
     }
 
     public void Emit()
     {
         GameObject clone=Instantiate(emission, gameObject.transform.position,Quaternion.identity);
         clone.GetComponent<Weapon>().launchAngle = Random.Range(0f, 360f);
+        Destroy(clone, 3);
     }
 
     IEnumerator Explode()
@@ -49,6 +52,7 @@ public class SubEmitter : Weapon {
                 this.gameObject.transform.position+2*new Vector3(Mathf.Cos(i*2*Mathf.PI/finalEmission), Mathf.Sin(i * 2 * Mathf.PI / finalEmission), 0f),
                 Quaternion.identity);
             clone.GetComponent<Weapon>().launchAngle = i * 360f / finalEmission+135f;
+            Destroy(clone, 3);
         }
         DestroyObject(this.gameObject);
     }

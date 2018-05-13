@@ -10,7 +10,8 @@ public class CircleMissle : Weapon {
 
     private float time;
     private float velocityAngle;
-    private bool isFiredFromRight; 
+    private bool isFiredFromRight;
+    private GameObject ship;
 
     void Start()
     {
@@ -25,11 +26,13 @@ public class CircleMissle : Weapon {
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
+        GameObject leftProjectile;
         GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
         if (leftFire != null)
         {
-            Instantiate(this.gameObject, leftFire.position,
+            leftProjectile = Instantiate(this.gameObject, leftFire.position,
                 leftFire.rotation);
+            leftProjectile.GetComponent<CircleMissle>().ship = ship.gameObject;
         }
 
         if (rightFire != null)
@@ -37,6 +40,7 @@ public class CircleMissle : Weapon {
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                  rightFire.rotation) as GameObject;
             rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
+            rightProjectile.GetComponent<CircleMissle>().ship = ship.gameObject;
         }
         SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
@@ -50,14 +54,22 @@ public class CircleMissle : Weapon {
         {
             phase *= -1;
         }
-        float speedX2 = -1 * angularSpeed * 2 * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
-        float speedY2 = angularSpeed * 2 * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-        float positionX = transform.position.x + 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-        float positionY = transform.position.y + 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
-        gameObject.transform.position = new Vector2(positionX, positionY);
-
-        velocityAngle = Mathf.Atan2(speedY2, speedX2);
-        transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
+        float speedX2 = -1 * angularSpeed * 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2) + 10 * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
+        float speedY2 = angularSpeed * 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2) + 10 * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
+        if (ship!=null)
+        {
+            float positionX = ship.transform.position.x + 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
+            float positionY = ship.transform.position.y + 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
+            gameObject.transform.position = new Vector2(positionX, positionY);
+            velocityAngle = Mathf.Atan2(speedY2, speedX2);
+            transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
+        }
+        else
+        {
+            float positionX = ship.transform.position.x + 10 * time * Mathf.Cos(speedX2);
+            float positionY = ship.transform.position.y + 10 * time * Mathf.Sin(speedY2);
+            gameObject.transform.position = new Vector2(positionX, positionY);
+        }
     }
 
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &10338051
 GameObject:
@@ -313,9 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbce1e07b307b79479976817c13f0dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanShoot: 1
-  enemyLaser: {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
-  shotdeviationArray: []
+  time: 0
 --- !u!58 &25318072
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -457,9 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbce1e07b307b79479976817c13f0dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanShoot: 1
-  enemyLaser: {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
-  shotdeviationArray: []
+  time: 0
 --- !u!58 &45639852
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -557,11 +553,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!4 &61980208 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4672589333398164, guid: 396ceaa0717f80d41875db6bb8c98f10,
-    type: 2}
-  m_PrefabInternal: {fileID: 1763202158}
 --- !u!1 &72537143
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +633,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &72537149
 MonoBehaviour:
@@ -1880,7 +1871,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &374810697
 GameObject:
@@ -2006,12 +1997,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4a9d11370c4904282bced45845c445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpList:
-  - {fileID: 1828840228733854, guid: 6836ba6d487736549b075ac7158c793d, type: 2}
-  powerUpNames:
-  - HealthRepairPowerUp
-  healthRepair:
-  - 20
+  powerUp: []
+  weaponPanel: []
+  weaponPanelBar: []
+  playerShip: {fileID: 0}
 --- !u!4 &392332793
 Transform:
   m_ObjectHideFlags: 0
@@ -2023,7 +2012,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &435316107
 GameObject:
@@ -2085,7 +2074,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &438567428
 GameObject:
@@ -2113,7 +2102,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451358866
 GameObject:
@@ -2896,7 +2885,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &695956549
 AudioSource:
@@ -2998,6 +2987,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 26366192f69a6e0438401c99da248b75, type: 3}
   - {fileID: 8300000, guid: c8f2570d9a7274440953c06fc9663ba1, type: 3}
   - {fileID: 8300000, guid: 155fe5a0876f9bf47a8394399d03933f, type: 3}
+  masterVolumeSlider: {fileID: 0}
+  bgmVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
 --- !u!1 &698430116
 GameObject:
   m_ObjectHideFlags: 0
@@ -3246,11 +3238,19 @@ MonoBehaviour:
   scoreText: {fileID: 1531951781}
   highScoreText: {fileID: 1306584050}
   retryText: {fileID: 120852572}
-  playerShip: {fileID: 1363665308}
+  livesText: {fileID: 0}
   debugDifficulty: 0
   difficultyInt: 0
+  scrollSpeed: -5
+  hitColor: {r: 0, g: 0, b: 0, a: 0}
+  isGameOver: 0
   startGameMenu: {fileID: 0}
   startGameMenuDiffucltyText: {fileID: 0}
+  sprites: []
+  shipSpriteImage: {fileID: 0}
+  shipSelectionPanel: {fileID: 0}
+  armoryPanel: {fileID: 0}
+  achieveMentPanel: {fileID: 0}
 --- !u!4 &746412692
 Transform:
   m_ObjectHideFlags: 0
@@ -3264,11 +3264,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &768437108 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4672589333398164, guid: 396ceaa0717f80d41875db6bb8c98f10,
-    type: 2}
-  m_PrefabInternal: {fileID: 1232328601}
 --- !u!1 &810202200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,7 +3691,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &889238692
 SpriteRenderer:
@@ -3904,6 +3899,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 396ceaa0717f80d41875db6bb8c98f10, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &973373635 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 973373634}
 --- !u!1 &1005793930
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,7 +3928,7 @@ Transform:
   m_LocalPosition: {x: 0.819, y: -0.56, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1744153053}
+  - {fileID: 1937110518}
   m_Father: {fileID: 1363665310}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3977,9 +3976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbce1e07b307b79479976817c13f0dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanShoot: 1
-  enemyLaser: {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
-  shotdeviationArray: []
+  time: 0
 --- !u!58 &1029103291
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4293,12 +4290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbce1e07b307b79479976817c13f0dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanShoot: 1
-  enemyLaser: {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
-  shotdeviationArray:
-  - 0
-  - 0
-  - 0
+  time: 0
 --- !u!1 &1105149616
 GameObject:
   m_ObjectHideFlags: 0
@@ -4745,11 +4737,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 396ceaa0717f80d41875db6bb8c98f10, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1234458427 stripped
+--- !u!4 &1232328602 stripped
 Transform:
-  m_PrefabParentObject: {fileID: 4541791881040522, guid: c00386fc646db8746a6e28fc261d6e32,
-    type: 2}
-  m_PrefabInternal: {fileID: 2026450914}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1232328601}
 --- !u!1 &1235426187
 GameObject:
   m_ObjectHideFlags: 0
@@ -5458,33 +5449,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b925c9dac6158e4c8ddbe1b5902909d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayerShipInvincible: 0
-  invincibleDuration: 2
-  torqueStrengthAngle: 2
-  boostStrength: 0.1
-  playerShipFacingAngle: 0
-  dotProduct: 0
   speed: 0
-  currentHealth: 100
-  initialMaxHealth: 100
-  currentMaxHealth: 100
-  timerForRedFlashes: 0.51
-  mainCam: {fileID: 72537147}
-  leftEngineFire: {fileID: 451358866}
-  rightEngineFire: {fileID: 1761237795}
-  sideLeftEngineFire: {fileID: 169318618}
-  sideRightEngineFire: {fileID: 2047545130}
-  healthSlider: {fileID: 1251325216}
-  enemyTypeManger: {fileID: 2117749086}
-  powerUpManger: {fileID: 392332791}
-  bigDebris1: {fileID: 1175776260}
-  bigDebris2: {fileID: 1973882642}
-  bigDebris3: {fileID: 1317891550}
-  smallDebris1: {fileID: 1209072787}
-  smallDebris2: {fileID: 1739232591}
-  smallDebris3: {fileID: 688013927}
-  RedFlashes: {fileID: 267916113}
-  speedText: {fileID: 1060464321}
+  minBound: {fileID: 0}
+  maxBound: {fileID: 0}
+  playerSpawn: {fileID: 0}
+  invincibleDuration: 2
+  deathDuration: 1.5
+  leftFirePosition: {fileID: 0}
+  rightFirePosition: {fileID: 0}
+  shotCoolDown: 0.2
+  mainWeaponObject: {fileID: 0}
+  supportWeaponObject: {fileID: 0}
+  ultimateWeaponObject: {fileID: 0}
+  chargingDuration: 0
+  dischargingDuration: 0
+  ultimateDuration: 0
 --- !u!114 &1363665317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5970,13 +5949,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 61980208}
-  - {fileID: 2107158781}
-  - {fileID: 768437108}
-  - {fileID: 2060825784}
-  - {fileID: 2033689000}
+  - {fileID: 1763202159}
+  - {fileID: 1473197877}
+  - {fileID: 1232328602}
+  - {fileID: 2139067342}
+  - {fileID: 973373635}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470889943
 GameObject:
@@ -6115,6 +6094,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 396ceaa0717f80d41875db6bb8c98f10, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1473197877 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1473197876}
 --- !u!1 &1494235222
 GameObject:
   m_ObjectHideFlags: 0
@@ -6234,7 +6217,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6644,7 +6627,7 @@ Transform:
   - {fileID: 1422087359}
   - {fileID: 1604282143}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721841101
 GameObject:
@@ -6708,7 +6691,7 @@ Transform:
   - {fileID: 1235426188}
   - {fileID: 345285981}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1738084631
 GameObject:
@@ -6905,11 +6888,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!4 &1744153053 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4541791881040522, guid: c00386fc646db8746a6e28fc261d6e32,
-    type: 2}
-  m_PrefabInternal: {fileID: 1937110517}
 --- !u!1 &1750228785
 GameObject:
   m_ObjectHideFlags: 0
@@ -7185,6 +7163,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 396ceaa0717f80d41875db6bb8c98f10, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1763202159 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1763202158}
 --- !u!1 &1770634514
 GameObject:
   m_ObjectHideFlags: 0
@@ -7428,7 +7410,7 @@ Transform:
   - {fileID: 1029103289}
   - {fileID: 45639850}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1866232068
 GameObject:
@@ -7528,7 +7510,7 @@ Transform:
   m_Children:
   - {fileID: 649778112}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1933802173
 GameObject:
@@ -7643,6 +7625,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c00386fc646db8746a6e28fc261d6e32, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1937110518 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1937110517}
 --- !u!1 &1973882642
 GameObject:
   m_ObjectHideFlags: 0
@@ -7793,7 +7779,7 @@ Transform:
   m_LocalPosition: {x: 0.81, y: -0.42, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1234458427}
+  - {fileID: 2026450915}
   m_Father: {fileID: 1061583977}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7849,11 +7835,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c00386fc646db8746a6e28fc261d6e32, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &2033689000 stripped
+--- !u!4 &2026450915 stripped
 Transform:
-  m_PrefabParentObject: {fileID: 4672589333398164, guid: 396ceaa0717f80d41875db6bb8c98f10,
-    type: 2}
-  m_PrefabInternal: {fileID: 973373634}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 2026450914}
 --- !u!1 &2038975314
 GameObject:
   m_ObjectHideFlags: 0
@@ -7949,7 +7934,7 @@ RectTransform:
   - {fileID: 737771002}
   - {fileID: 10338052}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8027,11 +8012,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!4 &2060825784 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4672589333398164, guid: 396ceaa0717f80d41875db6bb8c98f10,
-    type: 2}
-  m_PrefabInternal: {fileID: 2139067341}
 --- !u!1 &2066029211
 GameObject:
   m_ObjectHideFlags: 0
@@ -8147,9 +8127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbce1e07b307b79479976817c13f0dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanShoot: 1
-  enemyLaser: {fileID: 1344034998661486, guid: ca07dc0a52b0cf347a9f15b980a2fd7c, type: 2}
-  shotdeviationArray: []
+  time: 0
 --- !u!58 &2077224176
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8318,16 +8296,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!4 &2107158781 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4672589333398164, guid: 396ceaa0717f80d41875db6bb8c98f10,
-    type: 2}
-  m_PrefabInternal: {fileID: 1473197876}
---- !u!1 &2117749086 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1420891394749996, guid: eb76acd310560d141813485ab2a29701,
-    type: 2}
-  m_PrefabInternal: {fileID: 1182699307}
 --- !u!1 &2121802705
 GameObject:
   m_ObjectHideFlags: 0
@@ -8498,6 +8466,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 396ceaa0717f80d41875db6bb8c98f10, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &2139067342 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 2139067341}
 --- !u!1 &2141172925
 GameObject:
   m_ObjectHideFlags: 0

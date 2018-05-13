@@ -183,9 +183,9 @@ MonoBehaviour:
   damage: 5
   launchAngle: 0
   speed: 5
-  isUnlocked: 0
+  isUnlocked: 1
   cooldown: 0.2
-  cooldownStamp: 37.14273
+  cooldownStamp: 2.6755393
   time: 0
   forwardThrust: 30
 --- !u!212 &212097695805022122

@@ -6,90 +6,101 @@ using UnityEngine;
 public class EnemyShip : Enemy {
 
     [Header("Weapons")]
-    public GameObject[] enemyWeaponArray = new GameObject[5];
-    public bool[] unlockWeapons = new bool[5];
-    [Header("Shooting settings")]
-    public Transform firePosition;
+    public List<GameObject> enemyWeaponList;
+    //public bool[] unlockWeapons = new bool[5];
+    public int[] actionsList;
+    public float actionsDelay = 0.5f;
 
-    private List<GameObject> enemyWeaponList = new List<GameObject>();
-    private PlayerController[] players;
+    [Header("Shooting settings")]
+    public Transform leftFirePosition;
+    public Transform rightFirePosition;
+    //private List<GameObject> enemyWeaponList = new List<GameObject>();
+    private PlayerController player;
+
+    [Header("Movement settings")]
+    public float speed = 5.0f;
+
+    private float actionsTimeStamp;
+    private float timer;
 
     // Use this for initialization
     protected new void Start () {
+        actionsTimeStamp = 0;
         base.Start(); // Setup the hit flash
-        players = FindObjectsOfType<PlayerController>();	
+        player = FindObjectOfType<PlayerController>();	
 
         // Convert the array to list 
-        for (int i = 0; i < enemyWeaponArray.Length; ++i)
+        for (int i = 0; i < enemyWeaponList.Count; ++i)
         {
-            // Check that the weapon is valid
-            if (enemyWeaponArray[i] != null)
-            {
-                enemyWeaponArray[i].GetComponent<Weapon>().isUnlocked = unlockWeapons[i];
-                enemyWeaponList.Add(enemyWeaponArray[i]);
-               
-            }
+            enemyWeaponList[i].GetComponent<Weapon>().isUnlocked = true;      
+            //enemyWeaponList.Add(enemyWeaponList[i]);                         
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        players = FindObjectsOfType<PlayerController>();
+        timer += Time.deltaTime;
 
         // Control movement 
         // Will have bug if there's two players 
         // Since we could potentially target a different player
         // in the shoot function while having the ship direct to player1
-        Kinematics();
-
-        // Shoot weapon
-        foreach (GameObject weaponObject in enemyWeaponList)
+        //Kinematics();
+        RunAction();
+        if (timer > actionsDelay)
         {
-            EnemyWeapon weapon = weaponObject.GetComponent<EnemyWeapon>();
-            // Fire only if the weapon is off cooldown,
-            // hence the weapon is unlocked for this enemy
-            if (weapon.isUnlocked)
-            {
-                // Choose a random player to shoot at
-                if (players.Length > 0)
-                {
-                    int pIdx = UnityEngine.Random.Range(0, players.Length);
-                    weapon.Shoot(firePosition, players[pIdx].gameObject.transform);
-                }
-                StartCoroutine(FireCooldown(weapon));
-            }  
+            //RunAction();            
+            timer = 0;
         }
-
+        
         if (health <= 0)
         {
             Death();
         }
     }
 
-    protected override void Kinematics()
+    public void Fire()
     {
-        if (players.Length > 0)
+        // Shoot weapon
+        foreach (GameObject weaponObject in enemyWeaponList)
         {
-            float deltaX = players[0].gameObject.transform.position.x - gameObject.transform.position.x;
-            float deltaY = players[0].gameObject.transform.position.y - gameObject.transform.position.y;
-
-            float facingAngle = Mathf.Atan2(deltaY, deltaX) * Mathf.Rad2Deg;
-            transform.eulerAngles = new Vector3(0, 0, facingAngle + 90f);
+            Weapon weapon = weaponObject.GetComponent<Weapon>();
+            // Fire only if the weapon is off cooldown,
+            // hence the weapon is unlocked for this enemy
+            if (weapon == null) Debug.Log("weapon is null");
+            //Debug.Log(weapon.debugLog++);
+            if (weapon.isUnlocked)
+            {
+                //Debug.Log("weapon is unlocked " + weapon.debugLog);                
+                weapon.Shoot(gameObject.transform, leftFirePosition, rightFirePosition);
+                StartCoroutine(FireCooldown(weapon));
+            }
         }
     }
 
-    IEnumerator FireCooldown(EnemyWeapon weapon)
+    // Run the actions associated with that ship
+    private void RunAction()
+    {
+        EnemyActions.runAction(this.gameObject);
+    }
+
+    protected override void Kinematics()
+    {
+
+    }
+
+    IEnumerator FireCooldown(Weapon weapon)
     {
         weapon.isUnlocked = false;
         yield return new WaitForSeconds(weapon.cooldown);
         weapon.isUnlocked = true;
     }
 
-    IEnumerator FireDelay(EnemyWeapon weapon, float angle)
+    /*
+    IEnumerator FireDelay(Weapon weapon, float angle)
     {
         for (int i = 0; i < weapon.totalShots; i++)
-        {
-            /*
+        {            
             switch (weaponName)
             {
                 case "Boss1RedBall":
@@ -121,15 +132,16 @@ public class EnemyShip : Enemy {
                      Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
                     break;
             }
-            */
+            
             yield return new WaitForSeconds(weapon.fireDelay);
             
         }
     }
+    */
 
     void Death()
     {
-        SoundController.Play((int)SFX.ShipDeath);
+        SoundController.Play((int)SFX.ShipDeath, 0.25f);
         Destroy(this.gameObject);
     }
 

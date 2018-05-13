@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public float speed = 10.0f;
+    public GameObject minBound;
+    public GameObject maxBound;
 
     [Header("Total lives")]
     public static int maxLives = 3;
@@ -39,6 +41,14 @@ public class PlayerController : MonoBehaviour {
 
     // For use in making ship flash upon receiving damage
     private new Renderer renderer;
+
+    public bool IsInvincible
+    {
+        get
+        {
+            return isInvincible;
+        }
+    }
 
     void Start ()
     {
@@ -74,6 +84,36 @@ public class PlayerController : MonoBehaviour {
 
         float deltaY = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         gameObject.transform.position = gameObject.transform.position + new Vector3(0f, deltaY, 0f);
+        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(deltaX, deltaY);
+
+        float newX = gameObject.transform.position.x;
+        float newY = gameObject.transform.position.y;
+
+        // Check if the ship has gone out of bounds
+        if (gameObject.transform.position.x >= maxBound.transform.position.x)
+        {
+            newX = maxBound.transform.position.x;
+        }
+        else if (gameObject.transform.position.x <= minBound.transform.position.x)
+        {
+            newX = minBound.transform.position.x;
+        }
+
+        if (gameObject.transform.position.y >= maxBound.transform.position.y)
+        {
+            newY = maxBound.transform.position.y;
+        }
+        else if (gameObject.transform.position.y <= minBound.transform.position.y)
+        {
+            newY = minBound.transform.position.y;
+        }
+        
+        // Reset the new position, this is for if the ship goes out of bounds
+        gameObject.transform.position = new Vector3(newX, newY, 0f);
+
+        //Debug.Log("X position: " + gameObject.transform.position.x);
+        //Debug.Log("Y position: " + gameObject.transform.position.y);
+        
     }
 
     // Controls shooting 
@@ -160,28 +200,40 @@ public class PlayerController : MonoBehaviour {
         // Ship physically collided with an enemy
         if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
         {
+            gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             StartCoroutine(Death());
         }
     }
 
     void OnTriggerStay2D(Collider2D collidedTarget)
     {
-        // Ship collided with enemy projectile
-        if (collidedTarget.gameObject.GetComponent<EnemyWeapon>() != null)           
+        // Ship physically collided with an enemy
+        if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
         {
-            int damage = collidedTarget.GetComponent<EnemyWeapon>().damage;
-            Instantiate(collidedTarget.GetComponent<EnemyWeapon>().hiteffect,
-                new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f), 
-                Quaternion.identity);
-            Destroy(collidedTarget.gameObject);
-            // Set ship to invincible if it's not current invincible
-            if (!isInvincible)
+            //gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            StartCoroutine(Death());
+        }
+        
+        // Ship collided with enemy projectile
+        if (collidedTarget.tag == "EnemyProjectile")
+        {
+            
+            if (collidedTarget.gameObject.GetComponent<Weapon>() != null)
             {
-                StartCoroutine(Death());
-                //StartCoroutine(InvincibilityFrames());
-                //SoundController.Play((int)SFX.ShipDamage, damage);
-            }   
-        }  
+                int damage = collidedTarget.GetComponent<Weapon>().damage;
+                Instantiate(collidedTarget.GetComponent<Weapon>().hiteffect,
+                    new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f),
+                    Quaternion.identity);
+                Destroy(collidedTarget.gameObject);
+                // Set ship to invincible if it's not current invincible
+                if (!isInvincible)
+                {
+                    StartCoroutine(Death());
+                    //StartCoroutine(InvincibilityFrames());
+                    //SoundController.Play((int)SFX.ShipDamage, damage);
+                }
+            }
+        }
     }
 
     IEnumerator HitFlash()

@@ -21,6 +21,7 @@ public abstract class EnemyWeapon : Weapon
      **/
     public float fireDelay = 0.3f;  // the delay between each shot
     public int totalShots = 1;      // the number of shots for each wave    
+    public float waveDelay = 1.0f;  // the delay between each wave
 
     public abstract void Shoot(Transform ship, Transform target);
 

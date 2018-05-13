@@ -8,4 +8,5 @@ public class KillBorder : MonoBehaviour {
     {
         Destroy(other.gameObject);
     }
+
 }
