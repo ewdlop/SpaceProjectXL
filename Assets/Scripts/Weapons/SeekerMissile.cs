@@ -45,12 +45,11 @@ public class SeekerMissile : Weapon {
 
     public override void Kinematics()
     {
-        // Need to update the enemies list each time so that missiles can redirect 
-        enemies = FindObjectsOfType<Enemy>();
-
         // Find a new target for the missile
         if (target == null)
         {
+            // Need to update the enemies list each time so that missiles can redirect 
+            enemies = FindObjectsOfType<Enemy>();
             if (enemies.Length > 0)
             {
                 if (tempTarget != null)
@@ -84,8 +83,6 @@ public class SeekerMissile : Weapon {
         }
         else
         {
-            
-            
             float deltaXChasingMissiles = target.transform.position.x - gameObject.transform.position.x;
             float deltaYChasingMissiles = target.transform.position.y - gameObject.transform.position.y;
             float angleChasingMissiles = Mathf.Atan2(deltaYChasingMissiles, deltaXChasingMissiles);
@@ -96,6 +93,7 @@ public class SeekerMissile : Weapon {
                 targetSprite.transform.eulerAngles += new Vector3(0f, 0f, 360 * Time.deltaTime);
             }
         }
+
     }
     void LateUpdate()
     {

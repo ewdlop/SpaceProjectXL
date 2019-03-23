@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public float speed = 10.0f;
+    public Transform WinPosition; // Ship moves upwards to this point when clicking the continue screen
     public GameObject minBound;
     public GameObject maxBound;
 
@@ -15,8 +16,9 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Spawn Settings")]
     public Transform playerSpawn; // Where the player is respawned
+    public GameObject colliderCircle;
     public float invincibleDuration = 1.2f;
-    private bool isInvincible;
+    public bool isInvincible;
     public float deathDuration = 1.5f;
     private bool isDead;
 
@@ -24,7 +26,6 @@ public class PlayerController : MonoBehaviour {
     public Transform leftFirePosition; 
     public Transform rightFirePosition;
     public float shotCoolDown = 0.2f;
-    //private List<GameObject> weaponList; 
     public GameObject mainWeaponObject;
     public GameObject supportWeaponObject;
     private Weapon mainWeapon;
@@ -37,10 +38,28 @@ public class PlayerController : MonoBehaviour {
     public float chargingDuration;  // the amount the bar is charged per tick
     public float dischargingDuration;  // the amount the bar is charged per tick
     public float ultimateDuration;  // the maximum amount allowed of the ultimate bar
-    private Weapon ultimateWeapon;  
-
+    private Weapon ultimateWeapon;
+    [Header("LaserBeam")]
+    public GameObject laserBeam;
+    public bool isShootingLaserBeam;
+    [Header("Powerup")]
+    [Header("Cannon Angle")]
+    public GameObject cannon;
+    public float cannonAngle;
+    public int isFireRateBoosted;
     // For use in making ship flash upon receiving damage
     private new Renderer renderer;
+    private Renderer circleRenderer;
+    private Renderer cannonRenderer;
+    private bool isMovingToWin;
+    private bool canShoot = true;
+
+    private Vector3 startPosition, endPosition;
+    private float startTime;
+    private float journeyLength;
+
+    [Header("Shield")]
+    public GameObject shield;
 
     public bool IsInvincible
     {
@@ -49,13 +68,23 @@ public class PlayerController : MonoBehaviour {
             return isInvincible;
         }
     }
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
+        }
+    }
 
     void Start ()
     {
+        isMovingToWin = false;
+        canShoot = true;
         lives = maxLives;
-        //weaponList = WeaponManager.playerWeaponList;
+        isInvincible = false;
+        cannonAngle = 0f;
         renderer = GetComponent<Renderer>();
-
+        circleRenderer = colliderCircle.GetComponent<Renderer>();
         mainWeapon = mainWeaponObject.GetComponent<Weapon>();
         mainWeapon.cooldownStamp = Time.time;
    
@@ -63,28 +92,76 @@ public class PlayerController : MonoBehaviour {
         supportWeapon.cooldownStamp = Time.time;
 
         ultimateWeapon = ultimateWeaponObject.GetComponent<Weapon>();
-        ultimateProgress = 0.0f;
+        //ultimateProgress = 0.0f;
+        ultimateProgress = 0.7f;
         ultimateWeapon.cooldownStamp = 0.0f;
+
+        EnableShield(false);
+        EnableCannon(false);
     }
 
 	void Update ()
-    {
-        if (!isDead)
+    {       
+        if (!IsDead)
         {
-            Kinematics();
-            Shoot();
+            if (!isMovingToWin)
+            {
+                Kinematics();
+                Shoot();
+            }
+            else
+            {
+                LerpMovementToWin();
+            }
+            if(cannon.activeInHierarchy)
+                LineUpShipWithCursor();
         }
+    }
+
+    public void MoveShipToWin()
+    {
+        isMovingToWin = true;
+        SoundController.Play((int)SFX.ShipThrust, 1.0f);
+        startPosition = transform.position;
+        endPosition = new Vector3(transform.position.x, WinPosition.position.y, transform.position.z);
+        journeyLength = Vector2.Distance(startPosition, endPosition);
+        startTime = Time.time;       
+    }
+
+    void LerpMovementToWin()
+    {                 
+        float distCovered = (Time.time - startTime) * (speed*1.5f);
+        float fracJourney = distCovered / journeyLength;
+
+        if (fracJourney < 1.0f)
+        {
+            transform.position = Vector2.Lerp(startPosition, endPosition, fracJourney);
+        }
+        else
+        {
+            // Move to next stage once ship reaches the win position thats off screen
+            GameController.instance.MoveToNextStage();
+        }
+    }
+
+    void LineUpShipWithCursor()
+    {
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float facingAngle = Mathf.Atan2(
+            mouseWorldPosition.y - cannon.transform.position.y, 
+            mouseWorldPosition.x - cannon.transform.position.x) * Mathf.Rad2Deg;
+        cannonAngle = facingAngle;
+        cannon.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
+        transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
     }
 
     // Controls player movement
     void Kinematics()
     {
         float deltaX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        gameObject.transform.position = gameObject.transform.position + new Vector3(deltaX, 0f, 0f);
-
+        transform.position = transform.position + deltaX * new Vector3(1f, 0f, 0f);
         float deltaY = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        gameObject.transform.position = gameObject.transform.position + new Vector3(0f, deltaY, 0f);
-        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(deltaX, deltaY);
+        transform.position = transform.position + deltaY * new Vector3(0f, 1f, 0f);
 
         float newX = gameObject.transform.position.x;
         float newY = gameObject.transform.position.y;
@@ -110,51 +187,49 @@ public class PlayerController : MonoBehaviour {
         
         // Reset the new position, this is for if the ship goes out of bounds
         gameObject.transform.position = new Vector3(newX, newY, 0f);
-
-        //Debug.Log("X position: " + gameObject.transform.position.x);
-        //Debug.Log("Y position: " + gameObject.transform.position.y);
-        
+       
     }
 
     // Controls shooting 
     void Shoot()
     {
-        // Fire the main weapon if off cooldown
-        if ((Input.GetAxis("MainFire") > 0) && 
-            (mainWeapon.cooldownStamp < Time.time))
+        if (canShoot)
         {
-            mainWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
-            mainWeapon.cooldownStamp = Time.time + mainWeapon.cooldown;
-        }
+            // Fire the main weapon if off cooldown
+            if ((Input.GetAxis("MainFire") > 0) &&
+                (mainWeapon.cooldownStamp < Time.time))
+            {
+                mainWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
+                mainWeapon.cooldownStamp = Time.time + mainWeapon.cooldown / (1 + isFireRateBoosted);
+            }
 
-        // Fire the support weapon if off cooldown
-        if ((Input.GetAxis("SupportFire") > 0) &&
-            (supportWeapon.cooldownStamp < Time.time))
-        {
-            supportWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
-            supportWeapon.cooldownStamp = Time.time + supportWeapon.cooldown;
-        }
+            // Fire the support weapon if off cooldown
+            if ((Input.GetAxis("SupportFire") > 0) &&
+                (supportWeapon.cooldownStamp < Time.time))
+            {
+                supportWeapon.Shoot(this.gameObject.transform, leftFirePosition, rightFirePosition);
+                supportWeapon.cooldownStamp = Time.time + supportWeapon.cooldown / (1 + isFireRateBoosted);
+            }
 
-        // Handle the ultimate 
-        controlUltimate();
+            // Handle the ultimate 
+            controlUltimate();
+        }
     }
 
     void controlUltimate()
     {
-        //time += Time.deltaTime;
-
         // Fire the ultimate weapon if bar is full and we click the ultimate button
-        if (Input.GetKeyDown("u") && ultimateProgress >= ultimateDuration)
+        if (Input.GetKeyDown("r") && ultimateProgress >= ultimateDuration)
         {
             isDrainingProgess = true;
-            fillProgress(-1 * Time.deltaTime / ultimateDuration);
+            FillUltimateProgress(-1 * Time.deltaTime / ultimateDuration);
         }      
         else
         {
             // if ultimate was activated
             if (isDrainingProgess)
             {
-                fillProgress(-1 * Time.deltaTime / dischargingDuration);
+                FillUltimateProgress(-1 * Time.deltaTime / dischargingDuration);
                 // Instantiate the ultimate weapon while the bar is not yet 0
                 if (ultimateProgress > 0.0f) 
                 {
@@ -168,20 +243,38 @@ public class PlayerController : MonoBehaviour {
                 else
                 {
                     isDrainingProgess = false;
+                    if (isShootingLaserBeam)
+                    {
+                        isShootingLaserBeam = false;
+                        EnableLaserBeam(false);
+                    }
+
                 }
             }
             else
             {
                 // charging
-                fillProgress(Time.deltaTime / chargingDuration);
+                FillUltimateProgress(Time.deltaTime / chargingDuration);
             }
         }
     }
 
-    public void fillProgress(float amount)
+    // This function is used by the EnemyBoss to disable the player from firing when
+    // the boss transition is being played
+    public void SetCanShoot(bool _canShoot)
+    {
+        canShoot = _canShoot;
+    }
+
+    public void FillUltimateProgress(float amount)
     {
         ultimateProgress = Mathf.Clamp(ultimateProgress + amount, 0f, ultimateDuration);
         //this.ultimateSlider.GetComponent<Slider>().value = progress;
+    }
+
+    public void FillUltimateProgressToFull()
+    {
+        ultimateProgress = ultimateDuration;
     }
 
     public float getUltimateProgress()
@@ -189,61 +282,20 @@ public class PlayerController : MonoBehaviour {
         return ultimateProgress;
     }
 
-    void OnCollisionStay2D(Collision2D collidedTarget)
+    public void Hit()
     {
-        // Collided object is a Powerup so activate the effect on our gameobject
-        if (collidedTarget.gameObject.GetComponent<Powerup>() != null)
-        {
-            collidedTarget.gameObject.GetComponent<Powerup>().ActivateEffect(this.gameObject);
-        }
-
-        // Ship physically collided with an enemy
-        if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
-        {
-            gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            StartCoroutine(Death());
-        }
+        StartCoroutine(Death());
     }
-
-    void OnTriggerStay2D(Collider2D collidedTarget)
-    {
-        // Ship physically collided with an enemy
-        if (collidedTarget.gameObject.GetComponent<Enemy>() != null && !isInvincible)
-        {
-            //gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            StartCoroutine(Death());
-        }
-        
-        // Ship collided with enemy projectile
-        if (collidedTarget.tag == "EnemyProjectile")
-        {
-            
-            if (collidedTarget.gameObject.GetComponent<Weapon>() != null)
-            {
-                int damage = collidedTarget.GetComponent<Weapon>().damage;
-                Instantiate(collidedTarget.GetComponent<Weapon>().hiteffect,
-                    new Vector3(collidedTarget.gameObject.transform.position.x, collidedTarget.gameObject.transform.position.y, -0.01f),
-                    Quaternion.identity);
-                Destroy(collidedTarget.gameObject);
-                // Set ship to invincible if it's not current invincible
-                if (!isInvincible)
-                {
-                    StartCoroutine(Death());
-                    //StartCoroutine(InvincibilityFrames());
-                    //SoundController.Play((int)SFX.ShipDamage, damage);
-                }
-            }
-        }
-    }
-
     IEnumerator HitFlash()
     {
         // Flicker effect
         while (isInvincible)
         {
             this.renderer.enabled = false;
-            yield return new WaitForSeconds(0.05f);          
+            circleRenderer.enabled = false;
+            yield return new WaitForSeconds(0.05f);
             this.renderer.enabled = true;
+            circleRenderer.enabled = true;
             yield return new WaitForSeconds(0.05f);
         }
     }
@@ -261,26 +313,73 @@ public class PlayerController : MonoBehaviour {
     {
         SoundController.Play((int)SFX.ShipDeath);
         renderer.enabled = false;
+        circleRenderer.enabled = false;
         isDead = true;
         isInvincible = true;
+        EnableShield(false);
+        EnableCannon(false);
+        EnableLaserBeam(false);
+        EnableFireRateBoost(0);
+        gameObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
         yield return new WaitForSeconds(deathDuration);
         RespawnPlayer();  
     }
 
     public void RespawnPlayer()
     {
-        lives--;
-        GameController.instance.UpdateLivesText(lives);
+        lives--;        
         if (lives >= 0)
         {
             this.transform.position = playerSpawn.position;
             isDead = false;
+            ShootLaserBeam();
             StartCoroutine(InvincibilityFrames());
         }
         else
         {
+            isShootingLaserBeam = false;
             GameController.instance.isGameOver = true;
             Destroy(this.gameObject);
         }
     }
+
+    public void AddLife()
+    {
+        lives++;
+    }
+
+    public int GetLives()
+    {
+        return lives;
+    }
+
+    public void EnableShield(bool enable)
+    {
+        shield.SetActive(enable);
+    }
+
+    public void EnableCannon(bool enable)
+    {
+        cannon.SetActive(enable);
+        if (!enable)
+            cannonAngle = 90f;
+    }
+
+    public void EnableLaserBeam(bool enable)
+    {
+        laserBeam.SetActive(enable);
+    }
+
+    public void EnableFireRateBoost(int enable)
+    {
+        isFireRateBoosted = enable;
+    }
+
+    public void ShootLaserBeam()
+    {
+        if (isShootingLaserBeam)
+            EnableLaserBeam(true);
+    }
+
+
 }

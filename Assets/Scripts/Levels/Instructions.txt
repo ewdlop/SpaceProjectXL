@@ -1,0 +1,6 @@
+Have the name to match the name of the prefab (case-insensitive).
+Order each spawn line as followed
+<nameOfPrefab> <waveDelay> <spawnDelay> <waveAmount>
+EnemyShip 5 1 3
+Enemyship 5 1 3
+enemyShip 5 1 3

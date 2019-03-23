@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ public enum Difficulty
 {
     Easy, Medium, Hard
 }
+
 [System.Serializable]
 public class ShipSprite
 {
@@ -24,8 +26,10 @@ public class GameController : MonoBehaviour {
     public static GameController instance;
     public static int playerScore;
     public static int playerHighScore;
-    //public static bool isPlayerShipDead;
+    private static float gameTime;
     public bool isMenu;
+
+    public static bool skipToBoss = true;
 
     [Header("UI Settings")]
     public Text difficultyText;
@@ -33,6 +37,11 @@ public class GameController : MonoBehaviour {
     public Text highScoreText;
     public Text retryText;
     public Text livesText;
+    public Text timeText;
+    public Text finalScoreText;
+    public Text finalTimeText;
+
+    private PlayVideo playVideo;
 
     [Header("Gameplay Settings")]
     public Difficulty debugDifficulty;   // Just for setting difficulty via the inspector for debugging
@@ -53,38 +62,69 @@ public class GameController : MonoBehaviour {
     public GameObject shipSelectionPanel;
     public static Sprite inGameSprite;
 
+    [Header("PlayerShipWeapon")]
+    public static int mainWeaponInt;
+    public static int supportWeaponInt;
+    public Sprite[] mainWeaponSprites;
+    public Sprite[] supportWeaponSprites;
+    public Image mainWeaponImage;
+    public Image supportWeaponImage;
+    public GameObject weaponSelectionPanel;
+
     [Header("ArmoryMenu")]
     public GameObject armoryPanel;
 
     [Header("AchievementMenu")]
     public GameObject achieveMentPanel;
 
+    [Header("SettingMenu")]
+    public GameObject settingPanel;
+
+    public GameObject winPanel;
+
+    [Header("StageSelection")]
+    public static int stage;
+    public Image loadImage;
+
+    private PlayerController player;
+
+    public void ToggleSkipToBoss()
+    {
+        skipToBoss = !skipToBoss;
+    }
 
     void Start() {
+        gameTime = 0.0f;
+
+        player = FindObjectOfType<PlayerController>();
+
         if (isMenu)
         {
+            mainWeaponImage.sprite = mainWeaponSprites[mainWeaponInt];
+            supportWeaponImage.sprite = supportWeaponSprites[supportWeaponInt];
+            shipSpriteImage.sprite = sprites[spriteInt].Icon;
             inGameSprite = sprites[0].Icon;
-            difficulty = debugDifficulty;
-            difficultyInt = (int)difficulty;
-            startGameMenuDiffucltyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
+            //difficulty = debugDifficulty;
+            //difficultyInt = (int)difficulty;
+            //startGameMenuDiffucltyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
         }
         else
         {
-            UpdateLivesText(PlayerController.maxLives);
+            winPanel.SetActive(false);
             isGameOver = false;
-            difficultyInt = (int)difficulty;
-            difficultyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
+            //difficultyInt = (int)difficulty;
+            //difficultyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
         }
 
         //singleton
         if (instance == null)
-            {
-                instance = this;
-            }
-            else if (instance == !this)
-            {
-                Destroy(gameObject);
-            }
+        {
+            instance = this;
+        }
+        else if (instance == !this)
+        {
+            Destroy(gameObject);
+        }
 
         /*
         // TODO move this into the GameController instead with some global shot deviation
@@ -102,6 +142,8 @@ public class GameController : MonoBehaviour {
         if (shotDeviation < 0)
             shotDeviation *= -1;
         */
+
+        playVideo = FindObjectOfType<PlayVideo>();
     }
 
     void Update()
@@ -114,16 +156,47 @@ public class GameController : MonoBehaviour {
                 SetHighScore();
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    ResetStaticVariables();
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                    RestartScene();
                 }
             }
             else
             {
-                scoreText.text = "Score:" + playerScore.ToString();
-                highScoreText.text = "HighScore:" + playerHighScore.ToString();
+                gameTime += Time.deltaTime;
+                scoreText.text = playerScore.ToString();
+                highScoreText.text = playerHighScore.ToString();
+                TimeSpan timeSpan = TimeSpan.FromSeconds(gameTime);
+                timeText.text = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
             }
         }
+    }
+
+    public void Win()
+    {
+        StartCoroutine(WinRoutine(2.0f));     
+    }
+
+    IEnumerator WinRoutine(float seconds)
+    {
+        // Wait so that the win screen doesnt immediately popup
+        yield return new WaitForSeconds(seconds);
+
+        isMenu = true;
+        winPanel.SetActive(true);
+        finalScoreText.text = "Final Score: " + playerScore.ToString();
+        TimeSpan timeSpan = TimeSpan.FromSeconds(gameTime);
+        finalTimeText.text = "Time: " + string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+    }
+
+    public void MoveShipToWin()
+    {
+        winPanel.SetActive(false);
+        player.MoveShipToWin();
+    }
+
+    public void MoveToNextStage()
+    {
+        stage++;
+        RestartScene();
     }
 
     public void SetHighScore()
@@ -132,8 +205,8 @@ public class GameController : MonoBehaviour {
         {
             playerHighScore = playerScore;
         }
-        scoreText.text = "Score:" + playerScore.ToString();
-        highScoreText.text = "HighScore:" + playerHighScore.ToString();
+        scoreText.text = playerScore.ToString();
+        highScoreText.text = playerHighScore.ToString();
     }
 
     public void ResetStaticVariables()
@@ -142,11 +215,22 @@ public class GameController : MonoBehaviour {
         playerScore = 0;
     }
 
+    public void RestartScene()
+    {
+        ResetStaticVariables();
+        if (FindObjectOfType<EnemyBoss>() != null)
+        {
+            FindObjectOfType<BGM>().GetComponent<BGM>().SwapBGM(GameAudio.normal);
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     /***********************/
     // TODO: move this into a seperate menu script, or maybe into the current MenuScript
     public void LoadScenes(string scene)
     {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        loadImage.gameObject.SetActive(true);
         ResetStaticVariables();
     }
 
@@ -157,19 +241,36 @@ public class GameController : MonoBehaviour {
 
     public void OpenStartGameMenu()
     {
+        SoundController.Play((int)MSFX.menuButton);
         startGameMenu.SetActive(true);
     }
     public void CloseStartGameMenu()
     {
+        SoundController.Play((int)MSFX.menuButton);
         startGameMenu.SetActive(false);
     }
     public void OpenShipSelectionPanel()
     {
+        SoundController.Play((int)MSFX.menuButton);
         shipSelectionPanel.SetActive(true);
+    }
+
+    public void OpenWeaponSelectionPanel(int selectedStage)
+    {
+        SoundController.Play((int)MSFX.menuButton);
+        weaponSelectionPanel.SetActive(true);
+        stage = selectedStage;
+    }
+
+    public void CloseweaponSelectionPanel()
+    {
+        SoundController.Play((int)MSFX.menuButton);
+        weaponSelectionPanel.SetActive(false);
     }
 
     public void CloseShipSelectionPanel()
     {
+        SoundController.Play((int)MSFX.menuButton);
         shipSelectionPanel.SetActive(false);
     }
     public void OpenAchievementMenu()
@@ -184,6 +285,16 @@ public class GameController : MonoBehaviour {
     {
         armoryPanel.SetActive(false);
     }
+    public void OpenSettingMenu()
+    {
+        SoundController.Play((int)MSFX.menuButton);
+        settingPanel.SetActive(true);
+    }
+    public void CloseSettingMenu()
+    {
+        SoundController.Play((int)MSFX.menuButton);
+        settingPanel.SetActive(false);
+    }
 
     public void UpdateDifficultyText(int increament)
     {
@@ -197,6 +308,22 @@ public class GameController : MonoBehaviour {
         startGameMenuDiffucltyText.text = "Difficulty: " + System.Enum.GetName(typeof(Difficulty), difficultyInt);
     }
 
+    public void UpdateMainWeaponSelection(int increament)
+    {
+        mainWeaponInt = (mainWeaponInt + increament) % 9;
+        if (mainWeaponInt < 0)
+            mainWeaponInt += 9;
+        mainWeaponImage.sprite = mainWeaponSprites[mainWeaponInt];
+    }
+
+    public void UpdateSupportWeaponSelection(int increament)
+    {
+        supportWeaponInt = (supportWeaponInt + increament) % 9;
+        if (supportWeaponInt < 0)
+            supportWeaponInt += 9;
+        supportWeaponImage.sprite = supportWeaponSprites[supportWeaponInt];
+    }
+
     public void UpdateSpriteImage(int increament)
     {
 
@@ -207,13 +334,13 @@ public class GameController : MonoBehaviour {
         }
         shipSpriteImage.GetComponent<Image>().sprite = sprites[spriteInt].Icon;
         inGameSprite = sprites[spriteInt].Icon;
-    }
 
-    public void UpdateLivesText(int lives)
-    {
-        if (lives < 0)
-            lives = 0; // Prevent displaying negative lives 
-
-        livesText.text = "x" + lives.ToString();
+        if (playVideo == null)
+        {
+            playVideo = FindObjectOfType<PlayVideo>();        
+        }
+                
+        playVideo.Play(spriteInt);
+        
     }
 }

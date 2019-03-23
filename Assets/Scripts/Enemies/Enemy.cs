@@ -14,35 +14,46 @@ public abstract class Enemy : MonoBehaviour {
 
     // Control object's movement
     protected abstract void Kinematics();
+    protected bool hasCollided = false;
 
     protected void Start()
     {
+        hasCollided = false;
         health = maxHealth;
         renderer = GetComponent<Renderer>();
         originalColor = renderer.material.color;
     }
 
-    protected IEnumerator HitFlash()
+    protected void LateUpdate()
     {
-        renderer.material.color = GameController.instance.hitColor;
-        yield return new WaitForSeconds(0.05f);
-        renderer.material.color = originalColor;
+        hasCollided = false;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected IEnumerator HitFlash()
+    {
+        if(renderer!=null)
+            renderer.material.color = GameController.instance.hitColor;
+        yield return new WaitForSeconds(0.05f);
+        if (renderer != null)
+            renderer.material.color = originalColor;
+    }
+
+    protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Projectile")
         {
-            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-               new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
-               Quaternion.identity);
-            //need to tune damage
-            health -= other.gameObject.GetComponent<Weapon>().damage;
-            Destroy(other.gameObject);
-            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-            //0.5f so it is not so "cracked"
-            renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
-            StartCoroutine(HitFlash());
+            if (!hasCollided)
+            {
+                hasCollided = true;
+                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                   new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
+                   Quaternion.identity);
+                //need to tune damage
+                health -= other.gameObject.GetComponent<Weapon>().damage;
+                //0.5f so it is not so "cracked"
+                //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
+                StartCoroutine(HitFlash());
+            }
         }
     }
 

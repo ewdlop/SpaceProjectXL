@@ -3,55 +3,97 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyShip : Enemy {
 
     [Header("Weapons")]
     public List<GameObject> enemyWeaponList;
     //public bool[] unlockWeapons = new bool[5];
-    public int[] actionsList;
+    //public int[] actionsList;
+    public List<EnemyAction> actionsList;
+    //not using
     public float actionsDelay = 0.5f;
-
+    //private List<float> weaponCooldownList;
+    [SerializeField]
+    public List<float> weaponCooldownTimerList = new List<float>();
     [Header("Shooting settings")]
     public Transform leftFirePosition;
     public Transform rightFirePosition;
     //private List<GameObject> enemyWeaponList = new List<GameObject>();
-    private PlayerController player;
 
+    // This is set by the enemyboss that controls the attachments
+    // normal enemy ships do not have to deal with this
+    protected EnemyBoss parentShip;
+    protected bool canShoot;
+    
     [Header("Movement settings")]
     public float speed = 5.0f;
+    public float rotateSpeedFactor = 2f;
+    public float timer;
 
-    private float actionsTimeStamp;
-    private float timer;
+    [Header("AmbushShipOnly")]
+    public bool isAmbushShip;
+    public float yRange;
+    public bool isRightToLeft;
+
+    [Header("RotateBetweenAnglesOnly(in degree)")]
+    public float angleA;
+    public float angleB;
+    public float rotateSpeed;
+    public float phase;
+    public GameObject playerShip;
 
     // Use this for initialization
     protected new void Start () {
-        actionsTimeStamp = 0;
-        base.Start(); // Setup the hit flash
-        player = FindObjectOfType<PlayerController>();	
 
-        // Convert the array to list 
+        parentShip = GetComponentInParent<EnemyBoss>();
+           
+        timer = 0;
+
+        base.Start(); // Setup the hit flash
+
+        if(isAmbushShip)
+        {
+            yRange = UnityEngine.Random.Range(-7.5f, 7.5f);
+            float random = UnityEngine.Random.Range(-7.5f, 7.5f);
+            if (random <= 0.5f) isRightToLeft = true;
+        }
+
         for (int i = 0; i < enemyWeaponList.Count; ++i)
         {
-            enemyWeaponList[i].GetComponent<Weapon>().isUnlocked = true;      
-            //enemyWeaponList.Add(enemyWeaponList[i]);                         
+            weaponCooldownTimerList.Add(0);
         }
+       
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (parentShip != null)
+        {
+            if (parentShip.BossIsActive())
+                canShoot = true;
+            else
+                canShoot = false;
+        }
+        else
+        {
+            canShoot = true;
+        }     
+
         timer += Time.deltaTime;
+        // Increment each weaponCooldownTimer to determine which weapon should be unlocked
+        for (int i = 0; i < enemyWeaponList.Count; ++i)
+        {            
+            weaponCooldownTimerList[i] -= Time.deltaTime;
+        }
 
         // Control movement 
         // Will have bug if there's two players 
         // Since we could potentially target a different player
         // in the shoot function while having the ship direct to player1
         //Kinematics();
-        RunAction();
-        if (timer > actionsDelay)
-        {
-            //RunAction();            
-            timer = 0;
-        }
+        RunAction();        
         
         if (health <= 0)
         {
@@ -61,21 +103,34 @@ public class EnemyShip : Enemy {
 
     public void Fire()
     {
-        // Shoot weapon
-        foreach (GameObject weaponObject in enemyWeaponList)
+        if (canShoot)
         {
-            Weapon weapon = weaponObject.GetComponent<Weapon>();
-            // Fire only if the weapon is off cooldown,
-            // hence the weapon is unlocked for this enemy
-            if (weapon == null) Debug.Log("weapon is null");
-            //Debug.Log(weapon.debugLog++);
-            if (weapon.isUnlocked)
+            // Shoot weapon
+            for (int i = 0; i < enemyWeaponList.Count; ++i)
             {
-                //Debug.Log("weapon is unlocked " + weapon.debugLog);                
-                weapon.Shoot(gameObject.transform, leftFirePosition, rightFirePosition);
-                StartCoroutine(FireCooldown(weapon));
+                Weapon weapon = enemyWeaponList[i].GetComponent<Weapon>();
+                // Fire only if the weapon is off cooldown                                    
+                if (weaponCooldownTimerList[i] <= 0)
+                {
+                    //Parallel Recursive Coroutines? GG CPU?
+                    StartCoroutine(Shots(weapon, weapon.totalShots));
+                    weaponCooldownTimerList[i] = weapon.cooldown;
+                    //StartCoroutine(FireCooldown(weapon));                
+                }
             }
         }
+    }
+
+    IEnumerator Shots(Weapon weapon,int count)
+    {
+        if(count > 0)
+        {
+            count--;
+            weapon.Shoot(gameObject.transform, leftFirePosition, rightFirePosition);
+            yield return new WaitForSeconds(weapon.shotDelay);
+            StartCoroutine(Shots(weapon,count));
+        }
+        yield return null;
     }
 
     // Run the actions associated with that ship
@@ -96,53 +151,72 @@ public class EnemyShip : Enemy {
         weapon.isUnlocked = true;
     }
 
-    /*
-    IEnumerator FireDelay(Weapon weapon, float angle)
+    new void OnTriggerEnter2D(Collider2D other)
     {
-        for (int i = 0; i < weapon.totalShots; i++)
-        {            
-            switch (weaponName)
+        if (other.tag == "Projectile")
+        {
+            if (hasCollided == false)
             {
-                case "Boss1RedBall":
-
-                    ball.transform.position = new Vector3(ball.transform.position.x, ball.transform.position.y, -0.01f);
-                    ball.GetComponent<ProjectileController>().playerSpaceShipX = transform.position.x;
-                    ball.GetComponent<ProjectileController>().playerSpaceShipY = transform.position.y;
-                    break;
-                case "Boss1YellowBall":
-
-                    ball.transform.position = new Vector3(ball.transform.position.x, ball.transform.position.y, -0.01f);
-                    ball.GetComponent<Rigidbody2D>().velocity = ball.GetComponent<ProjectileController>().speed * new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    break;
-                case "Boss1BlueBall":
-                    ball.transform.position = new Vector3(ball.transform.position.x, ball.transform.position.y, -0.01f);
-                    ball.GetComponent<Rigidbody2D>().velocity = ball.GetComponent<ProjectileController>().speed * new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    break;
-                case "Boss1GreenBall"://need to fix a small bug later
-                    if (gameObject != null)
-                        ball.GetComponent<Rigidbody2D>().velocity = playerShip.GetComponent<Rigidbody2D>().velocity + ball.GetComponent<ProjectileController>().speed * new Vector2(Mathf.Cos((gameObject.transform.eulerAngles.z + 270f) *
-                         Mathf.Deg2Rad), Mathf.Sin((gameObject.transform.eulerAngles.z + 270f) * Mathf.Deg2Rad));
-                    break;
-                case "Boss2BrownBall":
-                    ball.GetComponent<ProjectileController>().playerSpaceShip = playerShip;
-
-                    break;
-                default:
-                    ball.GetComponent<Rigidbody2D>().velocity = playerShip.GetComponent<Rigidbody2D>().velocity + ball.GetComponent<ProjectileController>().speed * new Vector2(Mathf.Cos(angle *
-                     Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    break;
+                hasCollided = true;
+                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                   new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
+                   Quaternion.identity);
+                if (other.gameObject.GetComponent<Weapon>().isPlaysMissileImpactSound)
+                    SoundController.Play((int)SFX.MissileExplosion);
+                //need to tune damage
+                if (parentShip == null )
+                {
+                    health -= other.gameObject.GetComponent<Weapon>().damage;
+                }
+                else
+                {
+                    if (parentShip.BossIsActive())
+                    {
+                        if(!parentShip.isBoss3)
+                            parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
+                    }
+                }
+                Destroy(other.gameObject);
+                //0.5f so it is not so "cracked"
+                //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
+                StartCoroutine(HitFlash());
             }
-            
-            yield return new WaitForSeconds(weapon.fireDelay);
-            
         }
     }
-    */
-
+    //for boomerange, draven ult, laser beam type of weapon
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "Slicer")
+        {
+            if (parentShip == null)
+            {
+                health -= other.gameObject.GetComponent<Weapon>().damage;
+                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                      new Vector3(transform.position.x, transform.position.y, -0.01f),
+                      Quaternion.identity);
+                StartCoroutine(HitFlash());
+            }
+            else
+            {
+                if (parentShip.BossIsActive())
+                {
+                    Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                      new Vector3(transform.position.x, transform.position.y, -0.01f),
+                      Quaternion.identity);
+                    parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
+                    StartCoroutine(HitFlash());
+                }
+            }
+        }
+    }
     void Death()
     {
-        SoundController.Play((int)SFX.ShipDeath, 0.25f);
-        Destroy(this.gameObject);
+        // Only destroy the enemy ship if it's not attached to a boss ship
+        if (parentShip == null)
+        {           
+            SoundController.Play((int)SFX.ShipDeath, 0.25f);
+            GameController.playerScore += score;
+            Destroy(this.gameObject);
+        }
     }
-
 }

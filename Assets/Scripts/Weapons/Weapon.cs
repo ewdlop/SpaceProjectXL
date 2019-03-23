@@ -9,6 +9,8 @@ public abstract class Weapon : MonoBehaviour {
     public float launchAngle = 0;
     public float speed = 50.0f;
     public bool isUnlocked = true;
+    public bool isPlaysMissileImpactSound;
+    public bool isReflected;
     public float cooldown = 0.2f;
     public float cooldownStamp = 0.0f;
     //public int debugLog = 0;

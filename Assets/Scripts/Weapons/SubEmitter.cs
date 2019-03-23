@@ -10,7 +10,8 @@ public class SubEmitter : Weapon {
     public float lifeTime;
     public int finalEmission;
     public GameObject emission;
-
+    public GameObject ship;
+    public float launchAngletoRad;
     void Start()
     {
         Kinematics();
@@ -20,13 +21,12 @@ public class SubEmitter : Weapon {
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
-        GameObject emitter = Instantiate(gameObject, ship.position,Quaternion.identity);
-        
+        GameObject Emitter = Instantiate(gameObject, ship.position,Quaternion.identity);
+        Emitter.GetComponent<SubEmitter>().launchAngletoRad = ship.gameObject.GetComponent<PlayerController>().cannonAngle * Mathf.Deg2Rad;
     }
 
     public override void Kinematics()
     {
-        float launchAngletoRad = GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
         Vector2 relativeVelocity =
             speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));

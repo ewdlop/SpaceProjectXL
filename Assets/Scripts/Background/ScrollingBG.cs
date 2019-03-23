@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScrollingBG : MonoBehaviour {
 
     private Rigidbody2D rb2d;
-    GameController test; 
+    GameController test;
 	// Use this for initialization
 	void Start ()
     {
@@ -16,10 +16,17 @@ public class ScrollingBG : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		if (GameController.instance.isGameOver == true)
         {
+            //Debug.Log("Stop scrolling BG");
             rb2d.velocity = Vector2.zero;
+        }
+        else
+        {
+            //Debug.Log("Start scrolling BG");
+
         }
 	}
 }

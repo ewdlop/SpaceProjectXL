@@ -127,10 +127,13 @@ MonoBehaviour:
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
   damage: 5
   launchAngle: 0
-  speed: 10
+  speed: 8
   isUnlocked: 1
-  cooldown: 0.2
-  cooldownStamp: 1.7771127
+  isPlaysMissileImpactSound: 0
+  cooldown: 0.1
+  cooldownStamp: 27.166723
+  totalShots: 1
+  shotDelay: 0.2
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

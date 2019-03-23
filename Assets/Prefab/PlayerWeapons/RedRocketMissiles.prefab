@@ -180,14 +180,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
-  damage: 5
+  damage: 18
   launchAngle: 0
-  speed: 5
+  speed: 30
   isUnlocked: 1
-  cooldown: 0.2
-  cooldownStamp: 2.6755393
+  isPlaysMissileImpactSound: 1
+  cooldown: 0.75
+  cooldownStamp: 9.402215
+  totalShots: 1
+  shotDelay: 0
   time: 0
   forwardThrust: 30
+  speedX: 5
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -12,76 +12,125 @@ using UnityEngine;
 public enum EnemyAction
 {
     // Movement functions
-    moveDown = 0,          
+    moveDown = 0,    
+    patrol,      
     chargeStraight,
     followPlayer,
-    movePeriodic,
-
+    moveTanh,
     // Rotation functions
-    rotateToPlayer = 4,
-
+    rotateToPlayer,
+    
     // Non-movement functions
-    shoot = 5,
+    shoot,
 
     // Hybrid functions (movement + something else)
-    moveDownAndShoot = 6,
+    moveDownAndShoot,
     rotateTowardPlayerAndShoot,
-    followPlayerAndShoot
+    followPlayerAndShoot,
+    moveCircle,
+    moveCircleFacingOuter,
+    moveCircleFacingCenter,
+    
+    rotateClockWise,
+    rotateCounterClockWise,
+    moveHyperbola,
+    RandomHeightHorizontalMovement,
+    RotatBetweenAngles,
+    MoveLeftToRight,
+    MoveRightToLeft
 };
 
 // Contains all the actions available to enemy ships
 public class EnemyActions : MonoBehaviour
 {
+    public GameObject player;   
+
     // shipPerformingAction parameter is the ship that is performing the action
     public static void runAction(GameObject shipPerformingAction)
     {
         if (shipPerformingAction.GetComponent<EnemyShip>() == null)
         {
+           
             // The gameobject passed in is not an enemyship so just return
             return;
         }
 
-        int[] actionsList = shipPerformingAction.GetComponent<EnemyShip>().actionsList;
+        List<EnemyAction> actionsList = shipPerformingAction.GetComponent<EnemyShip>().actionsList;
 
-        if (actionsList == null || actionsList.Length == 0)
+        if (actionsList == null || actionsList.Count == 0)
         {
             // if no action is added to the enemy ship, then just have it move straight down
             //MoveDown(shipPerformingAction);
         }
 
         // Certain ships might have multiple actions, i.e boss ships that have multiple actions
-        for (int i = 0; i < actionsList.Length; ++i)
+        for (int i = 0; i < actionsList.Count; ++i)
         {
             // TODO somehow wait a bit before performing the next action
             // this is more for bosses
             switch (actionsList[i])
             {
-                case (int)EnemyAction.moveDown:
-                    Debug.Log("MoveDown");
+                case EnemyAction.moveDown:
                     MoveDown(shipPerformingAction);
                     break;
-                case (int)EnemyAction.moveDownAndShoot:
-                    Debug.Log("MoveDownAndShoot");
+                case EnemyAction.patrol:
+                    //Patrol(shipPerformingAction);
+                    break;
+                case EnemyAction.moveDownAndShoot:
                     MoveDownAndShoot(shipPerformingAction);
                     break;
-                case (int)EnemyAction.chargeStraight:
-                    Debug.Log("ChargeStraight");
+                case EnemyAction.chargeStraight:
+                    ChargeStraight(shipPerformingAction);
                     break;
-                case (int)EnemyAction.followPlayer:
-                    Debug.Log("FollowPlayer");
+                case EnemyAction.followPlayer:
+                    FollowPlayer(shipPerformingAction);
                     break;
-                // Default action will be just moving down
-                case (int)EnemyAction.shoot:
-                    Debug.Log("Shoot");
+                case EnemyAction.followPlayerAndShoot:
+                    FollowPlayer(shipPerformingAction);
                     Shoot(shipPerformingAction);
                     break;
-                case (int)EnemyAction.rotateToPlayer:
-                    Debug.Log("RotateToPlayer");
+                // Default action will be just moving down
+                case EnemyAction.shoot:
+                    Shoot(shipPerformingAction);
+                    break;
+                case EnemyAction.rotateToPlayer:
                     RotateToPlayer(shipPerformingAction);
                     break;
-                case (int)EnemyAction.rotateTowardPlayerAndShoot:
-                    Debug.Log("RotateTowardPlayerAndShoot");
+                case EnemyAction.rotateTowardPlayerAndShoot:
                     RotateTowardPlayerAndShoot(shipPerformingAction);
+                    break;
+                case EnemyAction.moveCircle:
+                    MoveCircle(shipPerformingAction);
+                    break;
+                case EnemyAction.moveCircleFacingOuter:
+                    MoveCircleFacingOuter(shipPerformingAction);
+                    break;
+                case EnemyAction.moveCircleFacingCenter:
+                    MoveCircleFacingCenter(shipPerformingAction);
+                    break;
+                case EnemyAction.rotateClockWise:
+                    RotateClockWise(shipPerformingAction);
+                    break;
+                case EnemyAction.rotateCounterClockWise:
+                    RotateCounterClockWise(shipPerformingAction);
+                    break;
+                case EnemyAction.moveTanh:
+                    MoveTanh(shipPerformingAction);
+                    break;
+                case EnemyAction.moveHyperbola:
+                    MoveHyperbola(shipPerformingAction);
+                    break;
+                case EnemyAction.RandomHeightHorizontalMovement:
+                    RandomHeightHorizontalMovement(shipPerformingAction);
+                    break;
+                case EnemyAction.RotatBetweenAngles:
+                    RotateBetweenAngles(shipPerformingAction);
+                    break;
+                case EnemyAction.MoveLeftToRight:
+                    MoveLeftToRight(shipPerformingAction);
+                    break;
+                case EnemyAction.MoveRightToLeft:
+                    MoveRightToLeft(shipPerformingAction);
                     break;
                 default:
                     Debug.Log("Default");
@@ -94,18 +143,31 @@ public class EnemyActions : MonoBehaviour
     public static void MoveDown(GameObject shipPerformingAction)
     {        
         Rigidbody2D rb2d = shipPerformingAction.GetComponent<Rigidbody2D>();
-        //rb2d.AddForce(new Vector2(0f,-5f),ForceMode2D.Impulse);//a kick
         rb2d.velocity = new Vector2(0.0f, -shipPerformingAction.GetComponent<EnemyShip>().speed);
+    }
 
-        /*
-        shipPerformingAction.transform.position = 
-            new Vector3(0.0f, -shipPerformingAction.GetComponent<EnemyShip>().speed * Time.deltaTime, 0.0f);
-        */
+    public static void ChargeStraight(GameObject shipPerformingAction)
+    {
+        Rigidbody2D rb2d = shipPerformingAction.GetComponent<Rigidbody2D>();
+        rb2d.AddForce(new Vector2(0f, -10 * Time.deltaTime),ForceMode2D.Impulse);
+    }
+
+    IEnumerator ChargeAndReturn(float delayActions)
+    {
+
+        yield return new WaitForSeconds(delayActions);
+    }
+
+    public static void ReturnToPosition(GameObject shipPerformingAction, Vector3 originalPos)
+    {
+
     }
 
     public static void RotateToPlayer(GameObject shipPerformingAction)
     {
-        PlayerController player = FindObjectOfType<PlayerController>();
+        if (shipPerformingAction.GetComponent<EnemyShip>().playerShip == null)
+            shipPerformingAction.GetComponent<EnemyShip>().playerShip = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = shipPerformingAction.GetComponent<EnemyShip>().playerShip;
         if (player != null)
         {
             float deltaX = player.gameObject.transform.position.x - shipPerformingAction.transform.position.x;
@@ -118,8 +180,18 @@ public class EnemyActions : MonoBehaviour
 
     public static void Shoot(GameObject shipPerformingAction)
     {
-        // TODO instantiate the weapon to shoot at player
         shipPerformingAction.GetComponent<EnemyShip>().Fire();
+    }
+    public static void RotateClockWise(GameObject shipPerformingAction)
+    {
+        shipPerformingAction.transform.eulerAngles -= new Vector3(0f, 0f, 
+            180f/shipPerformingAction.GetComponent<EnemyShip>().rotateSpeedFactor * Time.deltaTime);
+
+    }
+    public static void RotateCounterClockWise(GameObject shipPerformingAction)
+    {
+        shipPerformingAction.transform.eulerAngles += new Vector3(0f, 0f, 
+            180f/ shipPerformingAction.GetComponent<EnemyShip>().rotateSpeedFactor * Time.deltaTime);
     }
 
     public static void RotateTowardPlayerAndShoot(GameObject shipPerformingAction)
@@ -132,5 +204,119 @@ public class EnemyActions : MonoBehaviour
     {
         MoveDown(shipPerformingAction);
         Shoot(shipPerformingAction);
+    }
+
+    public static void FollowPlayer(GameObject shipPerformingAction)
+    {
+        RotateToPlayer(shipPerformingAction);
+        if (shipPerformingAction.GetComponent<EnemyShip>().playerShip == null)
+            shipPerformingAction.GetComponent<EnemyShip>().playerShip = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = shipPerformingAction.GetComponent<EnemyShip>().playerShip;
+        float speed = shipPerformingAction.GetComponent<EnemyShip>().speed;
+        if (player != null)
+        {
+            Vector2 difference = (player.transform.position - shipPerformingAction.transform.position);
+            difference = speed * 0.05f / difference.magnitude * difference;
+            shipPerformingAction.transform.position += new Vector3(difference.x, difference.y, 0f);
+        }
+        else
+            DestroyObject(shipPerformingAction);
+    }
+    public static void MoveCircle(GameObject shipPerformingAction)
+    {
+        float radius = 5f;
+        float angularSpeed = 60f * Mathf.PI / 180f;
+        float shipFacingRadian = (shipPerformingAction.transform.eulerAngles.z + 180f) * Mathf.PI / 180f;
+        float deltaX = Mathf.Cos(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Cos(shipFacingRadian);
+        float deltaY = Mathf.Sin(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Sin(shipFacingRadian);
+        shipPerformingAction.transform.position += radius * new Vector3(deltaX, deltaY, 0f);
+        shipPerformingAction.transform.eulerAngles += new Vector3(0f, 0f, angularSpeed * Time.deltaTime * 180f / Mathf.PI);
+    }
+    public static void MoveCircleFacingOuter(GameObject shipPerformingAction)
+    {
+        float radius = 5f;
+        float angularSpeed = 60f * Mathf.PI / 180f;
+        float shipFacingRadian = (shipPerformingAction.transform.eulerAngles.z - 90f) * Mathf.PI / 180f;
+        float deltaX = Mathf.Cos(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Cos(shipFacingRadian);
+        float deltaY = Mathf.Sin(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Sin(shipFacingRadian);
+        shipPerformingAction.transform.position += radius * new Vector3(deltaX, deltaY, 0f);
+        shipPerformingAction.transform.eulerAngles += new Vector3(0f, 0f, angularSpeed * Time.deltaTime * 180f / Mathf.PI);
+    }
+
+    public static void MoveCircleFacingCenter(GameObject shipPerformingAction)
+    {
+        float radius = 5f;
+        float angularSpeed = 60f * Mathf.PI/180f;
+        float shipFacingRadian= (shipPerformingAction.transform.eulerAngles.z + 90f) * Mathf.PI / 180f;
+        float deltaX = Mathf.Cos(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Cos(shipFacingRadian);
+        float deltaY = Mathf.Sin(shipFacingRadian + angularSpeed * Time.deltaTime) - Mathf.Sin(shipFacingRadian);
+        shipPerformingAction.transform.position += radius * new Vector3(deltaX,deltaY,0f);
+        shipPerformingAction.transform.eulerAngles += new Vector3(0f, 0f, angularSpeed * Time.deltaTime * 180f/Mathf.PI);
+    }
+    
+    public static void MoveTanh(GameObject shipPerformingAction)
+    { 
+        //y = 7tanh(x)
+        shipPerformingAction.transform.position += new Vector3(
+            Time.deltaTime * shipPerformingAction.GetComponent<EnemyShip>().speed
+            , 7f * (float)(1 - Math.Tanh(shipPerformingAction.transform.position.x)
+            * Math.Tanh(shipPerformingAction.transform.position.x)) * Mathf.Abs(shipPerformingAction.GetComponent<EnemyShip>().speed) * Time.deltaTime, 0f);
+    }
+
+    public static void MoveHyperbola(GameObject shipPerformingAction)
+    {   
+        //y = 0.25 * sqrt(x^2 + 1)
+        float dxdt = shipPerformingAction.GetComponent<EnemyShip>().speed;
+        float dydx = 0.5f * shipPerformingAction.transform.position.x 
+            / (2f * Mathf.Sqrt(shipPerformingAction.transform.position.x 
+            * shipPerformingAction.transform.position.x + 1f));
+        //slope=dy/dx=angle lol
+        float angle = Mathf.Atan2(dydx * dxdt, dxdt) * 180f / Mathf.PI;
+        shipPerformingAction.transform.position += new Vector3(dxdt * Time.deltaTime, dydx * dxdt * Time.deltaTime, 0f);
+        shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, angle + 90f);
+    }
+    
+    public static void RandomHeightHorizontalMovement(GameObject shipPerformingAction)
+    {
+        float speedX = shipPerformingAction.GetComponent<EnemyShip>().speed;
+        if (!shipPerformingAction.GetComponent<EnemyShip>().isRightToLeft)
+        {
+            shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(1f, 0f);
+            shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
+                shipPerformingAction.GetComponent<EnemyShip>().yRange);
+            shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+        }
+        else
+        {
+            shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(-1f, 0f);
+            shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
+                shipPerformingAction.GetComponent<EnemyShip>().yRange);
+            shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, -90f);
+        }
+    }
+    public static void RotateBetweenAngles(GameObject shipPerformingAction)
+    {
+        float offset = 90f;
+        float roateSpeed = shipPerformingAction.GetComponent<EnemyShip>().rotateSpeed * Mathf.PI / 180f;
+        float angleA = shipPerformingAction.GetComponent<EnemyShip>().angleA + offset;
+        float angleB = shipPerformingAction.GetComponent<EnemyShip>().angleB + offset;
+        float start = (angleB + angleA) / 2f;
+        float amplitude = (angleB - angleA)/2f;
+        float phase = shipPerformingAction.GetComponent<EnemyShip>().phase * Mathf.PI / 180f;
+        shipPerformingAction.transform.eulerAngles= new Vector3(0f, 0f, 
+            amplitude * Mathf.Sin(roateSpeed * shipPerformingAction.GetComponent<EnemyShip>().timer +
+            phase) + start);
+    }
+    
+    public static void MoveLeftToRight(GameObject shipPerformingAction)
+    {
+        shipPerformingAction.GetComponent<Rigidbody2D>().velocity = shipPerformingAction.GetComponent<EnemyShip>().speed * new Vector2(1f, 0f);
+        shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+    }
+
+    public static void MoveRightToLeft(GameObject shipPerformingAction)
+    {
+        shipPerformingAction.GetComponent<Rigidbody2D>().velocity = shipPerformingAction.GetComponent<EnemyShip>().speed * new Vector2(-1f, 0f);
+        shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, -90f);
     }
 }

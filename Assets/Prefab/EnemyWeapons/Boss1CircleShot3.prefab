@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1344034998661486}
+  m_IsPrefabParent: 1
+--- !u!1 &1344034998661486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4071374503653984}
+  - component: {fileID: 114648449063151692}
+  m_Layer: 8
+  m_Name: Boss1CircleShot3
+  m_TagString: EnemyProjectile
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4071374503653984
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1344034998661486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114648449063151692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1344034998661486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82aaf22629b5ae4c9c7c0f4a368cd9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hiteffect: {fileID: 1076445698728776, guid: 020c22f6cd4807e43b26be6c190fd3d1, type: 2}
+  damage: 0
+  launchAngle: 0
+  speed: 0
+  isUnlocked: 1
+  isPlaysMissileImpactSound: 0
+  isReflected: 0
+  cooldown: 1000
+  cooldownStamp: 0
+  totalShots: 1
+  shotDelay: 0
+  smallBall: {fileID: 1344034998661486, guid: 4d883ff9949ce6d43ba08e15350b7180, type: 2}
+  smallBalls: []
+  number: 4
+  radius: 4
+  rotatingSpeed: 30
+  phase: 0
+  timer: 0

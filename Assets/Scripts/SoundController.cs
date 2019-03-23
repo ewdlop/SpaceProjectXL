@@ -13,7 +13,17 @@ public enum SFX
     RockBreakSmall,
     PickupHealth,
     PickupShield,
-    MONEY
+    MissileExplosion,
+    Reflect,
+    BossDeath,
+    ShipThrust,
+    Boss4LaserCharging,
+    Boss4LaserFiring
+}
+
+public enum MSFX
+{
+    menuButton
 }
 
 public class SoundController : MonoBehaviour
@@ -63,6 +73,7 @@ public class SoundController : MonoBehaviour
         sources[soundIndex].volume = Mathf.Min(sfxVolume, masterVolume);  // Play at specified volume
         sources[soundIndex].Play();
     }
+
 
     // Play desired clip at specified volume 
     // 1.0f for max volume

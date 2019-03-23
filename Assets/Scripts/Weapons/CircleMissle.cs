@@ -17,6 +17,7 @@ public class CircleMissle : Weapon {
     {
         velocityAngle = 0.0f;
         time = 1.0f / 60.0f;
+        DestroyObject(gameObject, 2f);
     }
 
     void Update()
@@ -33,42 +34,46 @@ public class CircleMissle : Weapon {
             leftProjectile = Instantiate(this.gameObject, leftFire.position,
                 leftFire.rotation);
             leftProjectile.GetComponent<CircleMissle>().ship = ship.gameObject;
+            leftProjectile.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
         }
 
         if (rightFire != null)
         {
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
-                 rightFire.rotation) as GameObject;
+                 rightFire.rotation);
             rightProjectile.GetComponent<CircleMissle>().isFiredFromRight = true;
             rightProjectile.GetComponent<CircleMissle>().ship = ship.gameObject;
+            rightProjectile.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
         }
         SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
     public override void Kinematics()
     {
+        float launchAngletoRad = launchAngle * Mathf.PI / 180;
         time += Time.deltaTime;
-        float angularSpeed = 5f;
+        float angularSpeed = speed;
         float phase = -1 * Mathf.PI / 2f;
         if (isFiredFromRight)
         {
             phase *= -1;
         }
-        float speedX2 = -1 * angularSpeed * 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2) + 10 * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-        float speedY2 = angularSpeed * 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2) + 10 * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
+        //derivative
+        float speedX2 = -1 * angularSpeed * 10 * time * Mathf.Sin(angularSpeed * time + phase + launchAngletoRad) + 10 * Mathf.Cos(angularSpeed * time + phase + launchAngletoRad);
+        float speedY2 = angularSpeed * 10 * time * Mathf.Cos(angularSpeed * time + phase + launchAngletoRad) + 10 * Mathf.Sin(angularSpeed * time + phase + launchAngletoRad);
         if (ship!=null)
         {
-            float positionX = ship.transform.position.x + 10 * time * Mathf.Cos(angularSpeed * time + phase + Mathf.PI / 2);
-            float positionY = ship.transform.position.y + 10 * time * Mathf.Sin(angularSpeed * time + phase + Mathf.PI / 2);
-            gameObject.transform.position = new Vector2(positionX, positionY);
+            float positionX = ship.transform.position.x + 10 * time * Mathf.Cos(angularSpeed * time + phase + launchAngletoRad);
+            float positionY = ship.transform.position.y + 10 * time * Mathf.Sin(angularSpeed * time + phase + launchAngletoRad);
+            transform.position = new Vector2(positionX, positionY);
             velocityAngle = Mathf.Atan2(speedY2, speedX2);
             transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
         }
         else
         {
-            float positionX = ship.transform.position.x + 10 * time * Mathf.Cos(speedX2);
-            float positionY = ship.transform.position.y + 10 * time * Mathf.Sin(speedY2);
-            gameObject.transform.position = new Vector2(positionX, positionY);
+            float positionX = transform.position.x + 10 * time * Mathf.Cos(velocityAngle);
+            float positionY = transform.position.y + 10 * time * Mathf.Sin(velocityAngle);
+            transform.position = new Vector2(positionX, positionY);
         }
     }
 

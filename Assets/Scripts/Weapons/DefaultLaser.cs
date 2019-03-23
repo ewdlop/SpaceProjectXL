@@ -8,12 +8,11 @@ public class DefaultLaser : Weapon {
     // DefaultLaser: 
     // Shoots forward at the specified launch angle
 
-    private bool isFiredFromRight; 
 
 
     void Start()
     {
-
+        DestroyObject(gameObject, 2f);
     }
 
     void Update()
@@ -29,33 +28,34 @@ public class DefaultLaser : Weapon {
         {
             leftProjectile=Instantiate(this.gameObject, leftFire.position,
                 leftFire.rotation);
-            leftProjectile.GetComponent<Weapon>().launchAngle = 45f;
-            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f,-45f);
+            float cannonAngle = ship.gameObject.GetComponent<PlayerController>().cannonAngle;
+            leftProjectile.GetComponent<Weapon>().launchAngle = cannonAngle - 45f;
+            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 135f);
             leftProjectile = Instantiate(this.gameObject, leftFire.position,
             leftFire.rotation);
-            leftProjectile.GetComponent<Weapon>().launchAngle = 90f;
+            leftProjectile.GetComponent<Weapon>().launchAngle = cannonAngle;
+            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
             leftProjectile = Instantiate(this.gameObject, leftFire.position,
             leftFire.rotation);
-            leftProjectile.GetComponent<Weapon>().launchAngle = 135f;
-            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f, 45f);
+            leftProjectile.GetComponent<Weapon>().launchAngle = cannonAngle + 45f;
+            leftProjectile.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 45f);
         }
 
         if (rightFire != null)
         {
+            float cannonAngle = ship.gameObject.GetComponent<PlayerController>().cannonAngle;
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                  rightFire.rotation) as GameObject;
-            rightProjectile.GetComponent<Weapon>().launchAngle = 45f;
-            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, -45f);
-            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+            rightProjectile.GetComponent<Weapon>().launchAngle = cannonAngle - 45f;
+            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, -cannonAngle - 135f);
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                 rightFire.rotation) as GameObject;
-            rightProjectile.GetComponent<Weapon>().launchAngle = 90f;
-            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+            rightProjectile.GetComponent<Weapon>().launchAngle = cannonAngle;
+            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                 rightFire.rotation) as GameObject;
-            rightProjectile.GetComponent<Weapon>().launchAngle = 135f;
-            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, 45f);
-            rightProjectile.GetComponent<DefaultLaser>().isFiredFromRight = true;
+            rightProjectile.GetComponent<Weapon>().launchAngle = cannonAngle + 45f;
+            rightProjectile.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 45f);
         }
 
         SoundController.Play((int)SFX.ShipLaserFire, 0.3f);

@@ -11,8 +11,11 @@ TagManager:
   - PowerUp
   - RockSmall
   - Boss
-  - EP
   - EnemyProjectile
+  - Slicer
+  - EP
+  - BoxBound
+  - BossLaser
   layers:
   - Default
   - TransparentFX

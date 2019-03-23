@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: cbcd5abcf18591d42b605cd0aa82d86d
-timeCreated: 1505691727
+timeCreated: 1526323544
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: GreenLight_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -39,7 +40,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -81,8 +82,68 @@ TextureImporter:
     overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
-    outline: []
+    sprites:
+    - serializedVersion: 2
+      name: GreenLight_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 400
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline:
+    - - {x: 117, y: -189}
+      - {x: 128, y: -182}
+      - {x: 136, y: -176}
+      - {x: 146, y: -167}
+      - {x: 167, y: -146}
+      - {x: 173, y: -139}
+      - {x: 182, y: -127}
+      - {x: 186, y: -121}
+      - {x: 189, y: -117}
+      - {x: 192, y: -112}
+      - {x: 196, y: -105}
+      - {x: 200, y: -96}
+      - {x: 200, y: 111}
+      - {x: 196, y: 120}
+      - {x: 192, y: 127}
+      - {x: 186, y: 137}
+      - {x: 182, y: 143}
+      - {x: 176, y: 151}
+      - {x: 173, y: 154}
+      - {x: 167, y: 161}
+      - {x: 146, y: 182}
+      - {x: 139, y: 188}
+      - {x: 123, y: 200}
+      - {x: -138, y: 200}
+      - {x: -143, y: 197}
+      - {x: -151, y: 191}
+      - {x: -161, y: 182}
+      - {x: -182, y: 161}
+      - {x: -188, y: 154}
+      - {x: -200, y: 138}
+      - {x: -200, y: -123}
+      - {x: -197, y: -128}
+      - {x: -191, y: -136}
+      - {x: -182, y: -146}
+      - {x: -161, y: -167}
+      - {x: -154, y: -173}
+      - {x: -142, y: -182}
+      - {x: -136, y: -186}
+      - {x: -132, y: -189}
+      - {x: -127, y: -192}
+      - {x: -118, y: -197}
+      - {x: -113, y: -199}
+      - {x: -111, y: -200}
+      - {x: 96, y: -200}
+      - {x: 105, y: -196}
+      - {x: 112, y: -192}
     physicsShape: []
   spritePackingTag: 
   userData: 

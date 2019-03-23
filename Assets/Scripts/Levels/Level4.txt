@@ -1,0 +1,86 @@
+GreyMeteorSmall 2 1 60
+GreyMeteorMed 0 5 12
+GreyMeteorLarge 0 10 6
+BladeShip 0 10 6
+BladeShip 0 10 6
+BladeShip 0 10 6
+BladeShip 0 10 6
+TanhEnemyShipLeft 1 1 5 <-11, -7>
+TanhEnemyShipRight 0.1 1 5 <11, -7>
+AmbushShipLeft  3 0.1 5 <-11,0>
+AmbushShipRight 0 0.1 5 <11,0>
+EnemyShip 2 1 10
+Kamikaze 0 0.1 5
+Kamikaze 2 0.1 5
+Kamikaze 2 0.1 5
+ArrayShipLeft 2 1 4 <-11, -6>
+ArrayShipLeft 0 1 4 <-11, -4.5>
+ArrayShipLeft 0 1 4 <-11, -3>
+ArrayShipLeft 0 1 4 <-11, -1.5>
+ArrayShipRight 2 1 4 <11, 6>
+ArrayShipRight 0 1 4 <11, 4.5>
+ArrayShipRight 0 1 4 <11, 3>
+ArrayShipRight 0 1 4 <11, 1.5>
+CannonPowerUp 0 1 1
+EnemySlowCharger 3 0.1 25
+EnemySlowCharger 2 0.1 25
+TotalPsychoPath 0 0.1 3
+EnemyShip 2 1 10
+LifePowerUp 2 0 1
+TotalPsychoPath 0 0.1 3
+HyperoblaEnemyShipLeft 1 1 5 <-11, 6>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 5>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 4>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 3>
+HyperoblaEnemyShipRight 0 1 5 <11, 6>
+HyperoblaEnemyShipRight 0 1 5 <11, 5>
+HyperoblaEnemyShipRight 0 1 5 <11, 4>
+HyperoblaEnemyShipRight 0 1 5 <11, 43
+SeeItComing 2 1 1 <-10, 13>
+AmbushShipLeft  0 0.1 5 <-11,0>
+AmbushShipRight 0 0.1 5 <11,0>
+SeeItComing 2 1 2 <-5, 13>
+SeeItComing 2 1 2 <0, 13>
+SeeItComing 2 1 2 <5, 13>
+FireRateBoostPpwerUp 0 0 1
+AmbushShipLeft  0 1 5 <-11,0>
+AmbushShipRight 0 1 5 <11,0>
+SeeItComing 2 1 2 <10, 13>
+EnemySlowCharger 1 0.1 25
+EnemySlowCharger 2 0.1 25
+ShieldPowerUp 1 0 1
+Kamikaze 1 0.1 5
+TotalPsychoPath 0 0.1 3
+EnemySlowCharger 3 0.1 25
+TotalPsychoPath 0 0.1 3
+EnemySlowCharger 2 0.1 25
+AmbushShipLeft  0 0.1 5 <-11,0>
+AmbushShipRight 0 0.1 5 <11,0>
+Kamikaze 1 0.1 5
+EnemyShip 2 1 10
+UltimatePowerUp 0 0 1
+ArrayShipLeft 2 1 4 <-11, -6>
+ArrayShipLeft 0 1 4 <-11, -6>
+ArrayShipLeft 0 1 4 <-11, -6>
+ArrayShipRight 2 1 4 <11, -6>
+ArrayShipRight 0 1 4 <11, -6>
+ArrayShipRight 0 1 4 <11, -6>
+HyperoblaEnemyShipLeft 1 1 5 <-11, 5>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 4>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 4>
+HyperoblaEnemyShipLeft 0 1 5 <-11, 2>
+HyperoblaEnemyShipLeft 0 1 5 <11, 1>
+HyperoblaEnemyShipLeft 0 1 5 <11, 0>
+HyperoblaEnemyShipLeft 0 1 5 <11, -1>
+HyperoblaEnemyShipLeft 0 1 5 <11, -2>
+HyperoblaEnemyShipRight 1 1 5 <-11, 5>
+HyperoblaEnemyShipRight 0 1 5 <-11, 4>
+HyperoblaEnemyShipRight 0 1 5 <-11, 4>
+HyperoblaEnemyShipRight 0 1 5 <-11, 2>
+HyperoblaEnemyShipRight 0 1 5 <11, 1>
+HyperoblaEnemyShipRight 0 1 5 <11, 0>
+HyperoblaEnemyShipRight 0 1 5 <11, -1>
+HyperoblaEnemyShipRight 0 1 5 <11, -2>
+Kamikaze 1 0.1 5
+TotalPsychoPath 0 0.1 3
+LifePowerUp 2 0 1
