@@ -12,6 +12,7 @@ public class UI : MonoBehaviour {
     public Text scoreText;
     public Text highScoreText;
     public Text retryText;
+    public Text livesText;
     public Slider bossHealth;
 
     public static int spriteInt;
@@ -20,37 +21,53 @@ public class UI : MonoBehaviour {
     
     public Sprite inGameSprite;
 
-    private EnemyShip boss;
+    private EnemyBoss boss;
+    private PlayerController player;
 
     void Start()
     {
-        boss = (EnemyShip)FindObjectOfType(typeof(EnemyShip));
     }
 
     void Update()
     {
+        if(player == null)
+            player = FindObjectOfType<PlayerController>();
+        if (boss == null)
+            boss = FindObjectOfType<EnemyBoss>();
+
+        UpdateAllText();
+
         if (boss != null)
         {
-            //Debug.Log(bossHealth.value);
-            bossHealth.gameObject.SetActive(true);
-            bossHealth.maxValue = boss.GetComponent<Enemy>().maxHealth;
-            bossHealth.value = boss.GetComponent<Enemy>().getHealth();
+            if (boss.GetComponent<EnemyBoss>().BossIsActive())
+            {
+                //Debug.Log(bossHealth.value);
+                bossHealth.gameObject.SetActive(true);
+                bossHealth.maxValue = boss.GetComponent<EnemyBoss>().maxHealth;
+                bossHealth.value = boss.GetComponent<EnemyBoss>().getHealth();
+            }
         }
         else
         {
-            bossHealth.gameObject.SetActive(false);
+            bossHealth.gameObject.SetActive(false);       
         }
     }
 
-    public void UpdateDifficultyText()
+    public void UpdateAllText()
     {
-        // Change to use nonstatic!
-        /*
-        switch(GameController.instance.difficulty)
-        {
+        UpdateLivesText();
+    }
 
+    public void UpdateLivesText()
+    {
+        if (player)
+        {
+            livesText.text = "x" + player.GetLives().ToString();
         }
-        */
+        else
+        {
+            livesText.text = "x0"; 
+        }
     }
 
     public void UpdateSpriteImage(int increment)

@@ -14,42 +14,43 @@ public abstract class Enemy : MonoBehaviour {
 
     // Control object's movement
     protected abstract void Kinematics();
+    protected bool hasCollided = false;
 
     protected void Start()
     {
+        hasCollided = false;
         health = maxHealth;
         renderer = GetComponent<Renderer>();
         originalColor = renderer.material.color;
     }
 
+    protected void LateUpdate()
+    {
+        hasCollided = false;
+    }
+
     protected IEnumerator HitFlash()
     {
-        renderer.material.color = GameController.instance.hitColor;
+        if(renderer!=null)
+            renderer.material.color = GameController.instance.hitColor;
         yield return new WaitForSeconds(0.05f);
-        renderer.material.color = originalColor;
+        if (renderer != null)
+            renderer.material.color = originalColor;
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Projectile")
+        if (other.tag == "Projectile" && !hasCollided)
         {
-            health -= other.gameObject.GetComponent<Weapon>().damage;
-            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Projectile")
-        {
+            hasCollided = true;
             Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
                new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
                Quaternion.identity);
-
-            Destroy(other.gameObject);
+            //need to tune damage
+            health -= other.gameObject.GetComponent<Weapon>().damage;
+            //0.5f so it is not so "cracked"
+            //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
             StartCoroutine(HitFlash());
-            health--;
         }
     }
 

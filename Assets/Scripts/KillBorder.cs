@@ -6,7 +6,8 @@ public class KillBorder : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D other)
     {
-        Destroy(other.gameObject);
+        if(other.gameObject.tag != "BossLaser")
+            Destroy(other.gameObject);
     }
 
 }

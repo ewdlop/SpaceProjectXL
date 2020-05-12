@@ -5,7 +5,7 @@ using UnityEngine;
 public class RedRcoketMissile : Weapon {
 
     public float time;
-    public float forwardThrust;
+    public float speedX;
     void Update()
     {
         Kinematics();
@@ -18,7 +18,8 @@ public class RedRcoketMissile : Weapon {
         if (time >= 0.3f)
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, forwardThrust), ForceMode2D.Impulse);
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(launchAngle * Mathf.PI / 180f) * speed,
+            Mathf.Sin(launchAngle * Mathf.PI / 180f) * speed), ForceMode2D.Impulse);
             time = -1;
         }
 
@@ -31,7 +32,13 @@ public class RedRcoketMissile : Weapon {
         GameObject redRocketRight = Instantiate(gameObject,
         new Vector3(ship.position.x, ship.position.y, 0.01f),
         ship.rotation);
-        redRocketLeft.GetComponent<Rigidbody2D>().velocity = new Vector2(-1 * speed, 0f);
-        redRocketRight.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0f);
+        redRocketLeft.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
+        redRocketRight.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
+        redRocketLeft.transform.eulerAngles = new Vector3(0f, 0f, ship.GetComponent<PlayerController>().cannonAngle - 90f);
+        redRocketRight.transform.eulerAngles = new Vector3(0f, 0f, ship.GetComponent<PlayerController>().cannonAngle - 90f);
+        redRocketLeft.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((ship.GetComponent<PlayerController>().cannonAngle + 90f) * Mathf.PI / 180f) * speedX,
+            Mathf.Sin((ship.GetComponent<PlayerController>().cannonAngle + 90f) * Mathf.PI / 180f) * speedX);
+        redRocketRight.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((ship.GetComponent<PlayerController>().cannonAngle - 90f) * Mathf.PI / 180f) * speedX, 
+            Mathf.Sin((ship.GetComponent<PlayerController>().cannonAngle - 90f) * Mathf.PI / 180f) * speedX);
     }
 }

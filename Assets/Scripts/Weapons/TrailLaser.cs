@@ -4,7 +4,7 @@ public class TrailLaser : Weapon {
 
     private bool isFiredFromRight;
     private GameObject target;
-
+    private Enemy[] enemies;
     void Start()
     {
         float launchAngletoRad;
@@ -25,20 +25,19 @@ public class TrailLaser : Weapon {
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
-        GameObject leftProjectile;
-        leftProjectile = Instantiate(this.gameObject, leftFire.position,
+        Instantiate(gameObject, leftFire.position,
                leftFire.rotation);
         GameObject rightProjectile;
-        rightProjectile = Instantiate(this.gameObject, rightFire.position,
+        rightProjectile = Instantiate(gameObject, rightFire.position,
                  rightFire.rotation);
         rightProjectile.GetComponent<TrailLaser>().isFiredFromRight = true;
     }
 
     public override void Kinematics()
     {
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
         if (target == null)
         {
+            enemies = FindObjectsOfType<Enemy>();
             if (enemies.Length > 0)
             {
                 int random = Random.Range(0, enemies.Length);

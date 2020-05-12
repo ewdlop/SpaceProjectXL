@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.372, y: 0, z: 0}
+  m_LocalPosition: {x: -5.5402737, y: 2.0375457, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -94,8 +94,12 @@ MonoBehaviour:
   launchAngle: 0
   speed: 50
   isUnlocked: 0
+  isPlaysMissileImpactSound: 0
+  isReflected: 0
   cooldown: 0.2
   cooldownStamp: 2.2701457
+  totalShots: 1
+  shotDelay: 0
 --- !u!212 &212097695805022122
 SpriteRenderer:
   m_ObjectHideFlags: 1

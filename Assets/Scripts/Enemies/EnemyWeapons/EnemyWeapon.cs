@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class EnemyWeapon : Weapon
 {
@@ -20,9 +18,48 @@ public abstract class EnemyWeapon : Weapon
      *
      **/
     public float fireDelay = 0.3f;  // the delay between each shot
-    public int totalShots = 1;      // the number of shots for each wave    
     public float waveDelay = 1.0f;  // the delay between each wave
+    protected bool hasCollided = false;
 
-    public abstract void Shoot(Transform ship, Transform target);
+
+    //public abstract void Shoot(Transform ship, Transform target);
+
+    protected void LateUpdate()
+    {
+        hasCollided = false;
+    }
+
+    protected void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Shield" && !hasCollided)
+        {
+            hasCollided = true;
+            float playerShipToCollidePointX = transform.position.x - other.gameObject.transform.position.x;
+            float playerShipToCollidePointY = transform.position.y - other.gameObject.transform.position.y;
+            float normalAngleinRad = Mathf.Atan2(playerShipToCollidePointY, playerShipToCollidePointX);
+            float shieldFacingAngleingRad = (other.gameObject.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad;
+            Vector2 shieldFacingUnitVector = new Vector2(Mathf.Cos(shieldFacingAngleingRad), Mathf.Sin(shieldFacingAngleingRad));
+            Vector2 normalUnitVector = new Vector2(Mathf.Cos(normalAngleinRad), Mathf.Sin(normalAngleinRad));
+            float cosineofCollideAngleRelativetoPlayShipFacing = Vector2.Dot(shieldFacingUnitVector, normalUnitVector);
+            if (cosineofCollideAngleRelativetoPlayShipFacing > (-90f - 56f) / 180f)
+            {
+                //Debug.Log("In shield arc");
+                gameObject.tag = "Projectile";
+                gameObject.layer = LayerMask.NameToLayer("Player");
+                isReflected = true;
+                float cosineOfincidentAngleRelativetoNormal = Vector2.Dot(normalUnitVector, gameObject.GetComponent<Rigidbody2D>().velocity);
+                Vector2 gameObjectVelocityVector = gameObject.GetComponent<Rigidbody2D>().velocity - 2 * (cosineOfincidentAngleRelativetoNormal) * normalUnitVector;
+                float gameObjectVelocityVectorX = gameObjectVelocityVector.x;
+                float gameObjectVelocityVectorY = gameObjectVelocityVector.y;
+                Vector2 finalgameObjectVelocity = new Vector2(gameObjectVelocityVectorX, gameObjectVelocityVectorY);
+                gameObject.GetComponent<Rigidbody2D>().velocity = 2f * finalgameObjectVelocity;
+
+                // Change rotation of the laser to match reflected direction
+                gameObject.transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(gameObjectVelocityVectorY, gameObjectVelocityVectorX) * 180f / Mathf.PI - 90f);
+                // Play the reflect sound
+                SoundController.Play((int)SFX.Reflect, 0.2f);
+            }
+        }
+    }
 
 }

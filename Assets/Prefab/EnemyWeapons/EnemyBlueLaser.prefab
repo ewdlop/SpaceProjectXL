@@ -68,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1344034998661486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.1675588, y: -1.3738267, z: 0}
-  m_LocalScale: {x: 3.1656554, y: 1.7844224, z: 3.422327}
+  m_LocalScale: {x: 3.1656554, y: 1.7844224, z: 1}
   m_Children:
   - {fileID: 4044828680585222}
   m_Father: {fileID: 0}
@@ -123,13 +123,16 @@ MonoBehaviour:
   hiteffect: {fileID: 1076445698728776, guid: cd34ee766df45554391686343e99d49f, type: 2}
   damage: 5
   launchAngle: -90
-  speed: 20
+  speed: 12
   isUnlocked: 1
+  isPlaysMissileImpactSound: 0
+  isReflected: 0
   cooldown: 1
   cooldownStamp: 0
-  debugLog: 5021
   totalShots: 1
-  shotDelay: 1
+  shotDelay: 0
+  fireDelay: 0.3
+  waveDelay: 1
 --- !u!198 &198287001297252824
 ParticleSystem:
   m_ObjectHideFlags: 1

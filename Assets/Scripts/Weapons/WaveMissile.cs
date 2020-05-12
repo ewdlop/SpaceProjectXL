@@ -25,11 +25,13 @@ public class WaveMissile : Weapon {
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
+        GameObject leftrightProjectile;
         GameObject rightProjectile;  // Creating a temp object just to set the isRightSide variable
         if (leftFire != null)
         {
-            Instantiate(this.gameObject, leftFire.position,
+            leftrightProjectile = Instantiate(this.gameObject, leftFire.position,
                 leftFire.rotation);
+            leftrightProjectile.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
         }
 
         if (rightFire != null)
@@ -37,6 +39,7 @@ public class WaveMissile : Weapon {
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                  rightFire.rotation) as GameObject;
             rightProjectile.GetComponent<WaveMissile>().isFiredFromRight = true;
+            rightProjectile.GetComponent<Weapon>().launchAngle = ship.GetComponent<PlayerController>().cannonAngle;
         }
         SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
@@ -49,7 +52,8 @@ public class WaveMissile : Weapon {
         {
             speedY *= -1;
         }
-        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * Mathf.Cos(Mathf.PI / 2) - speedY * Mathf.Sin(Mathf.PI / 2), speed * Mathf.Sin(Mathf.PI / 2) + speedY * Mathf.Cos(Mathf.PI / 2));
+        float launchAngletoRad = launchAngle * Mathf.PI/180f;
+        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * Mathf.Cos(launchAngletoRad) - speedY * Mathf.Sin(launchAngletoRad), speed * Mathf.Sin(launchAngletoRad) + speedY * Mathf.Cos(launchAngletoRad));
         velocityAngle = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.y, gameObject.GetComponent<Rigidbody2D>().velocity.x);
         transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
     }

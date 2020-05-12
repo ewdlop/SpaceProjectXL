@@ -10,7 +10,7 @@ public class EnemyDebris : Enemy {
 
     public GameObject objectToSpawn;
     public int numberToSpawn;
-
+    private bool isDebris;
     [Header("Spawn child object settings")]
     public float maxSpeed = 2.0f;
     public float maxAngle = 120.0f;
@@ -21,14 +21,18 @@ public class EnemyDebris : Enemy {
     new void Start ()
     {
         base.Start();
+        // Initialize the debris's movement just once
+        // The movement will typically be some random movement downwards
+        if(!isDebris)
+            Kinematics();
 	}
 	
 	void Update ()
     {
-        //kinematics();
 
         if (health <= 0)
         {
+            PlaySoundBySize();
             Destroy(this.gameObject);
             GameController.playerScore += score;
 
@@ -37,7 +41,23 @@ public class EnemyDebris : Enemy {
             if (objectToSpawn != null)
             {
                 SpawnObjects();
-            }
+            }        
+        }
+    }
+
+    private void PlaySoundBySize()
+    {
+        if (objectToSpawn == null)
+        {
+            SoundController.Play((int)SFX.RockBreakSmall);
+        }
+        else if (numberToSpawn > 3)
+        {
+            SoundController.Play((int)SFX.RockBreakLarge);
+        }
+        else
+        {
+            SoundController.Play((int)SFX.RockBreakMedium);
         }
     }
 
@@ -50,50 +70,50 @@ public class EnemyDebris : Enemy {
                 new Vector3(transform.position.x, transform.position.y, transform.position.z),
                 Quaternion.identity);
 
-            //temp.GetComponent<EnemyDebris>().angle = UnityEngine.Random.Range(0.0f, maxAngle);
-            //temp.GetComponent<EnemyDebris>().speed = UnityEngine.Random.Range(0.2f, maxSpeed);
             angle = UnityEngine.Random.Range(0.0f, maxAngle);
             speed = UnityEngine.Random.Range(0.2f, maxSpeed);
-
+            temp.GetComponent<EnemyDebris>().isDebris = true;
             // Update the speed of the object
-            //temp.GetComponent<EnemyDebris>().Kinematics();
             temp.GetComponent<Rigidbody2D>().velocity =
-               new Vector2(speed * Mathf.Cos((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f),
-                           speed * Mathf.Sin((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f));
+               new Vector2(speed * Mathf.Cos((360.0f * i / numberToSpawn + angle) * Mathf.PI / 180.0f),
+                           // Take into account the relative speed of the ship, so objects moving away will only slowly move away
+                           (GameController.instance.scrollSpeed - speed) * Mathf.Sin((360.0f* i / numberToSpawn + angle) * Mathf.PI / 180.0f));
         }
     }
 
     protected override void Kinematics()
-    {
-        GetComponent<Rigidbody2D>().velocity =
-               new Vector2(speed * Mathf.Cos((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f),
-                           speed * Mathf.Sin((360.0f / numberToSpawn + angle) * Mathf.PI / 180.0f));
-    }
-
-    /*
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.tag == "Projectile")
-        {
-            health -= other.gameObject.GetComponent<Weapon>().damage;
-            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
-        }
+    {        
+        GetComponent<Rigidbody2D>().velocity = 
+            new Vector2(3.0f * UnityEngine.Random.Range(-1.0f, 1.0f), GameController.instance.scrollSpeed);
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    new void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Projectile")
+        if (other.gameObject.GetComponent<Weapon>())
         {
             Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
                new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
                Quaternion.identity);
-
-            Destroy(other.gameObject);
-            StartCoroutine(HitFlash());
-            health--;
+            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
+            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
+            if(other.gameObject.tag!="Slicer")
+                Destroy(other.gameObject);
+            health -= other.gameObject.GetComponent<Weapon>().damage;
         }
     }
-    */
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Slicer")
+        {
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+               new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -2f),
+               Quaternion.identity);
+            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
+            renderer.material.SetFloat("_OcclusionStrength", 1.0f - healthPercentage);
+            health -= other.gameObject.GetComponent<Weapon>().damage;
+        }
+    }
+
 }

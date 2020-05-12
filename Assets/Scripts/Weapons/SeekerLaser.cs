@@ -4,69 +4,58 @@ using UnityEngine;
 
 public class SeekerLaser : Weapon {
 
-    public Transform playerShip;
     public Enemy[] enemies;
-    public GameObject target;
-    public GameObject projectile;
+    public GameObject damageEffect;
+    public GameObject line;
+    public float laserBoxSpeed;
+    public bool isPrefab;
 
     void Update()
     {
-        Kinematics();
+        if(!isPrefab)
+            Kinematics();
     }
 
     public override void Kinematics()
     {
-        if (playerShip.gameObject.GetComponent<PlayerController>().IsInvincible || playerShip == null)
+        foreach(Transform child in transform)
         {
-            DestroyObject(gameObject);
-        }
-        else
-        {
-            enemies = FindObjectsOfType<Enemy>();
-            if (target == null)
+            if (child.GetComponent<SeekerLaserProjectile>().target == null)
             {
+                enemies = FindObjectsOfType<Enemy>();
                 if (enemies.Length > 0)
                 {
-                    int random = UnityEngine.Random.Range(0, enemies.Length);
-                    target = enemies[random].gameObject;
-                    LineRenderer lineRenderer = GetComponent<LineRenderer>();
-                    Vector3[] points = { playerShip.position, target.transform.position };
-                    lineRenderer.SetPositions(points);
+                    int random = Random.Range(0, enemies.Length);
+                    child.GetComponent<SeekerLaserProjectile>().target = enemies[random].gameObject;
                 }
                 else
                 {
-                    LineRenderer lineRenderer = GetComponent<LineRenderer>();
-                    Vector3[] points = { playerShip.position, playerShip.position };
+                    LineRenderer lineRenderer = child.GetComponent<LineRenderer>();
+                    Vector3[] points = { child.transform.position, child.transform.position };
                     lineRenderer.SetPositions(points);
-
                 }
             }
             else
             {
-                LineRenderer lineRenderer = GetComponent<LineRenderer>();
-                if (playerShip != null)
-                {
-                    Vector3[] points = { playerShip.position, target.transform.position };
-                    lineRenderer.SetPositions(points);
-                    GameObject effect = Instantiate(projectile, target.transform.position, Quaternion.identity);
-                    DestroyObject(effect, 0.1f);
-                }
-                else
-                {
-                    DestroyObject(gameObject);
-                }
+                LineRenderer lineRenderer = child.GetComponent<LineRenderer>();
+                Vector3[] points = { child.transform.position, child.GetComponent<SeekerLaserProjectile>().target.transform.position };
+                lineRenderer.SetPositions(points);
+                GameObject effect = Instantiate(damageEffect, child.GetComponent<SeekerLaserProjectile>().target.transform.position, Quaternion.identity);
+                Destroy(effect, 0.1f);
             }
         }
-       
+        
     }
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
-        GameObject laser = Instantiate(gameObject, ship.transform.position, Quaternion.identity);
-        laser.GetComponent<SeekerLaser>().playerShip = ship;
-        LineRenderer lineRenderer = laser.GetComponent<LineRenderer>();
-        Vector3[] points = { ship.position, ship.position };
-        lineRenderer.SetPositions(points);
-        DestroyObject(laser, cooldown);
+        GameObject laser = Instantiate(gameObject, ship.position, Quaternion.identity);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
+        laser.GetComponent<SeekerLaser>().isPrefab = false;
+        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, laserBoxSpeed);
+        Destroy(laser, 2f);
     }
 
 }

@@ -11,8 +11,13 @@ TagManager:
   - PowerUp
   - RockSmall
   - Boss
-  - EP
   - EnemyProjectile
+  - Slicer
+  - EP
+  - BoxBound
+  - BossLaser
+  - AchievementList
+  - BossHealthText
   layers:
   - Default
   - TransparentFX

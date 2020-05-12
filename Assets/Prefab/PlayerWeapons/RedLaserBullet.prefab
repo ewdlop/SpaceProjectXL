@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344034998661486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1675588, y: -1.3738267, z: 0}
+  m_LocalPosition: {x: -5.1050577, y: 1.9111927, z: 0}
   m_LocalScale: {x: 3.1656554, y: 1.7844224, z: 3.422327}
   m_Children:
   - {fileID: 4044828680585222}
@@ -121,12 +121,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiteffect: {fileID: 1076445698728776, guid: 7c6d900199f2cf140b8f65459fcded7d, type: 2}
-  damage: 2
+  damage: 5
   launchAngle: 0
   speed: 50
   isUnlocked: 0
+  isPlaysMissileImpactSound: 0
+  isReflected: 0
   cooldown: 0.2
-  cooldownStamp: 0
+  cooldownStamp: 153.62663
+  totalShots: 1
+  shotDelay: 0.2
 --- !u!198 &198287001297252824
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -186,7 +190,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -192906553
+  randomSeed: -1804219746
   InitialModule:
     serializedVersion: 3
     enabled: 1

@@ -9,11 +9,6 @@ public class EmittedLaser : Weapon {
         Kinematics();
     }
 
-    void Update()
-    {
-        
-    }
-
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
 

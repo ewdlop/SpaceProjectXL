@@ -3,21 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDefaultLaser : Weapon {
+public class EnemyDefaultLaser : EnemyWeapon {
 
     // DefaultLaser: 
     // Shoots forward at the specified launch angle
 
-    private bool isFiredFromRight; 
-
     void Start()
     {
-
+        hasCollided = false;
+        Kinematics();
     }
 
     void Update()
     {
-        Kinematics();
+        //Kinematics();
     }
 
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
@@ -39,8 +38,7 @@ public class EnemyDefaultLaser : Weapon {
         {
             rightProjectile = Instantiate(this.gameObject, rightFire.position,
                 rightFire.rotation) as GameObject;
-            rightProjectile.GetComponent<Weapon>().launchAngle = rotationAngle;
-            rightProjectile.GetComponent<EnemyDefaultLaser>().isFiredFromRight = true;            
+            rightProjectile.GetComponent<Weapon>().launchAngle = rotationAngle;  
         }
 
         SoundController.Play((int)SFX.ShipLaserFire, 0.2f);
@@ -51,10 +49,8 @@ public class EnemyDefaultLaser : Weapon {
         //Debug.Log("launch angle " + this.GetComponent<Weapon>().launchAngle);
         //Debug.Log("RAD launch angle " + this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad);
         float launchAngletoRad = this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
-        Vector2 relativeVelocity =
-            speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
-
-        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
     }
+
 }

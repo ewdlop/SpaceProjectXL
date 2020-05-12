@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Space.unity
     guid: 2e39a4a7d79cc144aaa01e543cf0e97f
+  - enabled: 0
+    path: Assets/_Scenes/TestScene.unity
+    guid: 243b64dfee16a864080bd968c604a1c3

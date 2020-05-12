@@ -5,8 +5,6 @@ using UnityEngine;
 public class SpreadLaser : Weapon {
 
     public int shotCount = 10; 
-
-    private float unitVectorX, unitVectorY;
     private Vector2 shotDirection;
 
     void Update()
@@ -23,8 +21,8 @@ public class SpreadLaser : Weapon {
                 ship.rotation);
 
             SpreadLaser.GetComponent<SpreadLaser>().shotDirection =
-                new Vector2(Mathf.Cos(135f / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i),
-                Mathf.Sin(135f / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i));
+                new Vector2(Mathf.Cos((135f + ship.GetComponent<PlayerController>().cannonAngle - 90f) / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i),
+                Mathf.Sin((135f + ship.GetComponent<PlayerController>().cannonAngle - 90f) / 180f * Mathf.PI - 10f / 180f * Mathf.PI * i));
         }
         SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
@@ -33,5 +31,6 @@ public class SpreadLaser : Weapon {
     {
         Vector2 relativeVelocity = speed * shotDirection;
         this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(relativeVelocity.y, relativeVelocity.x) * Mathf.Rad2Deg - 90f);
     }
 }

@@ -84,14 +84,14 @@ public class AchievementManager : MonoBehaviour {
 
     public void InitAchievements()
     {
-        CreateAchievement("General", 0, "A", "Press Z", 15, 0);
-        CreateAchievement("General", 0, "B", "Press X", 15, 1);
-        CreateAchievement("Boss", 1, "C", "Press C", 15, 0);
-        CreateAchievement("Enemy", 2, "D", "Press C", 15, 0);
-        CreateAchievement("PowerUp", 3, "F", "Press C", 15, 0);
-        CreateAchievement("Ship", 4, "G", "Press C", 15, 0);
-        CreateAchievement("Weapon", 5, "H", "Press C", 15, 0);
-        CreateAchievement("Other", 6, "I", "Press D", 10, 0);
+        //CreateAchievement("General", 0, "A", "Press Z", 15, 0);
+        //CreateAchievement("General", 0, "B", "Press X", 15, 1);
+        //CreateAchievement("Boss", 1, "C", "Press C", 15, 0);
+        //CreateAchievement("Enemy", 2, "D", "Press C", 15, 0);
+        //CreateAchievement("PowerUp", 3, "F", "Press C", 15, 0);
+        //CreateAchievement("Ship", 4, "G", "Press C", 15, 0);
+        //CreateAchievement("Weapon", 5, "H", "Press C", 15, 0);
+        //CreateAchievement("Other", 6, "I", "Press D", 10, 0);
 
     }
     public void CreateAchievement(string category, int categoryIndex, string title, string description ,int points, int spriteIndex)

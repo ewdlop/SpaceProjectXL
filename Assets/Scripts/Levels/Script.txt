@@ -1,0 +1,4 @@
+TanhEnemyShipRight 0.1 0 1 <11, -5>
+TanhEnemyShipLeft 0 0 1 <-11, -5>
+HyperoblaEnemyShipLeft 0 0 1 <-11, 7>
+HyperoblaEnemyShipRight 0 0 1 <11, 7>

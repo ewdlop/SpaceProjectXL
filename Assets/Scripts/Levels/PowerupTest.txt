@@ -1,0 +1,3 @@
+ShieldPowerUp 1 5 5
+CannonPowerUp 1 5 5	<5.5,5>
+Lifepowerup 1 5 5 0 11
