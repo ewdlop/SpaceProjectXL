@@ -153,34 +153,27 @@ public class EnemyShip : Enemy {
 
     new void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Projectile")
+        if (other.tag == "Projectile" && hasCollided == false)
         {
-            if (hasCollided == false)
+            hasCollided = true;
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+               new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
+               Quaternion.identity);
+            if (other.gameObject.GetComponent<Weapon>().isPlaysMissileImpactSound)
+                SoundController.Play((int)SFX.MissileExplosion);
+            //need to tune damage
+            if (parentShip == null)
             {
-                hasCollided = true;
-                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-                   new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
-                   Quaternion.identity);
-                if (other.gameObject.GetComponent<Weapon>().isPlaysMissileImpactSound)
-                    SoundController.Play((int)SFX.MissileExplosion);
-                //need to tune damage
-                if (parentShip == null )
-                {
-                    health -= other.gameObject.GetComponent<Weapon>().damage;
-                }
-                else
-                {
-                    if (parentShip.BossIsActive())
-                    {
-                        if(!parentShip.isBoss3)
-                            parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
-                    }
-                }
-                Destroy(other.gameObject);
-                //0.5f so it is not so "cracked"
-                //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
-                StartCoroutine(HitFlash());
+                health -= other.gameObject.GetComponent<Weapon>().damage;
             }
+            else if (parentShip.BossIsActive() && !parentShip.isBoss3)
+            {
+                parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
+            }
+            Destroy(other.gameObject);
+            //0.5f so it is not so "cracked"
+            //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
+            StartCoroutine(HitFlash());
         }
     }
     //for boomerange, draven ult, laser beam type of weapon

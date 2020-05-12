@@ -8,7 +8,7 @@ public class FireRateBoostedPowerUp : Powerup {
     {
         touchedObject.GetComponent<PlayerController>().EnableFireRateBoost(1);
         SoundController.Play((int)SFX.PickupHealth);
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 
 }

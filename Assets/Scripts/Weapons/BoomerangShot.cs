@@ -13,10 +13,12 @@ public class BoomerangShot : Weapon {
             if (Vector2.Distance(transform.position, playerShip.position) <= 0.5f &&
                 !playerShip.GetComponent<PlayerController>().IsDead)
             {
-                 GetComponent<Rigidbody2D>().velocity = -1 * direction;
+                GetComponent<Rigidbody2D>().velocity = -1 * direction;
             }
             else
+            {
                 GetComponent<Rigidbody2D>().AddForce(direction.normalized * Time.deltaTime * 20, ForceMode2D.Impulse);
+            }
         }
        
     }
@@ -29,7 +31,7 @@ public class BoomerangShot : Weapon {
                         Mathf.Sin(ship.GetComponent<PlayerController>().cannonAngle * Mathf.PI / 180f));
         emitter.GetComponent<BoomerangShot>().playerShip = ship;
         emitter.GetComponent<BoomerangShot>().direction = -1 * emitter.GetComponent<Rigidbody2D>().velocity;
-        DestroyObject(emitter, 7.65f);
+        Destroy(emitter, 7.65f);
     }
 
 	void Update () {

@@ -27,11 +27,8 @@ public class SubEmitter : Weapon {
 
     public override void Kinematics()
     {
-        Vector2 relativeVelocity =
-            speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        GetComponent<Rigidbody2D>().velocity =             speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
-
-        GetComponent<Rigidbody2D>().velocity = relativeVelocity;
         GetComponent<Rigidbody2D>().angularVelocity = angularSpeed;
 
     }
@@ -51,9 +48,9 @@ public class SubEmitter : Weapon {
             GameObject clone = Instantiate(emission, 
                 this.gameObject.transform.position+2*new Vector3(Mathf.Cos(i*2*Mathf.PI/finalEmission), Mathf.Sin(i * 2 * Mathf.PI / finalEmission), 0f),
                 Quaternion.identity);
-            clone.GetComponent<Weapon>().launchAngle = i * 360f / finalEmission+135f;
+            clone.GetComponent<Weapon>().launchAngle = (i * 360f / finalEmission) + 135f;
             Destroy(clone, 3);
         }
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

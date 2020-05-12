@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RichochetShot : Weapon {
 
-    bool isHitTheBoundary;
     Vector2 velocity;
     public override void Kinematics()
     {
@@ -17,7 +16,7 @@ public class RichochetShot : Weapon {
             new Vector2(Mathf.Cos(randomAngle * Mathf.PI/180f), 
                         Mathf.Sin(randomAngle * Mathf.PI/180f));
         emitter.GetComponent<RichochetShot>().velocity = emitter.GetComponent<Rigidbody2D>().velocity;
-        DestroyObject(emitter, 4f);
+        Destroy(emitter, 4f);
     }
     void OnCollisionEnter2D(Collision2D collision)
     {

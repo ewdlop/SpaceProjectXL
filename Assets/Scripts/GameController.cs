@@ -86,6 +86,8 @@ public class GameController : MonoBehaviour {
     public static int stage;
     public Image loadImage;
 
+    [Header("SkyBox")]
+    public Material[] skyboxMaterials;
     private PlayerController player;
 
     public void ToggleSkipToBoss()
@@ -94,6 +96,9 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
+        if (!isMenu)
+            RenderSettings.skybox = skyboxMaterials[stage];
+
         gameTime = 0.0f;
 
         player = FindObjectOfType<PlayerController>();
@@ -196,6 +201,7 @@ public class GameController : MonoBehaviour {
     public void MoveToNextStage()
     {
         stage++;
+        stage = stage % 4;
         RestartScene();
     }
 
@@ -310,17 +316,17 @@ public class GameController : MonoBehaviour {
 
     public void UpdateMainWeaponSelection(int increament)
     {
-        mainWeaponInt = (mainWeaponInt + increament) % 9;
+        mainWeaponInt = (mainWeaponInt + increament) % 10;
         if (mainWeaponInt < 0)
-            mainWeaponInt += 9;
+            mainWeaponInt += 10;
         mainWeaponImage.sprite = mainWeaponSprites[mainWeaponInt];
     }
 
     public void UpdateSupportWeaponSelection(int increament)
     {
-        supportWeaponInt = (supportWeaponInt + increament) % 9;
+        supportWeaponInt = (supportWeaponInt + increament) % 10;
         if (supportWeaponInt < 0)
-            supportWeaponInt += 9;
+            supportWeaponInt += 10;
         supportWeaponImage.sprite = supportWeaponSprites[supportWeaponInt];
     }
 

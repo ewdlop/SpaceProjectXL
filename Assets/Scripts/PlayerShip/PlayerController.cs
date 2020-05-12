@@ -327,7 +327,7 @@ public class PlayerController : MonoBehaviour {
 
     public void RespawnPlayer()
     {
-        lives--;        
+        lives--;
         if (lives >= 0)
         {
             this.transform.position = playerSpawn.position;

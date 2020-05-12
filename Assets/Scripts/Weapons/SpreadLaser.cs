@@ -5,8 +5,6 @@ using UnityEngine;
 public class SpreadLaser : Weapon {
 
     public int shotCount = 10; 
-
-    private float unitVectorX, unitVectorY;
     private Vector2 shotDirection;
 
     void Update()

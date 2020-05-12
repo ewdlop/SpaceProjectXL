@@ -51,16 +51,13 @@ public class EnemyDebris : Enemy {
         {
             SoundController.Play((int)SFX.RockBreakSmall);
         }
+        else if (numberToSpawn > 3)
+        {
+            SoundController.Play((int)SFX.RockBreakLarge);
+        }
         else
         {
-            if (numberToSpawn > 3)
-            {
-                SoundController.Play((int)SFX.RockBreakLarge);
-            }
-            else
-            {
-                SoundController.Play((int)SFX.RockBreakMedium);
-            }
+            SoundController.Play((int)SFX.RockBreakMedium);
         }
     }
 

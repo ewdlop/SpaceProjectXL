@@ -8,7 +8,7 @@ public class UltimatePowerUp : Powerup {
     {
         touchedObject.GetComponent<PlayerController>().FillUltimateProgressToFull();
         SoundController.Play((int)SFX.PickupHealth);
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 
 }

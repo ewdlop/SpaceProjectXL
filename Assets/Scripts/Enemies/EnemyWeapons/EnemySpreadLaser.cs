@@ -10,7 +10,6 @@ public class EnemySpreadLaser : EnemyWeapon{
     [Header("Spining")]
     public float torque;
 
-    private float unitVectorX, unitVectorY;
     private Vector2 shotDirection;
 
     void Update()

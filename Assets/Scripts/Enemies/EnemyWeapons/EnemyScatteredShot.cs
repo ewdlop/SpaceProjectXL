@@ -29,9 +29,8 @@ public class EnemyScatteredShot : Weapon{
         GameObject Shot = Instantiate(this.gameObject,
                new Vector3(ship.position.x, ship.position.y, -2f),
                Quaternion.identity);
-        Vector2 relativeVelocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad),
+        Shot.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad),
                 Mathf.Sin((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad));
-        Shot.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
         //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
@@ -54,7 +53,7 @@ public class EnemyScatteredShot : Weapon{
                 blueBalls.GetComponent<EnemyScatteredShotBlueBall>().numberOfBlueBalls = numberOfScatteredBlueBalls;
                 blueBalls.GetComponent<EnemyScatteredShotBlueBall>().speedUpFactor = speedUpFactor;
             }
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBoss : Enemy
 {
@@ -51,6 +53,7 @@ public class EnemyBoss : Enemy
 
     private float timer;
     private BGM bgm;
+    public Text bossHealthText;
 
     public List<Transform> patrolTransformList = new List<Transform>();
     [Header("Boss3")]
@@ -81,7 +84,6 @@ public class EnemyBoss : Enemy
         currentState = BossState.StartMovement;
         //journeyLength = Vector3.Distance(startPosition, endPosition);
         patrolTimer = patrolTimerMax;
-
         base.Start(); // Setup the hit flash
         player = FindObjectOfType<PlayerController>();
         player.SetCanShoot(false);
@@ -131,7 +133,12 @@ public class EnemyBoss : Enemy
             currentState = BossState.Patrol;
             hasNewLerpPositions = false;
             hasReachedEndPos = true;
-            hasReachedPatrolPos = true;            
+            hasReachedPatrolPos = true;
+            bossHealthText = GameObject.Find("BossHealthNumber").GetComponent<Text>();
+            StringBuilder sb = new StringBuilder(health.ToString());
+            sb.Append("/");
+            sb.Append(maxHealth.ToString());
+            bossHealthText.text = sb.ToString();
         }
     }
 
@@ -365,49 +372,51 @@ public class EnemyBoss : Enemy
 
     new void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.GetComponent<Weapon>()!=null)
+        if (other.GetComponent<Weapon>() != null && isBoss3 && !other.GetComponent<Weapon>().isReflected)
         {
-            if (isBoss3 && !other.GetComponent<Weapon>().isReflected)
-                return;
+            return;
         }
-        if (other.tag == "Projectile")
+        if (other.tag == "Projectile" && !hasCollided)
         {
-            if (!hasCollided)
-            {
-                hasCollided = true;
+            hasCollided = true;
 
-                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-                   new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
-                   Quaternion.identity);
-                //need to tune damage
-                if (hasReachedEndPos)
-                {
-                    health -= other.gameObject.GetComponent<Weapon>().damage;
-                    StartCoroutine(HitFlash());
-                }
-                if (other.gameObject.GetComponent<Weapon>().isPlaysMissileImpactSound)
-                    SoundController.Play((int)SFX.MissileExplosion);
-                Destroy(other.gameObject);
-                float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-                //0.5f so it is not so "cracked"
-                renderer.material.SetFloat("_OcclusionStrength", 0.5f * (1.0f - healthPercentage));
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+               new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
+               Quaternion.identity);
+            //need to tune damage
+            if (hasReachedEndPos)
+            {
+                health -= other.gameObject.GetComponent<Weapon>().damage;
+                StringBuilder sb = new StringBuilder(health.ToString());
+                sb.Append("/");
+                sb.Append(maxHealth.ToString());
+                bossHealthText.text = sb.ToString();
+                StartCoroutine(HitFlash());
             }
+            if (other.gameObject.GetComponent<Weapon>().isPlaysMissileImpactSound)
+                SoundController.Play((int)SFX.MissileExplosion);
+            Destroy(other.gameObject);
+            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
+            //0.5f so it is not so "cracked"
+            renderer.material.SetFloat("_OcclusionStrength", 0.5f * (1.0f - healthPercentage));
         }
     }
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.tag == "Slicer")
+        if (other.tag == "Slicer" && hasReachedEndPos)
         {
-            if (hasReachedEndPos)
-            {
-                health -= other.gameObject.GetComponent<Weapon>().damage;
-                StartCoroutine(HitFlash());
-                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-                       new Vector3(transform.position.x, transform.position.y, -0.01f),
-                       Quaternion.identity);
-                float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
-                renderer.material.SetFloat("_OcclusionStrength", 0.5f * (1.0f - healthPercentage));
-            }
+            health -= other.gameObject.GetComponent<Weapon>().damage;
+            StringBuilder sb = new StringBuilder(health.ToString());
+            sb.Append("/");
+            sb.Append(maxHealth.ToString());
+            if (bossHealthText != null)
+                bossHealthText.text = sb.ToString();
+            StartCoroutine(HitFlash());
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                   new Vector3(transform.position.x, transform.position.y, -0.01f),
+                   Quaternion.identity);
+            float healthPercentage = Mathf.Clamp((float)health / (float)maxHealth, 0.0f, 1.0f);
+            renderer.material.SetFloat("_OcclusionStrength", 0.5f * (1.0f - healthPercentage));
         }
     }
     public void setStartEndPosition(Vector3 start, Vector3 end)

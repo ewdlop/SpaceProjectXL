@@ -45,7 +45,7 @@ public class EnemyScatteredShotBlueBall : EnemyWeapon
                     collider2d.isTrigger = true;
                 }
             }
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
     }
 }

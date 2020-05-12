@@ -12,7 +12,7 @@ public class DefaultLaser : Weapon {
 
     void Start()
     {
-        DestroyObject(gameObject, 2f);
+        Destroy(gameObject, 2f);
     }
 
     void Update()
@@ -64,10 +64,7 @@ public class DefaultLaser : Weapon {
     public override void Kinematics()
     {
         float launchAngletoRad = this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
-        Vector2 relativeVelocity =
-            speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        this.GetComponent<Rigidbody2D>().velocity =             speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
-
-        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
     }
 }

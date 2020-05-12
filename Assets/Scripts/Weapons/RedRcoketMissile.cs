@@ -5,7 +5,6 @@ using UnityEngine;
 public class RedRcoketMissile : Weapon {
 
     public float time;
-    public float forwardThrust;
     public float speedX;
     void Update()
     {

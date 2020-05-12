@@ -49,11 +49,8 @@ public class EnemyDefaultLaser : EnemyWeapon {
         //Debug.Log("launch angle " + this.GetComponent<Weapon>().launchAngle);
         //Debug.Log("RAD launch angle " + this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad);
         float launchAngletoRad = this.GetComponent<Weapon>().launchAngle * Mathf.Deg2Rad;
-        Vector2 relativeVelocity =
-            speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
-
-        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
     }
 
 }

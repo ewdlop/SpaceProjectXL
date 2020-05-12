@@ -143,7 +143,8 @@ public class EnemyActions : MonoBehaviour
     public static void MoveDown(GameObject shipPerformingAction)
     {        
         Rigidbody2D rb2d = shipPerformingAction.GetComponent<Rigidbody2D>();
-        rb2d.velocity = new Vector2(0.0f, -shipPerformingAction.GetComponent<EnemyShip>().speed);
+        if(rb2d.velocity.magnitude == 0f)
+            rb2d.velocity = new Vector2(0.0f, -shipPerformingAction.GetComponent<EnemyShip>().speed);
     }
 
     public static void ChargeStraight(GameObject shipPerformingAction)
@@ -174,7 +175,7 @@ public class EnemyActions : MonoBehaviour
             float deltaY = player.gameObject.transform.position.y - shipPerformingAction.transform.position.y;
             float facingAngle = Mathf.Atan2(deltaY, deltaX) * Mathf.Rad2Deg;
             float shipFacingAngle = shipPerformingAction.transform.eulerAngles.z;
-            shipPerformingAction.transform.eulerAngles = shipPerformingAction.transform.eulerAngles + new Vector3(0f, 0f, (facingAngle - shipFacingAngle) + 90f);
+            shipPerformingAction.transform.eulerAngles += new Vector3(0f, 0f, (facingAngle - shipFacingAngle) + 90f);
         }
     }
 
@@ -220,7 +221,9 @@ public class EnemyActions : MonoBehaviour
             shipPerformingAction.transform.position += new Vector3(difference.x, difference.y, 0f);
         }
         else
-            DestroyObject(shipPerformingAction);
+        {
+            Destroy(shipPerformingAction);
+        }
     }
     public static void MoveCircle(GameObject shipPerformingAction)
     {
@@ -268,8 +271,8 @@ public class EnemyActions : MonoBehaviour
         //y = 0.25 * sqrt(x^2 + 1)
         float dxdt = shipPerformingAction.GetComponent<EnemyShip>().speed;
         float dydx = 0.5f * shipPerformingAction.transform.position.x 
-            / (2f * Mathf.Sqrt(shipPerformingAction.transform.position.x 
-            * shipPerformingAction.transform.position.x + 1f));
+            / (2f * Mathf.Sqrt((shipPerformingAction.transform.position.x 
+            * shipPerformingAction.transform.position.x) + 1f));
         //slope=dy/dx=angle lol
         float angle = Mathf.Atan2(dydx * dxdt, dxdt) * 180f / Mathf.PI;
         shipPerformingAction.transform.position += new Vector3(dxdt * Time.deltaTime, dydx * dxdt * Time.deltaTime, 0f);
@@ -281,17 +284,23 @@ public class EnemyActions : MonoBehaviour
         float speedX = shipPerformingAction.GetComponent<EnemyShip>().speed;
         if (!shipPerformingAction.GetComponent<EnemyShip>().isRightToLeft)
         {
-            shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(1f, 0f);
-            shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
-                shipPerformingAction.GetComponent<EnemyShip>().yRange);
-            shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+            if (shipPerformingAction.GetComponent<Rigidbody2D>().velocity.magnitude == 0f)
+            {
+                shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(1f, 0f);
+                shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
+                    shipPerformingAction.GetComponent<EnemyShip>().yRange);
+                shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+            }
         }
         else
         {
-            shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(-1f, 0f);
-            shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
-                shipPerformingAction.GetComponent<EnemyShip>().yRange);
-            shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, -90f);
+            if(shipPerformingAction.GetComponent<Rigidbody2D>().velocity.magnitude == 0f)
+            {
+                shipPerformingAction.GetComponent<Rigidbody2D>().velocity = speedX * new Vector2(-1f, 0f);
+                shipPerformingAction.transform.position = new Vector2(shipPerformingAction.transform.position.x,
+                    shipPerformingAction.GetComponent<EnemyShip>().yRange);
+                shipPerformingAction.transform.eulerAngles = new Vector3(0f, 0f, -90f);
+            }
         }
     }
     public static void RotateBetweenAngles(GameObject shipPerformingAction)
@@ -303,9 +312,9 @@ public class EnemyActions : MonoBehaviour
         float start = (angleB + angleA) / 2f;
         float amplitude = (angleB - angleA)/2f;
         float phase = shipPerformingAction.GetComponent<EnemyShip>().phase * Mathf.PI / 180f;
-        shipPerformingAction.transform.eulerAngles= new Vector3(0f, 0f, 
-            amplitude * Mathf.Sin(roateSpeed * shipPerformingAction.GetComponent<EnemyShip>().timer +
-            phase) + start);
+        shipPerformingAction.transform.eulerAngles= new Vector3(0f, 0f,
+            (amplitude * Mathf.Sin((roateSpeed * shipPerformingAction.GetComponent<EnemyShip>().timer) +
+            phase)) + start);
     }
     
     public static void MoveLeftToRight(GameObject shipPerformingAction)

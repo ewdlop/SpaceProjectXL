@@ -8,6 +8,6 @@ public class ShieldPowerUp : Powerup
     {
         touchedObject.GetComponent<PlayerController>().EnableShield(true);
         SoundController.Play((int)SFX.PickupHealth);
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

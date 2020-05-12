@@ -8,7 +8,7 @@ public class CannonPowerUp : Powerup {
     {
         touchedObject.GetComponent<PlayerController>().EnableCannon(true);
         SoundController.Play((int)SFX.PickupHealth);
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 
 }

@@ -46,7 +46,7 @@ public class EnemyExpandingShot : Weapon{
                     Mathf.Sin(2 * Mathf.PI / number * i)
                     );
             }
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -57,8 +57,8 @@ public class EnemyExpandingShot : Weapon{
                 Destroy(GetComponent<CircleCollider2D>());
                 if (GetComponentInChildren<Light>() != null)
                 {
-                    GetComponentInChildren<Light>().range = GetComponentInChildren<Light>().range * (1f + expandingFactor);
-                    GetComponentInChildren<Light>().intensity = GetComponentInChildren<Light>().intensity * (1f + expandingFactor);
+                    GetComponentInChildren<Light>().range *= (1f + expandingFactor);
+                    GetComponentInChildren<Light>().intensity *= (1f + expandingFactor);
                 }
                 CircleCollider2D collider2d = gameObject.AddComponent<CircleCollider2D>();
                 collider2d.isTrigger = true;

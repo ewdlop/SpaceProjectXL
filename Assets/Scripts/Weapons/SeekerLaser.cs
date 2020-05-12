@@ -5,11 +5,11 @@ using UnityEngine;
 public class SeekerLaser : Weapon {
 
     public Enemy[] enemies;
-    public GameObject target;
-    public GameObject projectile;
+    public GameObject damageEffect;
+    public GameObject line;
     public float laserBoxSpeed;
-    public int numberOfLaserPerBall;
     public bool isPrefab;
+
     void Update()
     {
         if(!isPrefab)
@@ -18,39 +18,44 @@ public class SeekerLaser : Weapon {
 
     public override void Kinematics()
     {
-        if (target == null)
+        foreach(Transform child in transform)
         {
-            enemies = FindObjectsOfType<Enemy>();
-            if (enemies.Length > 0)
+            if (child.GetComponent<SeekerLaserProjectile>().target == null)
             {
-                int random = UnityEngine.Random.Range(0, enemies.Length);
-                target = enemies[random].gameObject;
-                LineRenderer lineRenderer = GetComponent<LineRenderer>();
-                Vector3[] points = { gameObject.transform.position, target.transform.position };
-                lineRenderer.SetPositions(points);
+                enemies = FindObjectsOfType<Enemy>();
+                if (enemies.Length > 0)
+                {
+                    int random = Random.Range(0, enemies.Length);
+                    child.GetComponent<SeekerLaserProjectile>().target = enemies[random].gameObject;
+                }
+                else
+                {
+                    LineRenderer lineRenderer = child.GetComponent<LineRenderer>();
+                    Vector3[] points = { child.transform.position, child.transform.position };
+                    lineRenderer.SetPositions(points);
+                }
             }
             else
             {
-                LineRenderer lineRenderer = GetComponent<LineRenderer>();
-                Vector3[] points = { gameObject.transform.position, gameObject.transform.position };
+                LineRenderer lineRenderer = child.GetComponent<LineRenderer>();
+                Vector3[] points = { child.transform.position, child.GetComponent<SeekerLaserProjectile>().target.transform.position };
                 lineRenderer.SetPositions(points);
+                GameObject effect = Instantiate(damageEffect, child.GetComponent<SeekerLaserProjectile>().target.transform.position, Quaternion.identity);
+                Destroy(effect, 0.1f);
             }
         }
-        else
-        {
-            LineRenderer lineRenderer = GetComponent<LineRenderer>();
-            Vector3[] points = { gameObject.transform.position, target.transform.position };
-            lineRenderer.SetPositions(points);
-            GameObject effect = Instantiate(projectile, target.transform.position, Quaternion.identity);
-            DestroyObject(effect, 0.1f);
-        }
+        
     }
     public override void Shoot(Transform ship, Transform leftFire, Transform rightFire)
     {
         GameObject laser = Instantiate(gameObject, ship.position, Quaternion.identity);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
+        Instantiate(line, laser.transform);
         laser.GetComponent<SeekerLaser>().isPrefab = false;
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, laserBoxSpeed);
-        DestroyObject(laser, 2f);
+        Destroy(laser, 2f);
     }
 
 }

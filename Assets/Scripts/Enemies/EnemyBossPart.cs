@@ -200,10 +200,9 @@ public class EnemyBossPart : EnemyShip
                 }
                 else
                 {
-                    if (parentShip.BossIsActive())
+                    if (parentShip.BossIsActive() && !parentShip.isBoss3)
                     {
-                        if (!parentShip.isBoss3)
-                            parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
+                        parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
                     }
                 }
                 Destroy(other.gameObject);
@@ -227,16 +226,13 @@ public class EnemyBossPart : EnemyShip
                       Quaternion.identity);
                 StartCoroutine(HitFlash());
             }
-            else
+            else if (parentShip.BossIsActive())
             {
-                if (parentShip.BossIsActive())
-                {
-                    Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-                      new Vector3(transform.position.x, transform.position.y, -0.01f),
-                      Quaternion.identity);
-                    parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
-                    StartCoroutine(HitFlash());
-                }
+                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+                  new Vector3(transform.position.x, transform.position.y, -0.01f),
+                  Quaternion.identity);
+                parentShip.decrementHealth(other.gameObject.GetComponent<Weapon>().damage);
+                StartCoroutine(HitFlash());
             }
         }
     }
@@ -248,7 +244,7 @@ public class EnemyBossPart : EnemyShip
         {
             SoundController.Play((int)SFX.ShipDeath, 0.25f);
             GameController.playerScore += score;
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

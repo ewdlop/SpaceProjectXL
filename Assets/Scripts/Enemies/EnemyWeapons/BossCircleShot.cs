@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossCircleShot : Weapon{
+public class BossCircleShot : EnemyWeapon{
 
     public GameObject smallBall;
     public GameObject[] smallBalls;

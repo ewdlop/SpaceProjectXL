@@ -40,20 +40,17 @@ public abstract class Enemy : MonoBehaviour {
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Projectile")
+        if (other.tag == "Projectile" && !hasCollided)
         {
-            if (!hasCollided)
-            {
-                hasCollided = true;
-                Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
-                   new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
-                   Quaternion.identity);
-                //need to tune damage
-                health -= other.gameObject.GetComponent<Weapon>().damage;
-                //0.5f so it is not so "cracked"
-                //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
-                StartCoroutine(HitFlash());
-            }
+            hasCollided = true;
+            Instantiate(other.gameObject.GetComponent<Weapon>().hiteffect,
+               new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, -0.01f),
+               Quaternion.identity);
+            //need to tune damage
+            health -= other.gameObject.GetComponent<Weapon>().damage;
+            //0.5f so it is not so "cracked"
+            //renderer.material.SetFloat("_OcclusionStrength", 0.5f*(1.0f - healthPercentage));
+            StartCoroutine(HitFlash());
         }
     }
 

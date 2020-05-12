@@ -234,7 +234,7 @@ public class ScriptedSpawner : MonoBehaviour
     }
     void SetStageText()
     {
-        if (spawnScripts[GameController.stage] != null && !isTestingStage)
+        if (GameController.stage < spawnScripts.Length && spawnScripts[GameController.stage] != null && !isTestingStage)
         {
             spawnScript = spawnScripts[GameController.stage];
             //spawnScript = defaultScript;

@@ -17,7 +17,7 @@ public class CircleMissle : Weapon {
     {
         velocityAngle = 0.0f;
         time = 1.0f / 60.0f;
-        DestroyObject(gameObject, 2f);
+        Destroy(gameObject, 2f);
     }
 
     void Update()

@@ -18,7 +18,7 @@ public class SeekerMissile : Weapon {
     private Enemy[] enemies;
 
     void Update()
-    {      
+    {
         Kinematics();
     }
 
@@ -32,12 +32,12 @@ public class SeekerMissile : Weapon {
         {
             for (int i = 0; i < shotCount; ++i)
             {
-                leftProj = Instantiate(this.gameObject, leftFire.position, leftFire.rotation) as GameObject;
-                rightProj = Instantiate(this.gameObject, rightFire.position, rightFire.rotation) as GameObject;
+                leftProj = Instantiate(this.gameObject, leftFire.position, leftFire.rotation);
+                rightProj = Instantiate(this.gameObject, rightFire.position, rightFire.rotation);
 
                 // Destroy the seeker after a certain time to avoid too much on screen
-                DestroyObject(leftProj, destroyTimer);
-                DestroyObject(rightProj, destroyTimer);
+                Destroy(leftProj, destroyTimer);
+                Destroy(rightProj, destroyTimer);
             }
             SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
         }
@@ -54,7 +54,7 @@ public class SeekerMissile : Weapon {
             {
                 if (tempTarget != null)
                 {
-                    DestroyObject(tempTarget);
+                    Destroy(tempTarget);
                 }
                 int random = UnityEngine.Random.Range(0, enemies.Length);
 
@@ -76,7 +76,7 @@ public class SeekerMissile : Weapon {
                 Vector2 velocity = gameObject.GetComponent<Rigidbody2D>().velocity;
                 if (Mathf.Approximately(velocity.x, 0.0f) && Mathf.Approximately(velocity.y, 0.0f))
                 {
-                    DestroyObject(gameObject);
+                    Destroy(gameObject);
 
                 }
             }

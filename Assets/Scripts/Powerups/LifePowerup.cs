@@ -9,6 +9,6 @@ public class LifePowerup : Powerup {
         // Add a life to the player
         player.GetComponent<PlayerController>().AddLife();
         SoundController.Play((int)SFX.PickupHealth);
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

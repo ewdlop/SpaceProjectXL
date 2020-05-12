@@ -27,7 +27,7 @@ public class SeekerEnemyWeapon : EnemyWeapon {
         // Set the transform just once since this shot  
         // only goes straight to the target
         projectile.GetComponent<SeekerEnemyWeapon>().target = target;
-        DestroyObject(projectile, destroyDuration);
+        Destroy(projectile, destroyDuration);
     }
 
     public override void Kinematics()

@@ -11,6 +11,6 @@ public class EnemyKamikaze : Weapon{
 
     public override void Kinematics()
     {
-        
+
     }
 }

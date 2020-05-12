@@ -16,6 +16,8 @@ TagManager:
   - EP
   - BoxBound
   - BossLaser
+  - AchievementList
+  - BossHealthText
   layers:
   - Default
   - TransparentFX
