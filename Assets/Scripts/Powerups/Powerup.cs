@@ -25,15 +25,11 @@ public abstract class Powerup : MonoBehaviour {
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
-    {    
+    {
         // Collided object is a Powerup so activate the effect on our gameobject
-        if (collision.tag == "Player")
-        {
-            if (!hasCollided)
-            {
-                hasCollided = true;
-                ActivateEffect(collision.gameObject);
-            }
+        if (collision.tag == "Player" && !hasCollided) {
+            hasCollided = true;
+            ActivateEffect(collision.gameObject);
         }
     }
 }

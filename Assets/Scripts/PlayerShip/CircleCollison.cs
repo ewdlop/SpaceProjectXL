@@ -17,7 +17,7 @@ public class CircleCollison : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collidedTarget)
     {
         if (collidedTarget.gameObject.GetComponent<Enemy>() != null &&
-            !playerController.isInvincible)
+            !playerController.IsInvincible)
         {
             playerController.Hit();
         }
@@ -33,7 +33,7 @@ public class CircleCollison : MonoBehaviour {
                             Quaternion.identity);
                 Destroy(collidedTarget.gameObject);
                 // Set ship to invincible if it's not current invincible
-                if (!playerController.isInvincible)
+                if (!playerController.IsInvincible)
                 {
                     playerController.Hit();
                 }
