@@ -18,8 +18,10 @@ public class PlayerController : MonoBehaviour {
     public Transform playerSpawn; // Where the player is respawned
     public GameObject colliderCircle;
     public float invincibleDuration = 1.2f;
-    public bool isInvincible;
+    [SerializeField]
+    private bool isInvincible;
     public float deathDuration = 1.5f;
+    [SerializeField]
     private bool isDead;
 
     [Header("Shooting Controls")]
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour {
     // For use in making ship flash upon receiving damage
     private new Renderer renderer;
     private Renderer circleRenderer;
-    private Renderer cannonRenderer;
+    //private Renderer cannonRenderer;
     private bool isMovingToWin;
     private bool canShoot = true;
 
@@ -61,20 +63,18 @@ public class PlayerController : MonoBehaviour {
     [Header("Shield")]
     public GameObject shield;
 
-    public bool IsInvincible
-    {
-        get
-        {
-            return isInvincible;
-        }
-    }
-    public bool IsDead
-    {
-        get
-        {
-            return isDead;
-        }
-    }
+    [Header("PowerUpImage")]
+    [SerializeField]
+    private Image shieldImage;
+    [SerializeField]
+    private Image multiDirectionalImage;
+    [SerializeField]
+    private Image fireRateBoostImage;
+    public bool IsDead => isDead;
+    public bool IsInvincible => isInvincible;
+    public Image ShieldImage { get => shieldImage; set => shieldImage = value; }
+    public Image MultiDirectionalImage { get => multiDirectionalImage; set => multiDirectionalImage = value; }
+    public Image FireRateBoostImage { get => fireRateBoostImage; set => fireRateBoostImage = value; }
 
     void Start ()
     {
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 	void Update ()
-    {       
+    {
         if (!IsDead)
         {
             if (!isMovingToWin)
@@ -125,11 +125,11 @@ public class PlayerController : MonoBehaviour {
         startPosition = transform.position;
         endPosition = new Vector3(transform.position.x, WinPosition.position.y, transform.position.z);
         journeyLength = Vector2.Distance(startPosition, endPosition);
-        startTime = Time.time;       
+        startTime = Time.time;
     }
 
     void LerpMovementToWin()
-    {                 
+    {
         float distCovered = (Time.time - startTime) * (speed*1.5f);
         float fracJourney = distCovered / journeyLength;
 
@@ -147,10 +147,9 @@ public class PlayerController : MonoBehaviour {
     void LineUpShipWithCursor()
     {
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float facingAngle = Mathf.Atan2(
-            mouseWorldPosition.y - cannon.transform.position.y, 
+        cannonAngle = Mathf.Atan2(
+            mouseWorldPosition.y - cannon.transform.position.y,
             mouseWorldPosition.x - cannon.transform.position.x) * Mathf.Rad2Deg;
-        cannonAngle = facingAngle;
         cannon.transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
         transform.eulerAngles = new Vector3(0f, 0f, cannonAngle - 90f);
     }
@@ -159,9 +158,9 @@ public class PlayerController : MonoBehaviour {
     void Kinematics()
     {
         float deltaX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        transform.position = transform.position + deltaX * new Vector3(1f, 0f, 0f);
+        transform.position += deltaX * new Vector3(1f, 0f, 0f);
         float deltaY = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        transform.position = transform.position + deltaY * new Vector3(0f, 1f, 0f);
+        transform.position += deltaY * new Vector3(0f, 1f, 0f);
 
         float newX = gameObject.transform.position.x;
         float newY = gameObject.transform.position.y;
@@ -277,7 +276,7 @@ public class PlayerController : MonoBehaviour {
         ultimateProgress = ultimateDuration;
     }
 
-    public float getUltimateProgress()
+    public float GetUltimateProgress()
     {
         return ultimateProgress;
     }
@@ -322,7 +321,7 @@ public class PlayerController : MonoBehaviour {
         EnableFireRateBoost(0);
         gameObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
         yield return new WaitForSeconds(deathDuration);
-        RespawnPlayer();  
+        RespawnPlayer();
     }
 
     public void RespawnPlayer()
@@ -356,11 +355,13 @@ public class PlayerController : MonoBehaviour {
     public void EnableShield(bool enable)
     {
         shield.SetActive(enable);
+        ShieldImage.gameObject.SetActive(enable);
     }
 
     public void EnableCannon(bool enable)
     {
         cannon.SetActive(enable);
+        MultiDirectionalImage.gameObject.SetActive(enable);
         if (!enable)
             cannonAngle = 90f;
     }
@@ -372,6 +373,7 @@ public class PlayerController : MonoBehaviour {
 
     public void EnableFireRateBoost(int enable)
     {
+        FireRateBoostImage.gameObject.SetActive(enable!=0);
         isFireRateBoosted = enable;
     }
 
@@ -380,6 +382,4 @@ public class PlayerController : MonoBehaviour {
         if (isShootingLaserBeam)
             EnableLaserBeam(true);
     }
-
-
 }

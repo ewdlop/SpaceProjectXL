@@ -39,7 +39,7 @@ public class UltimateManger : MonoBehaviour {
     {
         //update ultimateSlider to the progress value
         if (playerShip != null)
-            this.ultimateSlider.GetComponent<Slider>().value = playerShip.GetComponent<PlayerController>().getUltimateProgress();
+            this.ultimateSlider.GetComponent<Slider>().value = playerShip.GetComponent<PlayerController>().GetUltimateProgress();
     }
     
 }
