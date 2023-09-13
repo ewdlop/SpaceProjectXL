@@ -1,7 +1,6 @@
 # SpaceProjectXL
 
-Live Link:
-legav.itch.io/spaceprojectdemo
+[GamePlay Link](legav.itch.io/spaceprojectdemo)
 
 ## Gameplay ScreenShots
 ![Screenshot 0](https://cdn.discordapp.com/attachments/329460036684218373/727618106737950901/sceenshot.PNG)
