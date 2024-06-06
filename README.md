@@ -1,12 +1,11 @@
 # SpaceProjectXL
 
-[GamePlay Link](legav.itch.io/spaceprojectdemo)
-
-#ToDO: Fix screenshot
+[GamePlay Link](https://legav.itch.io/spaceprojectdemo)
 
 ## Gameplay ScreenShots
-![Screenshot 0](https://cdn.discordapp.com/attachments/329460036684218373/727618106737950901/sceenshot.PNG)
-![Screenshot 1](https://cdn.discordapp.com/attachments/329460036684218373/727616393763094599/screenshot3.PNG)
-![Screenshot 2](https://cdn.discordapp.com/attachments/329460036684218373/727616397760397394/screenshot2.PNG)
-![Screenshot 3](https://cdn.discordapp.com/attachments/329460036684218373/727616398947516456/screenshot.PNG)
-![Screenshot 4](https://cdn.discordapp.com/attachments/329460036684218373/727533211462271076/test.PNG)
+
+![image](https://github.com/ewdlop/SpaceProjectXL/assets/25368970/e4adfc79-1f95-4858-b7ee-f5fdb3266b83)
+![image](https://github.com/ewdlop/SpaceProjectXL/assets/25368970/892110dc-e2af-4346-9a9d-10ab3516c9ae)
+![image](https://github.com/ewdlop/SpaceProjectXL/assets/25368970/596761b5-30e7-4aaf-8640-c87151a028b2)
+![image](https://github.com/ewdlop/SpaceProjectXL/assets/25368970/07382526-753b-4acf-9eaf-63f6a556e6d0)
+![image](https://github.com/ewdlop/SpaceProjectXL/assets/25368970/311022c3-89d0-4ee6-8589-90e0e0deed7e)
