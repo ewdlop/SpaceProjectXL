@@ -2,6 +2,8 @@
 
 [GamePlay Link](legav.itch.io/spaceprojectdemo)
 
+#ToDO: Fix screenshot
+
 ## Gameplay ScreenShots
 ![Screenshot 0](https://cdn.discordapp.com/attachments/329460036684218373/727618106737950901/sceenshot.PNG)
 ![Screenshot 1](https://cdn.discordapp.com/attachments/329460036684218373/727616393763094599/screenshot3.PNG)
