@@ -47,12 +47,12 @@ public abstract class EnemyWeapon : Weapon
                 gameObject.tag = "Projectile";
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 isReflected = true;
-                float cosineOfincidentAngleRelativetoNormal = Vector2.Dot(normalUnitVector, gameObject.GetComponent<Rigidbody2D>().velocity);
-                Vector2 gameObjectVelocityVector = gameObject.GetComponent<Rigidbody2D>().velocity - 2 * (cosineOfincidentAngleRelativetoNormal) * normalUnitVector;
+                float cosineOfincidentAngleRelativetoNormal = Vector2.Dot(normalUnitVector, gameObject.GetComponent<Rigidbody2D>().linearVelocity);
+                Vector2 gameObjectVelocityVector = gameObject.GetComponent<Rigidbody2D>().linearVelocity - 2 * (cosineOfincidentAngleRelativetoNormal) * normalUnitVector;
                 float gameObjectVelocityVectorX = gameObjectVelocityVector.x;
                 float gameObjectVelocityVectorY = gameObjectVelocityVector.y;
                 Vector2 finalgameObjectVelocity = new Vector2(gameObjectVelocityVectorX, gameObjectVelocityVectorY);
-                gameObject.GetComponent<Rigidbody2D>().velocity = 2f * finalgameObjectVelocity;
+                gameObject.GetComponent<Rigidbody2D>().linearVelocity = 2f * finalgameObjectVelocity;
 
                 // Change rotation of the laser to match reflected direction
                 gameObject.transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(gameObjectVelocityVectorY, gameObjectVelocityVectorX) * 180f / Mathf.PI - 90f);

@@ -13,7 +13,7 @@ public class TrailLaser : Weapon
             launchAngletoRad = random;
         else
             launchAngletoRad = Mathf.PI - random;
-        gameObject.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
     }
 
@@ -38,10 +38,10 @@ public class TrailLaser : Weapon
                 target = enemies[random].gameObject;
             }
         } else {
-            float velocityRadian = Mathf.Atan2(gameObject.GetComponent<Rigidbody2D>().velocity.y, gameObject.GetComponent<Rigidbody2D>().velocity.x);
+            float velocityRadian = Mathf.Atan2(gameObject.GetComponent<Rigidbody2D>().linearVelocity.y, gameObject.GetComponent<Rigidbody2D>().linearVelocity.x);
             Vector3 targetDisplacement = target.transform.position - gameObject.transform.position;
-            float currentSpeed = gameObject.GetComponent<Rigidbody2D>().velocity.magnitude;
-            float cosine = Vector3.Dot(targetDisplacement, gameObject.GetComponent<Rigidbody2D>().velocity) / (targetDisplacement.magnitude * currentSpeed);
+            float currentSpeed = gameObject.GetComponent<Rigidbody2D>().linearVelocity.magnitude;
+            float cosine = Vector3.Dot(targetDisplacement, gameObject.GetComponent<Rigidbody2D>().linearVelocity) / (targetDisplacement.magnitude * currentSpeed);
             float displacmentArcRad = Mathf.Acos(cosine);//[0,Pi]
             float maxTurnRad = Mathf.Min(displacmentArcRad, Mathf.PI * 0.95f);
             if (displacmentArcRad < 0.1f) {

@@ -16,7 +16,7 @@ public abstract class Powerup : MonoBehaviour {
 
     protected void Update()
     {
-        rb2d.velocity = new Vector2(0.0f, -3.0f);
+        rb2d.linearVelocity = new Vector2(0.0f, -3.0f);
     }
 
     protected void LateUpdate()

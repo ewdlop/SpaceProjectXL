@@ -33,7 +33,7 @@ public class EnemyConsecutiveShots : EnemyWeapon{
 
         Vector2 relativeVelocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad),
                 Mathf.Sin((ship.transform.eulerAngles.z - 90f)* Mathf.Deg2Rad));
-        Shot.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        Shot.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
         //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 

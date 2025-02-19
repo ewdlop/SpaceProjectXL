@@ -12,7 +12,7 @@ public class ScrollingBG : MonoBehaviour {
         test = GameController.instance;
         rb2d = this.GetComponent<Rigidbody2D>();
         //rb2d.velocity = new Vector2(0.0f, GameController.instance.scrollSpeed);
-        rb2d.velocity = new Vector2(0.0f, -5.0f);
+        rb2d.linearVelocity = new Vector2(0.0f, -5.0f);
     }
 	
 	// Update is called once per frame
@@ -21,7 +21,7 @@ public class ScrollingBG : MonoBehaviour {
 		if (GameController.instance.isGameOver == true)
         {
             //Debug.Log("Stop scrolling BG");
-            rb2d.velocity = Vector2.zero;
+            rb2d.linearVelocity = Vector2.zero;
         }
         else
         {

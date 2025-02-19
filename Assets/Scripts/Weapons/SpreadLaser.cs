@@ -30,7 +30,7 @@ public class SpreadLaser : Weapon {
     public override void Kinematics()
     {
         Vector2 relativeVelocity = speed * shotDirection;
-        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        this.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(relativeVelocity.y, relativeVelocity.x) * Mathf.Rad2Deg - 90f);
     }
 }

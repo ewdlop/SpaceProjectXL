@@ -21,7 +21,7 @@ public class EmittedLaser : Weapon {
             speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
 
-        this.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        this.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
         this.transform.eulerAngles = new Vector3(0f, 0f, this.GetComponent<Weapon>().launchAngle - 90f);
     }
 }

@@ -33,7 +33,7 @@ public class EnemySpreadLaser : EnemyWeapon{
             Vector2 relativeVelocity = speed * new Vector2(
             Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad ) * direction.x - Mathf.Sin((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad) * direction.y
            ,Mathf.Sin((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad ) * direction.x + Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad) * direction.y);
-            SpreadLaser.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+            SpreadLaser.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
             SpreadLaser.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(relativeVelocity.y, relativeVelocity.x) * Mathf.Rad2Deg - 90f);
             //for spining
             SpreadLaser.GetComponent<Rigidbody2D>().AddTorque(torque, ForceMode2D.Impulse);

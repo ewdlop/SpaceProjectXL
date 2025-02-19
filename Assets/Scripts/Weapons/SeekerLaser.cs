@@ -54,7 +54,7 @@ public class SeekerLaser : Weapon {
         Instantiate(line, laser.transform);
         Instantiate(line, laser.transform);
         laser.GetComponent<SeekerLaser>().isPrefab = false;
-        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, laserBoxSpeed);
+        laser.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, laserBoxSpeed);
         Destroy(laser, 2f);
     }
 

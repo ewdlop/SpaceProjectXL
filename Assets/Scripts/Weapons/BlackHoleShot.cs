@@ -23,7 +23,7 @@ public class BlackHoleShot: Weapon {
         Vector2 relativeVelocity =
            speed * new Vector2(Mathf.Cos(launchAngletoRad),
            Mathf.Sin(launchAngletoRad));
-        blackHole.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        blackHole.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
     }
 
     public override void Kinematics()

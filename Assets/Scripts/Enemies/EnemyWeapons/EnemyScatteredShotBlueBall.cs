@@ -35,7 +35,7 @@ public class EnemyScatteredShotBlueBall : EnemyWeapon
                 for (int i = 0; i < numberOfBlueBalls; i++)
                 {
                     GameObject blueBalls = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
-                    blueBalls.GetComponent<Rigidbody2D>().velocity = smallBlueBallSpeed * new Vector2(
+                    blueBalls.GetComponent<Rigidbody2D>().linearVelocity = smallBlueBallSpeed * new Vector2(
                         Mathf.Cos(2 * Mathf.PI / numberOfBlueBalls * i),
                         Mathf.Sin(2 * Mathf.PI / numberOfBlueBalls * i)
                         );

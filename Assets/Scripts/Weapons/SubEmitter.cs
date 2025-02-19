@@ -27,7 +27,7 @@ public class SubEmitter : Weapon {
 
     public override void Kinematics()
     {
-        GetComponent<Rigidbody2D>().velocity =             speed * new Vector2(Mathf.Cos(launchAngletoRad),
+        GetComponent<Rigidbody2D>().linearVelocity =             speed * new Vector2(Mathf.Cos(launchAngletoRad),
             Mathf.Sin(launchAngletoRad));
         GetComponent<Rigidbody2D>().angularVelocity = angularSpeed;
 

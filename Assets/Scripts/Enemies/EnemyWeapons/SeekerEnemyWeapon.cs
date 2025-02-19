@@ -39,7 +39,7 @@ public class SeekerEnemyWeapon : EnemyWeapon {
                 target = GameObject.Find("Boss3(Clone)").transform;
             }
             Vector2 direction = target.position - this.transform.position;
-            this.GetComponent<Rigidbody2D>().velocity = speed * direction.normalized;
+            this.GetComponent<Rigidbody2D>().linearVelocity = speed * direction.normalized;
         }
 
     }

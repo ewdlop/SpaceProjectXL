@@ -53,8 +53,8 @@ public class WaveMissile : Weapon {
             speedY *= -1;
         }
         float launchAngletoRad = launchAngle * Mathf.PI/180f;
-        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * Mathf.Cos(launchAngletoRad) - speedY * Mathf.Sin(launchAngletoRad), speed * Mathf.Sin(launchAngletoRad) + speedY * Mathf.Cos(launchAngletoRad));
-        velocityAngle = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.y, gameObject.GetComponent<Rigidbody2D>().velocity.x);
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * Mathf.Cos(launchAngletoRad) - speedY * Mathf.Sin(launchAngletoRad), speed * Mathf.Sin(launchAngletoRad) + speedY * Mathf.Cos(launchAngletoRad));
+        velocityAngle = Mathf.Atan2(GetComponent<Rigidbody2D>().linearVelocity.y, gameObject.GetComponent<Rigidbody2D>().linearVelocity.x);
         transform.eulerAngles = new Vector3(0f, 0f, velocityAngle * Mathf.Rad2Deg - 180f);
     }
 }

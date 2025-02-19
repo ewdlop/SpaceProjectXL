@@ -29,7 +29,7 @@ public class EnemyScatteredShot : Weapon{
         GameObject Shot = Instantiate(this.gameObject,
                new Vector3(ship.position.x, ship.position.y, -2f),
                Quaternion.identity);
-        Shot.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad),
+        Shot.GetComponent<Rigidbody2D>().linearVelocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad),
                 Mathf.Sin((ship.transform.eulerAngles.z - 90f) * Mathf.Deg2Rad));
         //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
@@ -42,7 +42,7 @@ public class EnemyScatteredShot : Weapon{
             for (int i = 0; i < numberOfScatteredBlueBalls; i++)
             {
                 GameObject blueBalls = Instantiate(smallBlueBall, gameObject.transform.position, Quaternion.identity);
-                blueBalls.GetComponent<Rigidbody2D>().velocity = smallBlueBallSpeed * new Vector2(
+                blueBalls.GetComponent<Rigidbody2D>().linearVelocity = smallBlueBallSpeed * new Vector2(
                     Mathf.Cos(2 * Mathf.PI / numberOfScatteredBlueBalls * i),
                     Mathf.Sin(2 * Mathf.PI / numberOfScatteredBlueBalls * i)
                     );

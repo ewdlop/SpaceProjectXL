@@ -73,7 +73,7 @@ public class SeekerMissile : Weapon {
                 // Slow down the missile 
 
                 // Shoot explosion effect
-                Vector2 velocity = gameObject.GetComponent<Rigidbody2D>().velocity;
+                Vector2 velocity = gameObject.GetComponent<Rigidbody2D>().linearVelocity;
                 if (Mathf.Approximately(velocity.x, 0.0f) && Mathf.Approximately(velocity.y, 0.0f))
                 {
                     Destroy(gameObject);
@@ -86,7 +86,7 @@ public class SeekerMissile : Weapon {
             float deltaXChasingMissiles = target.transform.position.x - gameObject.transform.position.x;
             float deltaYChasingMissiles = target.transform.position.y - gameObject.transform.position.y;
             float angleChasingMissiles = Mathf.Atan2(deltaYChasingMissiles, deltaXChasingMissiles);
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(10 * Mathf.Cos(angleChasingMissiles), 10 * Mathf.Sin(angleChasingMissiles));
+            gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(10 * Mathf.Cos(angleChasingMissiles), 10 * Mathf.Sin(angleChasingMissiles));
             gameObject.transform.eulerAngles = new Vector3(0f, 0f, angleChasingMissiles * Mathf.Rad2Deg - 90f);
             if (targetSprite != null)
             {

@@ -28,7 +28,7 @@ public class EnemyExpandingShot : Weapon{
                Quaternion.identity);
         Vector2 relativeVelocity = speed * new Vector2(Mathf.Cos((ship.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad),
                 Mathf.Sin((ship.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad));
-        Shot.GetComponent<Rigidbody2D>().velocity = relativeVelocity;
+        Shot.GetComponent<Rigidbody2D>().linearVelocity = relativeVelocity;
         //SoundController.Play((int)SFX.ShipLaserFire, 0.3f);
     }
 
@@ -41,7 +41,7 @@ public class EnemyExpandingShot : Weapon{
             for (int i = 0; i < number; i++)
             {
                 GameObject greenBalls = Instantiate(smallGreenBall, gameObject.transform.position, Quaternion.identity);
-                greenBalls.GetComponent<Rigidbody2D>().velocity = greenBallSpeed * new Vector2(
+                greenBalls.GetComponent<Rigidbody2D>().linearVelocity = greenBallSpeed * new Vector2(
                     Mathf.Cos(2 * Mathf.PI / number * i),
                     Mathf.Sin(2 * Mathf.PI / number * i)
                     );

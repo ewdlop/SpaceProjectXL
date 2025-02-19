@@ -1,0 +1,4 @@
+repository "SpaceProjectXL@InTentStudio@cloud"
+  path "/"
+    br "/main"
+    co "/main"

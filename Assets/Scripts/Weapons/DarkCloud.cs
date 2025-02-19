@@ -16,7 +16,7 @@ public class DarkCloud : Weapon{
         GameObject darkCloud = Instantiate(gameObject,
          new Vector3(ship.position.x, ship.position.y, 0.01f),
          ship.rotation);
-        darkCloud.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(Mathf.Cos((ship.GetComponent<PlayerController>().cannonAngle - 180f) * Mathf.Deg2Rad),
+        darkCloud.GetComponent<Rigidbody2D>().linearVelocity = speed * new Vector2(Mathf.Cos((ship.GetComponent<PlayerController>().cannonAngle - 180f) * Mathf.Deg2Rad),
                                                                              Mathf.Sin((ship.GetComponent<PlayerController>().cannonAngle - 180f) * Mathf.Deg2Rad));
         Destroy(darkCloud, 0.5f);
     }

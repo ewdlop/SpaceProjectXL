@@ -12,10 +12,10 @@ public class RichochetShot : Weapon {
     {
         GameObject emitter = Instantiate(gameObject, ship.position + new Vector3(0f, 0.5f, 0f),Quaternion.identity);
         float randomAngle = Random.Range(0f,180f);
-        emitter.GetComponent<Rigidbody2D>().velocity = speed * 
+        emitter.GetComponent<Rigidbody2D>().linearVelocity = speed * 
             new Vector2(Mathf.Cos(randomAngle * Mathf.PI/180f), 
                         Mathf.Sin(randomAngle * Mathf.PI/180f));
-        emitter.GetComponent<RichochetShot>().velocity = emitter.GetComponent<Rigidbody2D>().velocity;
+        emitter.GetComponent<RichochetShot>().velocity = emitter.GetComponent<Rigidbody2D>().linearVelocity;
         Destroy(emitter, 4f);
     }
     void OnCollisionEnter2D(Collision2D collision)
@@ -28,15 +28,15 @@ public class RichochetShot : Weapon {
             if (collision.gameObject.name == "Left" ||
                 collision.gameObject.name == "Right")
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1f, velocity.y);
-                velocity = GetComponent<Rigidbody2D>().velocity;
+                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(velocity.x * -1f, velocity.y);
+                velocity = GetComponent<Rigidbody2D>().linearVelocity;
             }
 
             if (collision.gameObject.name == "Top" ||
                 collision.gameObject.name == "Bottom")
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1f);
-                velocity = GetComponent<Rigidbody2D>().velocity;
+                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(velocity.x, velocity.y * -1f);
+                velocity = GetComponent<Rigidbody2D>().linearVelocity;
             }
         }
     }

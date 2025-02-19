@@ -74,7 +74,7 @@ public class EnemyDebris : Enemy {
             speed = UnityEngine.Random.Range(0.2f, maxSpeed);
             temp.GetComponent<EnemyDebris>().isDebris = true;
             // Update the speed of the object
-            temp.GetComponent<Rigidbody2D>().velocity =
+            temp.GetComponent<Rigidbody2D>().linearVelocity =
                new Vector2(speed * Mathf.Cos((360.0f * i / numberToSpawn + angle) * Mathf.PI / 180.0f),
                            // Take into account the relative speed of the ship, so objects moving away will only slowly move away
                            (GameController.instance.scrollSpeed - speed) * Mathf.Sin((360.0f* i / numberToSpawn + angle) * Mathf.PI / 180.0f));
@@ -83,7 +83,7 @@ public class EnemyDebris : Enemy {
 
     protected override void Kinematics()
     {        
-        GetComponent<Rigidbody2D>().velocity = 
+        GetComponent<Rigidbody2D>().linearVelocity = 
             new Vector2(3.0f * UnityEngine.Random.Range(-1.0f, 1.0f), GameController.instance.scrollSpeed);
 
     }
