@@ -1,6 +1,6 @@
 # SpaceProjectXL
 
-[GamePlay Link](https://legav.itch.io/spaceprojectdemo)
+[GamePlay Link](https://ewdlop.itch.io/spaceprojectxldemo)
 
 ## Introduction
 SpaceProjectXL is an exciting space shooter game where players navigate through space, battling enemies and avoiding obstacles. The game features various levels, power-ups, and challenging bosses.
